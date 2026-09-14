@@ -847,7 +847,7 @@ async function loadFilters(){
             });
 
 
-        /* MUTU */
+  /* MUTU */
 
 filterMutu.innerHTML =
     '<option value="SEMUA">SEMUA</option>';
@@ -1122,38 +1122,95 @@ function tampilkanData(data){
             "none";
 
     }
+const urutanSortimen = [
+    "DECKING",
+    "FLOORING",
+    "LONGSTRIP",
+    "PB PANJANG",
+    "PB PENDEK",
+    "P STOCK",
+    "FJL",
+    "RENG",
+    "LIST",
+    "HOUSING COMPONENT"
+];
+
+
 const urutanMutu = [
     "P",
     "D",
     "T"
 ];
 
+
 data.sort(function(a, b){
 
-    const posisiA =
+    const posisiSortimenA =
+        urutanSortimen.indexOf(
+            String(a.sortimen || "").toUpperCase()
+        );
+
+    const posisiSortimenB =
+        urutanSortimen.indexOf(
+            String(b.sortimen || "").toUpperCase()
+        );
+
+
+    const nilaiSortimenA =
+        posisiSortimenA === -1
+            ? 999
+            : posisiSortimenA;
+
+
+    const nilaiSortimenB =
+        posisiSortimenB === -1
+            ? 999
+            : posisiSortimenB;
+
+
+    /*
+     * SORTIMEN DULU
+     */
+
+    if(nilaiSortimenA !== nilaiSortimenB){
+
+        return nilaiSortimenA - nilaiSortimenB;
+
+    }
+
+
+    /*
+     * JIKA SORTIMEN SAMA,
+     * BARU MUTU
+     */
+
+    const posisiMutuA =
         urutanMutu.indexOf(
             String(a.mutu || "").toUpperCase()
         );
 
-    const posisiB =
+
+    const posisiMutuB =
         urutanMutu.indexOf(
             String(b.mutu || "").toUpperCase()
         );
 
-    const nilaiA =
-        posisiA === -1
-            ? 999
-            : posisiA;
 
-    const nilaiB =
-        posisiB === -1
+    const nilaiMutuA =
+        posisiMutuA === -1
             ? 999
-            : posisiB;
+            : posisiMutuA;
 
-    return nilaiA - nilaiB;
+
+    const nilaiMutuB =
+        posisiMutuB === -1
+            ? 999
+            : posisiMutuB;
+
+
+    return nilaiMutuA - nilaiMutuB;
 
 });
-
     data.forEach(function(item){
 
         jumlahBatang +=
