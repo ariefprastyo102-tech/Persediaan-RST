@@ -849,23 +849,54 @@ async function loadFilters(){
 
         /* MUTU */
 
-        filterMutu.innerHTML =
-            '<option value="SEMUA">SEMUA</option>';
+filterMutu.innerHTML =
+    '<option value="SEMUA">SEMUA</option>';
 
 
-        (hasil.mutu || [])
-            .forEach(function(item){
+const urutanMutu = [
+    "P",
+    "D",
+    "T"
+];
 
-                const option =
-                    document.createElement("option");
 
-                option.value = item;
-                option.textContent = item;
+(hasil.mutu || [])
+    .sort(function(a,b){
 
-                filterMutu.appendChild(option);
+        const posisiA =
+            urutanMutu.indexOf(
+                String(a).toUpperCase()
+            );
 
-            });
+        const posisiB =
+            urutanMutu.indexOf(
+                String(b).toUpperCase()
+            );
 
+        const nilaiA =
+            posisiA === -1
+                ? 999
+                : posisiA;
+
+        const nilaiB =
+            posisiB === -1
+                ? 999
+                : posisiB;
+
+        return nilaiA - nilaiB;
+
+    })
+    .forEach(function(item){
+
+        const option =
+            document.createElement("option");
+
+        option.value = item;
+        option.textContent = item;
+
+        filterMutu.appendChild(option);
+
+    });
     }
 
     catch(error){
