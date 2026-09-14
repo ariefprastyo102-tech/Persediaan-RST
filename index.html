@@ -1,0 +1,1326 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>PERSEDIAAN RST</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+
+body{
+
+    margin:0;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    background:#f2f4f7;
+
+    color:#222;
+
+}
+
+
+header{
+
+    background:#198754;
+
+    color:white;
+
+    padding:14px 16px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:10;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0,0,0,.15);
+
+}
+
+
+header h1{
+
+    margin:0;
+
+    font-size:21px;
+
+}
+
+
+header .sub{
+
+    margin-top:4px;
+
+    font-size:12px;
+
+    opacity:.9;
+
+}
+
+
+.container{
+
+    padding:12px;
+
+    max-width:1400px;
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status{
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:10px 12px;
+
+    margin-bottom:10px;
+
+    box-shadow:
+        0 1px 4px
+        rgba(0,0,0,.08);
+
+    font-size:13px;
+
+}
+
+
+.status span{
+
+    font-weight:bold;
+
+}
+
+
+/* =====================================================
+   RINGKASAN
+===================================================== */
+
+.ringkas{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:8px;
+
+    margin-bottom:10px;
+
+}
+
+
+.kartu{
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:10px;
+
+    box-shadow:
+        0 1px 4px
+        rgba(0,0,0,.08);
+
+}
+
+
+.kartu .judul{
+
+    font-size:11px;
+
+    color:#666;
+
+}
+
+
+.kartu .angka{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-top:3px;
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.box-table{
+
+    background:white;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 1px 5px
+        rgba(0,0,0,.08);
+
+}
+
+
+.table-scroll{
+
+    overflow:auto;
+
+    max-height:
+        calc(100vh - 230px);
+
+}
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:850px;
+
+}
+
+
+th{
+
+    background:#198754;
+
+    color:white;
+
+    padding:7px;
+
+    font-size:12px;
+
+    text-align:center;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:2;
+
+}
+
+
+th.filter-head{
+
+    top:31px;
+
+    background:#e9f5ee;
+
+    padding:4px;
+
+    z-index:3;
+
+}
+
+
+td{
+
+    border-bottom:
+        1px solid #e5e5e5;
+
+    padding:7px;
+
+    font-size:12px;
+
+}
+
+
+td.center{
+
+    text-align:center;
+
+}
+
+
+td.number{
+
+    text-align:right;
+
+    white-space:nowrap;
+
+}
+
+
+td.ukuran{
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+
+tr:hover td{
+
+    background:#f7faf8;
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.filter{
+
+    width:100%;
+
+    border:1px solid #bbb;
+
+    border-radius:5px;
+
+    padding:5px 6px;
+
+    font-size:11px;
+
+    background:white;
+
+}
+
+
+.filter:focus{
+
+    outline:none;
+
+    border-color:#198754;
+
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:10px;
+
+    padding:12px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+    header h1{
+
+        font-size:18px;
+
+    }
+
+
+    .ringkas{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+    }
+
+
+    .kartu .angka{
+
+        font-size:15px;
+
+    }
+
+
+    .container{
+
+        padding:7px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>PERSEDIAAN RST</h1>
+
+    <div class="sub">
+        Persediaan RST yang masih tersedia
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     STATUS
+===================================================== -->
+
+<div class="status">
+
+    STATUS:
+    <span id="status">
+        MEMUAT DATA...
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     RINGKASAN
+===================================================== -->
+
+<div class="ringkas">
+
+
+    <div class="kartu">
+
+        <div class="judul">
+            JUMLAH UKURAN
+        </div>
+
+        <div
+            class="angka"
+            id="totalUkuran">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="kartu">
+
+        <div class="judul">
+            TOTAL BATANG
+        </div>
+
+        <div
+            class="angka"
+            id="totalBatang">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="kartu">
+
+        <div class="judul">
+            TOTAL VOLUME
+        </div>
+
+        <div
+            class="angka"
+            id="totalVolume">
+            0.000000
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     TABLE
+===================================================== -->
+
+<div class="box-table">
+
+<div class="table-scroll">
+
+
+<table>
+
+<thead>
+
+
+<tr>
+
+    <th>
+        TAHUN
+    </th>
+
+    <th>
+        SORTIMEN
+    </th>
+
+    <th>
+        MUTU
+    </th>
+
+    <th>
+        UKURAN
+    </th>
+
+    <th>
+        BATANG
+    </th>
+
+    <th>
+        VOLUME
+    </th>
+
+</tr>
+
+
+<tr class="filter-head">
+
+
+    <!-- TAHUN -->
+
+    <th>
+
+        <select
+            id="filterTahun"
+            class="filter">
+
+            <option value="SEMUA">
+                SEMUA
+            </option>
+
+            <option value="2025">
+                2025
+            </option>
+
+            <option value="2026">
+                2026
+            </option>
+
+        </select>
+
+    </th>
+
+
+    <!-- SORTIMEN -->
+
+    <th>
+
+        <select
+            id="filterSortimen"
+            class="filter">
+
+            <option value="SEMUA">
+                SEMUA
+            </option>
+
+        </select>
+
+    </th>
+
+
+    <!-- MUTU -->
+
+    <th>
+
+        <select
+            id="filterMutu"
+            class="filter">
+
+            <option value="SEMUA">
+                SEMUA
+            </option>
+
+        </select>
+
+    </th>
+
+
+    <!-- UKURAN -->
+
+    <th>
+
+        <input
+            type="text"
+            id="filterUkuran"
+            class="filter"
+            placeholder="Cari ukuran...">
+
+    </th>
+
+
+    <!-- BATANG -->
+
+    <th>
+    </th>
+
+
+    <!-- VOLUME -->
+
+    <th>
+    </th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="tbody">
+
+<tr>
+
+    <td
+        colspan="6"
+        class="loading">
+
+        MEMUAT DATA...
+
+    </td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    PERSEDIAAN RST
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby9dcBegLV7frA3KRFNW3cvM7dwbeBI91smsnFmX8KijjpuTk15KRo4XDsAvNYAFpU2/exec";
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let dataRST = [];
+
+
+/* =====================================================
+   JSONP
+===================================================== */
+
+function jsonp(url){
+
+    return new Promise(function(resolve,reject){
+
+        const callbackName =
+            "jsonp_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+                Math.random()*100000
+            );
+
+
+        const script =
+            document.createElement(
+                "script"
+            );
+
+
+        const timeout =
+            setTimeout(function(){
+
+                cleanup();
+
+                reject(
+                    new Error(
+                        "Timeout mengambil data."
+                    )
+                );
+
+            },15000);
+
+
+        function cleanup(){
+
+            clearTimeout(timeout);
+
+            if(script.parentNode){
+
+                script.parentNode
+                    .removeChild(script);
+
+            }
+
+            delete window[callbackName];
+
+        }
+
+
+        window[callbackName] =
+            function(data){
+
+                cleanup();
+
+                resolve(data);
+
+            };
+
+
+        script.onerror =
+            function(){
+
+                cleanup();
+
+                reject(
+                    new Error(
+                        "Gagal menghubungi Apps Script."
+                    )
+                );
+
+            };
+
+
+        script.src =
+            url +
+            (
+                url.includes("?")
+                ? "&"
+                : "?"
+            ) +
+            "callback=" +
+            encodeURIComponent(
+                callbackName
+            );
+
+
+        document
+            .body
+            .appendChild(script);
+
+    });
+
+}
+
+
+/* =====================================================
+   AMBIL FILTER
+===================================================== */
+
+async function ambilFilter(){
+
+    try{
+
+        const url =
+            API_URL +
+            "?action=filter";
+
+
+        const hasil =
+            await jsonp(url);
+
+
+        if(!hasil.sukses){
+
+            throw new Error(
+                hasil.error ||
+                "Gagal mengambil filter."
+            );
+
+        }
+
+
+        isiSelect(
+            "filterSortimen",
+            hasil.sortimen || []
+        );
+
+
+        isiSelect(
+            "filterMutu",
+            hasil.mutu || []
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   ISI SELECT
+===================================================== */
+
+function isiSelect(id,data){
+
+    const select =
+        document.getElementById(id);
+
+
+    const nilaiLama =
+        select.value;
+
+
+    select.innerHTML =
+        '<option value="SEMUA">SEMUA</option>';
+
+
+    data.forEach(function(item){
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value = item;
+
+        option.textContent = item;
+
+
+        select.appendChild(option);
+
+    });
+
+
+    if(
+        [...select.options]
+            .some(
+                x =>
+                x.value === nilaiLama
+            )
+    ){
+
+        select.value =
+            nilaiLama;
+
+    }
+
+}
+
+
+/* =====================================================
+   AMBIL DATA
+===================================================== */
+
+async function ambilData(){
+
+    setStatus(
+        "MEMUAT DATA..."
+    );
+
+
+    const tahun =
+        document
+            .getElementById(
+                "filterTahun"
+            )
+            .value;
+
+
+    const sortimen =
+        document
+            .getElementById(
+                "filterSortimen"
+            )
+            .value;
+
+
+    const mutu =
+        document
+            .getElementById(
+                "filterMutu"
+            )
+            .value;
+
+
+    const ukuran =
+        document
+            .getElementById(
+                "filterUkuran"
+            )
+            .value;
+
+
+    const params =
+        new URLSearchParams();
+
+
+    params.set(
+        "action",
+        "data"
+    );
+
+
+    params.set(
+        "tahun",
+        tahun
+    );
+
+
+    params.set(
+        "sortimen",
+        sortimen
+    );
+
+
+    params.set(
+        "mutu",
+        mutu
+    );
+
+
+    params.set(
+        "ukuran",
+        ukuran
+    );
+
+
+    try{
+
+        const hasil =
+            await jsonp(
+                API_URL +
+                "?" +
+                params.toString()
+            );
+
+
+        if(!hasil.sukses){
+
+            throw new Error(
+                hasil.error ||
+                "Gagal mengambil data."
+            );
+
+        }
+
+
+        dataRST =
+            hasil.data || [];
+
+
+        tampilkanData();
+
+
+        setStatus(
+            "ONLINE • " +
+            formatAngka(
+                dataRST.length
+            ) +
+            " ukuran"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        dataRST = [];
+
+        tampilkanData();
+
+
+        setStatus(
+            "GAGAL: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   TAMPILKAN DATA
+===================================================== */
+
+function tampilkanData(){
+
+    const tbody =
+        document.getElementById(
+            "tbody"
+        );
+
+
+    if(!dataRST.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    DATA PERSEDIAAN
+                    TIDAK DITEMUKAN
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        updateRingkas();
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    dataRST.forEach(function(item){
+
+        html += `
+
+            <tr>
+
+                <td class="center">
+                    ${escapeHtml(item.tahun)}
+                </td>
+
+                <td>
+                    ${escapeHtml(item.sortimen)}
+                </td>
+
+                <td class="center">
+                    ${escapeHtml(item.mutu)}
+                </td>
+
+                <td class="ukuran">
+                    ${escapeHtml(item.ukuran)}
+                </td>
+
+                <td class="number">
+                    ${formatAngka(item.batang)}
+                </td>
+
+                <td class="number">
+                    ${formatVolume(item.volume)}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    tbody.innerHTML =
+        html;
+
+
+    updateRingkas();
+
+}
+
+
+/* =====================================================
+   RINGKASAN
+===================================================== */
+
+function updateRingkas(){
+
+    let batang = 0;
+
+    let volume = 0;
+
+
+    dataRST.forEach(function(item){
+
+        batang +=
+            Number(
+                item.batang
+            ) || 0;
+
+
+        volume +=
+            Number(
+                item.volume
+            ) || 0;
+
+    });
+
+
+    document
+        .getElementById(
+            "totalUkuran"
+        )
+        .textContent =
+        formatAngka(
+            dataRST.length
+        );
+
+
+    document
+        .getElementById(
+            "totalBatang"
+        )
+        .textContent =
+        formatAngka(
+            batang
+        );
+
+
+    document
+        .getElementById(
+            "totalVolume"
+        )
+        .textContent =
+        formatVolume(
+            volume
+        );
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setStatus(text){
+
+    document
+        .getElementById(
+            "status"
+        )
+        .textContent =
+        text;
+
+}
+
+
+/* =====================================================
+   FORMAT ANGKA
+===================================================== */
+
+function formatAngka(value){
+
+    return Number(value || 0)
+        .toLocaleString(
+            "id-ID"
+        );
+
+}
+
+
+/* =====================================================
+   FORMAT VOLUME
+===================================================== */
+
+function formatVolume(value){
+
+    return Number(value || 0)
+        .toLocaleString(
+            "id-ID",
+            {
+                minimumFractionDigits:6,
+                maximumFractionDigits:6
+            }
+        );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   EVENT FILTER
+===================================================== */
+
+document
+    .getElementById(
+        "filterTahun"
+    )
+    .addEventListener(
+        "change",
+        ambilData
+    );
+
+
+document
+    .getElementById(
+        "filterSortimen"
+    )
+    .addEventListener(
+        "change",
+        ambilData
+    );
+
+
+document
+    .getElementById(
+        "filterMutu"
+    )
+    .addEventListener(
+        "change",
+        ambilData
+    );
+
+
+let timerUkuran;
+
+
+document
+    .getElementById(
+        "filterUkuran"
+    )
+    .addEventListener(
+        "input",
+        function(){
+
+            clearTimeout(
+                timerUkuran
+            );
+
+
+            timerUkuran =
+                setTimeout(
+                    ambilData,
+                    300
+                );
+
+        }
+    );
+
+
+/* =====================================================
+   MULAI
+===================================================== */
+
+async function mulai(){
+
+    await ambilFilter();
+
+    await ambilData();
+
+}
+
+
+mulai();
+
+</script>
+
+
+</body>
+
+</html>
+
