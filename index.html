@@ -836,15 +836,24 @@ function normalisasiUkuran(text){
 
     return String(text || "")
         .toUpperCase()
-        .replace(/×/g," ")
-        .replace(/X/g," ")
-        .replace(/,/g," ")
-        .replace(/;/g," ")
-        .replace(/\s+/g," ")
-        .trim();
+        .split(/\n+/)
+        .map(function(baris){
+
+            return baris
+                .replace(/×/g," ")
+                .replace(/X/g," ")
+                .replace(/,/g," ")
+                .replace(/;/g," ")
+                .replace(/\s+/g," ")
+                .trim();
+
+        })
+        .filter(function(baris){
+            return baris !== "";
+        })
+        .join("|");
 
 }
-
 
 /* =====================================================
    AMBIL DATA
