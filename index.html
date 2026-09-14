@@ -1,672 +1,583 @@
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PERSEDIAAN RST</title>
 
-
 <style>
-
 *{
     box-sizing:border-box;
 }
 
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    overflow-x:hidden;
+}
 
 body{
-
-    margin:0;
-
-    font-family:
-        Arial,
-        sans-serif;
-
-    background:#f2f4f7;
-
+    font-family:Arial,sans-serif;
+    background:#f3f4f6;
     color:#222;
-
+    font-size:13px;
 }
 
-
-header{
-
-    background:#198754;
-
-    color:white;
-
-    padding:14px 16px;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:10;
-
-    box-shadow:
-        0 2px 8px
-        rgba(0,0,0,.15);
-
-}
-
-
-header h1{
-
-    margin:0;
-
-    font-size:21px;
-
-}
-
-
-header .sub{
-
-    margin-top:4px;
-
-    font-size:12px;
-
-    opacity:.9;
-
-}
-
+/* =====================================================
+   CONTAINER
+===================================================== */
 
 .container{
-
-    padding:12px;
-
-    max-width:1400px;
-
-    margin:auto;
-
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+    padding:10px;
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+    background:#176b3a;
+    color:white;
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:8px;
+}
+
+.header h1{
+    margin:0;
+    font-size:20px;
+    line-height:1.2;
+}
+
+.header p{
+    margin:4px 0 0;
+    font-size:11px;
+    opacity:.9;
+}
 
 /* =====================================================
    STATUS
 ===================================================== */
 
 .status{
-
     background:white;
-
-    border-radius:8px;
-
-    padding:10px 12px;
-
-    margin-bottom:10px;
-
-    box-shadow:
-        0 1px 4px
-        rgba(0,0,0,.08);
-
-    font-size:13px;
-
+    border:1px solid #ddd;
+    border-radius:7px;
+    padding:7px 9px;
+    margin-bottom:8px;
+    font-size:11px;
+    color:#555;
 }
-
-
-.status span{
-
-    font-weight:bold;
-
-}
-
 
 /* =====================================================
    RINGKASAN
 ===================================================== */
 
-.ringkas{
-
+.summary{
     display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:8px;
-
-    margin-bottom:10px;
-
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin-bottom:9px;
 }
 
-
-.kartu{
-
+.card{
     background:white;
-
-    border-radius:8px;
-
-    padding:10px;
-
-    box-shadow:
-        0 1px 4px
-        rgba(0,0,0,.08);
-
+    border:1px solid #ddd;
+    border-radius:7px;
+    padding:8px 10px;
 }
 
-
-.kartu .judul{
-
-    font-size:11px;
-
-    color:#666;
-
+.card-label{
+    font-size:10px;
+    color:#777;
+    margin-bottom:2px;
 }
 
-
-.kartu .angka{
-
-    font-size:18px;
-
+.card-value{
+    font-size:17px;
     font-weight:bold;
-
-    margin-top:3px;
-
 }
-
 
 /* =====================================================
-   TABLE
+   TABEL
 ===================================================== */
 
-.box-table{
-
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
     background:white;
-
+    border:1px solid #ddd;
     border-radius:8px;
-
-    overflow:hidden;
-
-    box-shadow:
-        0 1px 5px
-        rgba(0,0,0,.08);
-
+    -webkit-overflow-scrolling:touch;
 }
-
-
-.table-scroll{
-
-    overflow:auto;
-
-    max-height:
-        calc(100vh - 230px);
-
-}
-
 
 table{
-
     width:100%;
-
+    min-width:590px;
     border-collapse:collapse;
-
-    min-width:850px;
-
+    table-layout:fixed;
 }
 
-
-th{
-
-    background:#198754;
-
-    color:white;
-
-    padding:7px;
-
-    font-size:12px;
-
-    text-align:center;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:2;
-
-}
-
-
-th.filter-head{
-
-    top:31px;
-
-    background:#e9f5ee;
-
-    padding:4px;
-
-    z-index:3;
-
-}
-
-
+th,
 td{
-
-    border-bottom:
-        1px solid #e5e5e5;
-
-    padding:7px;
-
-    font-size:12px;
-
-}
-
-
-td.center{
-
-    text-align:center;
-
-}
-
-
-td.number{
-
-    text-align:right;
-
+    border-bottom:1px solid #e5e5e5;
+    padding:6px 5px;
+    text-align:left;
+    vertical-align:middle;
     white-space:nowrap;
-
 }
 
-
-td.ukuran{
-
+thead tr:first-child th{
+    background:#176b3a;
+    color:white;
+    font-size:10px;
     font-weight:bold;
-
-    white-space:nowrap;
-
+    text-align:center;
 }
 
+thead tr.filter-row th{
+    background:#f7f7f7;
+    padding:4px;
+    position:sticky;
+    top:0;
+    z-index:5;
+}
 
-tr:hover td{
+tbody td{
+    font-size:11px;
+}
 
+tbody tr:last-child td{
+    border-bottom:none;
+}
+
+tbody tr:hover{
     background:#f7faf8;
-
 }
 
+/* =====================================================
+   LEBAR KOLOM
+===================================================== */
+
+.col-tahun{
+    width:55px;
+    text-align:center;
+}
+
+.col-sortimen{
+    width:105px;
+}
+
+.col-mutu{
+    width:60px;
+    text-align:center;
+}
+
+.col-ukuran{
+    width:190px;
+}
+
+.col-batang{
+    width:75px;
+    text-align:right;
+}
+
+.col-volume{
+    width:85px;
+    text-align:right;
+}
 
 /* =====================================================
    FILTER
 ===================================================== */
 
-.filter{
-
+select,
+input{
     width:100%;
-
-    border:1px solid #bbb;
-
-    border-radius:5px;
-
-    padding:5px 6px;
-
-    font-size:11px;
-
+    height:27px;
+    border:1px solid #ccc;
+    border-radius:4px;
     background:white;
-
-}
-
-
-.filter:focus{
-
+    padding:3px 5px;
+    font-family:Arial,sans-serif;
+    font-size:10px;
     outline:none;
-
-    border-color:#198754;
-
 }
 
+select:focus,
+input:focus{
+    border-color:#176b3a;
+}
 
 /* =====================================================
-   LOADING
+   EMPTY / LOADING
 ===================================================== */
 
 .loading{
-
-    padding:30px;
-
     text-align:center;
-
+    padding:20px 10px;
     color:#777;
-
-    font-size:13px;
-
+    font-size:11px;
 }
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
 
 .empty{
-
-    padding:30px;
-
     text-align:center;
-
-    color:#777;
-
-    font-size:13px;
-
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-.footer{
-
-    text-align:center;
-
+    padding:22px 10px;
     color:#888;
-
-    font-size:10px;
-
-    padding:12px;
-
+    font-size:11px;
 }
-
 
 /* =====================================================
    MOBILE
 ===================================================== */
 
-@media(max-width:700px){
+@media(max-width:600px){
 
-    header h1{
-
-        font-size:18px;
-
+    body{
+        font-size:12px;
     }
-
-
-    .ringkas{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-
-    .kartu .angka{
-
-        font-size:15px;
-
-    }
-
 
     .container{
-
-        padding:7px;
-
+        padding:6px;
+        max-width:100%;
     }
 
+    .header{
+        padding:10px 11px;
+        border-radius:6px;
+    }
+
+    .header h1{
+        font-size:17px;
+    }
+
+    .header p{
+        font-size:10px;
+    }
+
+    .status{
+        padding:6px 8px;
+        margin-bottom:6px;
+        font-size:10px;
+    }
+
+    .summary{
+        gap:5px;
+        margin-bottom:6px;
+    }
+
+    .card{
+        padding:6px 8px;
+        border-radius:6px;
+    }
+
+    .card-label{
+        font-size:9px;
+    }
+
+    .card-value{
+        font-size:15px;
+    }
+
+    table{
+        min-width:560px;
+    }
+
+    th,
+    td{
+        padding:5px 4px;
+    }
+
+    thead tr:first-child th{
+        font-size:9px;
+    }
+
+    tbody td{
+        font-size:10px;
+    }
+
+    select,
+    input{
+        height:25px;
+        font-size:9px;
+        padding:2px 4px;
+    }
+
+    .col-tahun{
+        width:50px;
+    }
+
+    .col-sortimen{
+        width:95px;
+    }
+
+    .col-mutu{
+        width:50px;
+    }
+
+    .col-ukuran{
+        width:180px;
+    }
+
+    .col-batang{
+        width:65px;
+    }
+
+    .col-volume{
+        width:80px;
+    }
 }
 
+/* =====================================================
+   VERY SMALL HP
+===================================================== */
+
+@media(max-width:380px){
+
+    .container{
+        padding:4px;
+    }
+
+    .header h1{
+        font-size:16px;
+    }
+
+    table{
+        min-width:520px;
+    }
+
+    .col-tahun{
+        width:45px;
+    }
+
+    .col-sortimen{
+        width:85px;
+    }
+
+    .col-mutu{
+        width:45px;
+    }
+
+    .col-ukuran{
+        width:165px;
+    }
+
+    .col-batang{
+        width:60px;
+    }
+
+    .col-volume{
+        width:75px;
+    }
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<header>
-
-    <h1>PERSEDIAAN RST</h1>
-
-    <div class="sub">
-        Persediaan RST yang masih tersedia
-    </div>
-
-</header>
-
-
 <div class="container">
 
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
-<!-- =====================================================
-     STATUS
-===================================================== -->
-
-<div class="status">
-
-    STATUS:
-    <span id="status">
-        MEMUAT DATA...
-    </span>
-
-</div>
-
-
-<!-- =====================================================
-     RINGKASAN
-===================================================== -->
-
-<div class="ringkas">
-
-
-    <div class="kartu">
-
-        <div class="judul">
-            JUMLAH UKURAN
-        </div>
-
-        <div
-            class="angka"
-            id="totalUkuran">
-            0
-        </div>
-
+    <div class="header">
+        <h1>PERSEDIAAN RST</h1>
+        <p>Persediaan RST yang masih tersedia</p>
     </div>
 
 
-    <div class="kartu">
-
-        <div class="judul">
-            TOTAL BATANG
-        </div>
-
-        <div
-            class="angka"
-            id="totalBatang">
-            0
-        </div>
-
-    </div>
-
-
-    <div class="kartu">
-
-        <div class="judul">
-            TOTAL VOLUME
-        </div>
-
-        <div
-            class="angka"
-            id="totalVolume">
-            0.000000
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<!-- =====================================================
-     TABLE
-===================================================== -->
-
-<div class="box-table">
-
-<div class="table-scroll">
-
-
-<table>
-
-<thead>
-
-
-<tr>
-
-    <th>
-        TAHUN
-    </th>
-
-    <th>
-        SORTIMEN
-    </th>
-
-    <th>
-        MUTU
-    </th>
-
-    <th>
-        UKURAN
-    </th>
-
-    <th>
-        BATANG
-    </th>
-
-    <th>
-        VOLUME
-    </th>
-
-</tr>
-
-
-<tr class="filter-head">
-
-
-    <!-- TAHUN -->
-
-    <th>
-
-        <select
-            id="filterTahun"
-            class="filter">
-
-            <option value="SEMUA">
-                SEMUA
-            </option>
-
-            <option value="2025">
-                2025
-            </option>
-
-            <option value="2026">
-                2026
-            </option>
-
-        </select>
-
-    </th>
-
-
-    <!-- SORTIMEN -->
-
-    <th>
-
-        <select
-            id="filterSortimen"
-            class="filter">
-
-            <option value="SEMUA">
-                SEMUA
-            </option>
-
-        </select>
-
-    </th>
-
-
-    <!-- MUTU -->
-
-    <th>
-
-        <select
-            id="filterMutu"
-            class="filter">
-
-            <option value="SEMUA">
-                SEMUA
-            </option>
-
-        </select>
-
-    </th>
-
-
-    <!-- UKURAN -->
-
-    <th>
-
-        <input
-            type="text"
-            id="filterUkuran"
-            class="filter"
-            placeholder="Cari ukuran...">
-
-    </th>
-
-
-    <!-- BATANG -->
-
-    <th>
-    </th>
-
-
-    <!-- VOLUME -->
-
-    <th>
-    </th>
-
-
-</tr>
-
-
-</thead>
-
-
-<tbody id="tbody">
-
-<tr>
-
-    <td
-        colspan="6"
-        class="loading">
+    <!-- =================================================
+         STATUS
+    ================================================== -->
+
+    <div
+        id="status"
+        class="status">
 
         MEMUAT DATA...
 
-    </td>
-
-</tr>
-
-</tbody>
+    </div>
 
 
-</table>
+    <!-- =================================================
+         RINGKASAN
+    ================================================== -->
 
-</div>
+    <div class="summary">
 
-</div>
+        <div class="card">
+
+            <div class="card-label">
+                TOTAL BATANG
+            </div>
+
+            <div
+                id="totalBatang"
+                class="card-value">
+
+                0
+
+            </div>
+
+        </div>
 
 
-<div class="footer">
+        <div class="card">
 
-    PERSEDIAAN RST
+            <div class="card-label">
+                TOTAL VOLUME
+            </div>
 
-</div>
+            <div
+                id="totalVolume"
+                class="card-value">
 
+                0.000000
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TABEL
+    ================================================== -->
+
+    <div class="table-wrap">
+
+        <table>
+
+            <colgroup>
+
+                <col class="col-tahun">
+                <col class="col-sortimen">
+                <col class="col-mutu">
+                <col class="col-ukuran">
+                <col class="col-batang">
+                <col class="col-volume">
+
+            </colgroup>
+
+
+            <thead>
+
+                <!-- JUDUL KOLOM -->
+
+                <tr>
+
+                    <th>TAHUN</th>
+                    <th>SORTIMEN</th>
+                    <th>MUTU</th>
+                    <th>UKURAN</th>
+                    <th>BATANG</th>
+                    <th>VOLUME</th>
+
+                </tr>
+
+
+                <!-- FILTER -->
+
+                <tr class="filter-row">
+
+                    <th>
+
+                        <select id="filterTahun">
+
+                            <option value="SEMUA">
+                                SEMUA
+                            </option>
+
+                            <option value="2025">
+                                2025
+                            </option>
+
+                            <option value="2026">
+                                2026
+                            </option>
+
+                        </select>
+
+                    </th>
+
+
+                    <th>
+
+                        <select id="filterSortimen">
+
+                            <option value="SEMUA">
+                                SEMUA
+                            </option>
+
+                        </select>
+
+                    </th>
+
+
+                    <th>
+
+                        <select id="filterMutu">
+
+                            <option value="SEMUA">
+                                SEMUA
+                            </option>
+
+                        </select>
+
+                    </th>
+
+
+                    <th>
+
+                        <input
+                            id="filterUkuran"
+                            type="text"
+                            placeholder="18 100 550">
+
+                    </th>
+
+
+                    <th></th>
+
+                    <th></th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="tbody">
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="loading">
+
+                        MEMUAT DATA...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
 
 <script>
-
 
 /* =====================================================
    API
@@ -677,525 +588,52 @@ const API_URL =
 
 
 /* =====================================================
-   STATE
+   ELEMENT
 ===================================================== */
 
-let dataRST = [];
+const statusBox =
+    document.getElementById("status");
+
+const tbody =
+    document.getElementById("tbody");
+
+const totalBatang =
+    document.getElementById("totalBatang");
+
+const totalVolume =
+    document.getElementById("totalVolume");
+
+const filterTahun =
+    document.getElementById("filterTahun");
+
+const filterSortimen =
+    document.getElementById("filterSortimen");
+
+const filterMutu =
+    document.getElementById("filterMutu");
+
+const filterUkuran =
+    document.getElementById("filterUkuran");
 
 
 /* =====================================================
-   JSONP
+   DATA
 ===================================================== */
 
-function jsonp(url){
-
-    return new Promise(function(resolve,reject){
-
-        const callbackName =
-            "jsonp_" +
-            Date.now() +
-            "_" +
-            Math.floor(
-                Math.random()*100000
-            );
-
-
-        const script =
-            document.createElement(
-                "script"
-            );
-
-
-        const timeout =
-            setTimeout(function(){
-
-                cleanup();
-
-                reject(
-                    new Error(
-                        "Timeout mengambil data."
-                    )
-                );
-
-            },15000);
-
-
-        function cleanup(){
-
-            clearTimeout(timeout);
-
-            if(script.parentNode){
-
-                script.parentNode
-                    .removeChild(script);
-
-            }
-
-            delete window[callbackName];
-
-        }
-
-
-        window[callbackName] =
-            function(data){
-
-                cleanup();
-
-                resolve(data);
-
-            };
-
-
-        script.onerror =
-            function(){
-
-                cleanup();
-
-                reject(
-                    new Error(
-                        "Gagal menghubungi Apps Script."
-                    )
-                );
-
-            };
-
-
-        script.src =
-            url +
-            (
-                url.includes("?")
-                ? "&"
-                : "?"
-            ) +
-            "callback=" +
-            encodeURIComponent(
-                callbackName
-            );
-
-
-        document
-            .body
-            .appendChild(script);
-
-    });
-
-}
-
-
-/* =====================================================
-   AMBIL FILTER
-===================================================== */
-
-async function ambilFilter(){
-
-    try{
-
-        const url =
-            API_URL +
-            "?action=filter";
-
-
-        const hasil =
-            await jsonp(url);
-
-
-        if(!hasil.sukses){
-
-            throw new Error(
-                hasil.error ||
-                "Gagal mengambil filter."
-            );
-
-        }
-
-
-        isiSelect(
-            "filterSortimen",
-            hasil.sortimen || []
-        );
-
-
-        isiSelect(
-            "filterMutu",
-            hasil.mutu || []
-        );
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-    }
-
-}
-
-
-/* =====================================================
-   ISI SELECT
-===================================================== */
-
-function isiSelect(id,data){
-
-    const select =
-        document.getElementById(id);
-
-
-    const nilaiLama =
-        select.value;
-
-
-    select.innerHTML =
-        '<option value="SEMUA">SEMUA</option>';
-
-
-    data.forEach(function(item){
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-
-        option.value = item;
-
-        option.textContent = item;
-
-
-        select.appendChild(option);
-
-    });
-
-
-    if(
-        [...select.options]
-            .some(
-                x =>
-                x.value === nilaiLama
-            )
-    ){
-
-        select.value =
-            nilaiLama;
-
-    }
-
-}
-
-
-/* =====================================================
-   AMBIL DATA
-===================================================== */
-
-async function ambilData(){
-
-    setStatus(
-        "MEMUAT DATA..."
-    );
-
-
-    const tahun =
-        document
-            .getElementById(
-                "filterTahun"
-            )
-            .value;
-
-
-    const sortimen =
-        document
-            .getElementById(
-                "filterSortimen"
-            )
-            .value;
-
-
-    const mutu =
-        document
-            .getElementById(
-                "filterMutu"
-            )
-            .value;
-
-
-    const ukuran =
-        document
-            .getElementById(
-                "filterUkuran"
-            )
-            .value;
-
-
-    const params =
-        new URLSearchParams();
-
-
-    params.set(
-        "action",
-        "data"
-    );
-
-
-    params.set(
-        "tahun",
-        tahun
-    );
-
-
-    params.set(
-        "sortimen",
-        sortimen
-    );
-
-
-    params.set(
-        "mutu",
-        mutu
-    );
-
-
-    params.set(
-        "ukuran",
-        ukuran
-    );
-
-
-    try{
-
-        const hasil =
-            await jsonp(
-                API_URL +
-                "?" +
-                params.toString()
-            );
-
-
-        if(!hasil.sukses){
-
-            throw new Error(
-                hasil.error ||
-                "Gagal mengambil data."
-            );
-
-        }
-
-
-        dataRST =
-            hasil.data || [];
-
-
-        tampilkanData();
-
-
-        setStatus(
-            "ONLINE • " +
-            formatAngka(
-                dataRST.length
-            ) +
-            " ukuran"
-        );
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        dataRST = [];
-
-        tampilkanData();
-
-
-        setStatus(
-            "GAGAL: " +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   TAMPILKAN DATA
-===================================================== */
-
-function tampilkanData(){
-
-    const tbody =
-        document.getElementById(
-            "tbody"
-        );
-
-
-    if(!dataRST.length){
-
-        tbody.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="6"
-                    class="empty">
-
-                    DATA PERSEDIAAN
-                    TIDAK DITEMUKAN
-
-                </td>
-
-            </tr>
-
-        `;
-
-
-        updateRingkas();
-
-        return;
-
-    }
-
-
-    let html = "";
-
-
-    dataRST.forEach(function(item){
-
-        html += `
-
-            <tr>
-
-                <td class="center">
-                    ${escapeHtml(item.tahun)}
-                </td>
-
-                <td>
-                    ${escapeHtml(item.sortimen)}
-                </td>
-
-                <td class="center">
-                    ${escapeHtml(item.mutu)}
-                </td>
-
-                <td class="ukuran">
-                    ${escapeHtml(item.ukuran)}
-                </td>
-
-                <td class="number">
-                    ${formatAngka(item.batang)}
-                </td>
-
-                <td class="number">
-                    ${formatVolume(item.volume)}
-                </td>
-
-            </tr>
-
-        `;
-
-    });
-
-
-    tbody.innerHTML =
-        html;
-
-
-    updateRingkas();
-
-}
-
-
-/* =====================================================
-   RINGKASAN
-===================================================== */
-
-function updateRingkas(){
-
-    let batang = 0;
-
-    let volume = 0;
-
-
-    dataRST.forEach(function(item){
-
-        batang +=
-            Number(
-                item.batang
-            ) || 0;
-
-
-        volume +=
-            Number(
-                item.volume
-            ) || 0;
-
-    });
-
-
-    document
-        .getElementById(
-            "totalUkuran"
-        )
-        .textContent =
-        formatAngka(
-            dataRST.length
-        );
-
-
-    document
-        .getElementById(
-            "totalBatang"
-        )
-        .textContent =
-        formatAngka(
-            batang
-        );
-
-
-    document
-        .getElementById(
-            "totalVolume"
-        )
-        .textContent =
-        formatVolume(
-            volume
-        );
-
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function setStatus(text){
-
-    document
-        .getElementById(
-            "status"
-        )
-        .textContent =
-        text;
-
-}
+let timerUkuran = null;
 
 
 /* =====================================================
    FORMAT ANGKA
 ===================================================== */
 
-function formatAngka(value){
+function formatBatang(value){
 
     return Number(value || 0)
-        .toLocaleString(
-            "id-ID"
-        );
+        .toLocaleString("id-ID");
 
 }
 
-
-/* =====================================================
-   FORMAT VOLUME
-===================================================== */
 
 function formatVolume(value){
 
@@ -1212,32 +650,418 @@ function formatVolume(value){
 
 
 /* =====================================================
+   JSONP
+===================================================== */
+
+function jsonp(url){
+
+    return new Promise(function(resolve,reject){
+
+        const callbackName =
+            "jsonp_" +
+            Date.now() +
+            "_" +
+            Math.floor(Math.random()*100000);
+
+
+        const script =
+            document.createElement("script");
+
+        let selesai = false;
+
+
+        window[callbackName] =
+            function(data){
+
+                selesai = true;
+
+                delete window[callbackName];
+
+                script.remove();
+
+                resolve(data);
+
+            };
+
+
+        script.onerror =
+            function(){
+
+                if(selesai) return;
+
+                delete window[callbackName];
+
+                script.remove();
+
+                reject(
+                    new Error(
+                        "Gagal mengambil data dari Apps Script."
+                    )
+                );
+
+            };
+
+
+        script.src =
+            url +
+            (url.includes("?") ? "&" : "?") +
+            "callback=" +
+            encodeURIComponent(callbackName) +
+            "&_=" +
+            Date.now();
+
+
+        document.body.appendChild(script);
+
+
+        setTimeout(function(){
+
+            if(selesai) return;
+
+            selesai = true;
+
+            delete window[callbackName];
+
+            script.remove();
+
+            reject(
+                new Error(
+                    "Waktu mengambil data habis."
+                )
+            );
+
+        },20000);
+
+    });
+
+}
+
+
+/* =====================================================
+   AMBIL FILTER
+===================================================== */
+
+async function loadFilters(){
+
+    try{
+
+        const url =
+            API_URL +
+            "?action=filter";
+
+
+        const hasil =
+            await jsonp(url);
+
+
+        if(!hasil || !hasil.sukses){
+
+            throw new Error(
+                hasil && hasil.error
+                    ? hasil.error
+                    : "Filter gagal."
+            );
+
+        }
+
+
+        /* SORTIMEN */
+
+        filterSortimen.innerHTML =
+            '<option value="SEMUA">SEMUA</option>';
+
+
+        (hasil.sortimen || [])
+            .forEach(function(item){
+
+                const option =
+                    document.createElement("option");
+
+                option.value = item;
+                option.textContent = item;
+
+                filterSortimen.appendChild(option);
+
+            });
+
+
+        /* MUTU */
+
+        filterMutu.innerHTML =
+            '<option value="SEMUA">SEMUA</option>';
+
+
+        (hasil.mutu || [])
+            .forEach(function(item){
+
+                const option =
+                    document.createElement("option");
+
+                option.value = item;
+                option.textContent = item;
+
+                filterMutu.appendChild(option);
+
+            });
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        statusBox.textContent =
+            "FILTER GAGAL: " +
+            error.message;
+
+    }
+
+}
+
+
+/* =====================================================
+   NORMALISASI PENCARIAN UKURAN
+===================================================== */
+
+function normalisasiUkuran(text){
+
+    return String(text || "")
+        .toUpperCase()
+        .replace(/×/g," ")
+        .replace(/X/g," ")
+        .replace(/,/g," ")
+        .replace(/;/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+/* =====================================================
+   AMBIL DATA
+===================================================== */
+
+async function loadData(){
+
+    try{
+
+        statusBox.textContent =
+            "MEMUAT DATA...";
+
+
+        tbody.innerHTML =
+            '<tr>' +
+            '<td colspan="6" class="loading">' +
+            'MEMUAT DATA...' +
+            '</td>' +
+            '</tr>';
+
+
+        const tahun =
+            encodeURIComponent(
+                filterTahun.value
+            );
+
+
+        const sortimen =
+            encodeURIComponent(
+                filterSortimen.value
+            );
+
+
+        const mutu =
+            encodeURIComponent(
+                filterMutu.value
+            );
+
+
+        /*
+         * UKURAN dikirim sebagai satu pencarian.
+         * Contoh:
+         * 18 100 550
+         */
+
+        const ukuran =
+            encodeURIComponent(
+                normalisasiUkuran(
+                    filterUkuran.value
+                )
+            );
+
+
+        const url =
+            API_URL +
+            "?action=data" +
+            "&tahun=" + tahun +
+            "&sortimen=" + sortimen +
+            "&mutu=" + mutu +
+            "&ukuran=" + ukuran;
+
+
+        const hasil =
+            await jsonp(url);
+
+
+        if(!hasil || !hasil.sukses){
+
+            throw new Error(
+                hasil && hasil.error
+                    ? hasil.error
+                    : "Data gagal diambil."
+            );
+
+        }
+
+
+        tampilkanData(
+            hasil.data || []
+        );
+
+
+        statusBox.textContent =
+            "MENAMPILKAN " +
+            formatBatang(
+                (hasil.data || []).length
+            ) +
+            " UKURAN";
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        tbody.innerHTML =
+            '<tr>' +
+            '<td colspan="6" class="empty">' +
+            'GAGAL MENGAMBIL DATA<br>' +
+            error.message +
+            '</td>' +
+            '</tr>';
+
+
+        totalBatang.textContent =
+            "0";
+
+
+        totalVolume.textContent =
+            "0,000000";
+
+
+        statusBox.textContent =
+            "ERROR: " +
+            error.message;
+
+    }
+
+}
+
+
+/* =====================================================
+   TAMPILKAN DATA
+===================================================== */
+
+function tampilkanData(data){
+
+    tbody.innerHTML = "";
+
+
+    let jumlahBatang = 0;
+
+    let jumlahVolume = 0;
+
+
+    if(!data.length){
+
+        tbody.innerHTML =
+            '<tr>' +
+            '<td colspan="6" class="empty">' +
+            'DATA TIDAK DITEMUKAN' +
+            '</td>' +
+            '</tr>';
+
+
+        totalBatang.textContent =
+            "0";
+
+
+        totalVolume.textContent =
+            "0,000000";
+
+        return;
+
+    }
+
+
+    data.forEach(function(item){
+
+        jumlahBatang +=
+            Number(item.batang || 0);
+
+
+        jumlahVolume +=
+            Number(item.volume || 0);
+
+
+        const tr =
+            document.createElement("tr");
+
+
+        tr.innerHTML =
+
+            "<td style='text-align:center;'>" +
+            escapeHTML(item.tahun) +
+            "</td>" +
+
+            "<td>" +
+            escapeHTML(item.sortimen) +
+            "</td>" +
+
+            "<td style='text-align:center;'>" +
+            escapeHTML(item.mutu) +
+            "</td>" +
+
+            "<td>" +
+            escapeHTML(item.ukuran) +
+            "</td>" +
+
+            "<td style='text-align:right;'>" +
+            formatBatang(item.batang) +
+            "</td>" +
+
+            "<td style='text-align:right;'>" +
+            formatVolume(item.volume) +
+            "</td>";
+
+
+        tbody.appendChild(tr);
+
+    });
+
+
+    totalBatang.textContent =
+        formatBatang(jumlahBatang);
+
+
+    totalVolume.textContent =
+        formatVolume(jumlahVolume);
+
+}
+
+
+/* =====================================================
    ESCAPE HTML
 ===================================================== */
 
-function escapeHtml(value){
+function escapeHTML(value){
 
     return String(value ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
@@ -1246,71 +1070,79 @@ function escapeHtml(value){
    EVENT FILTER
 ===================================================== */
 
-document
-    .getElementById(
-        "filterTahun"
-    )
-    .addEventListener(
-        "change",
-        ambilData
-    );
+filterTahun.addEventListener(
+    "change",
+    function(){
+
+        loadData();
+
+    }
+);
 
 
-document
-    .getElementById(
-        "filterSortimen"
-    )
-    .addEventListener(
-        "change",
-        ambilData
-    );
+filterSortimen.addEventListener(
+    "change",
+    function(){
+
+        loadData();
+
+    }
+);
 
 
-document
-    .getElementById(
-        "filterMutu"
-    )
-    .addEventListener(
-        "change",
-        ambilData
-    );
+filterMutu.addEventListener(
+    "change",
+    function(){
+
+        loadData();
+
+    }
+);
 
 
-let timerUkuran;
+filterUkuran.addEventListener(
+    "input",
+    function(){
+
+        clearTimeout(timerUkuran);
 
 
-document
-    .getElementById(
-        "filterUkuran"
-    )
-    .addEventListener(
-        "input",
-        function(){
+        timerUkuran =
+            setTimeout(
+                function(){
 
-            clearTimeout(
-                timerUkuran
+                    loadData();
+
+                },
+                300
             );
 
-
-            timerUkuran =
-                setTimeout(
-                    ambilData,
-                    300
-                );
-
-        }
-    );
+    }
+);
 
 
 /* =====================================================
-   MULAI
+   START
 ===================================================== */
 
 async function mulai(){
 
-    await ambilFilter();
+    try{
 
-    await ambilData();
+        await loadFilters();
+
+        await loadData();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        statusBox.textContent =
+            "GAGAL MEMUAT APLIKASI";
+
+    }
 
 }
 
@@ -1319,8 +1151,6 @@ mulai();
 
 </script>
 
-
 </body>
-
 </html>
 
