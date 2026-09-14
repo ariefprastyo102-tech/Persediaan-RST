@@ -1122,7 +1122,37 @@ function tampilkanData(data){
             "none";
 
     }
+const urutanMutu = [
+    "P",
+    "D",
+    "T"
+];
 
+data.sort(function(a, b){
+
+    const posisiA =
+        urutanMutu.indexOf(
+            String(a.mutu || "").toUpperCase()
+        );
+
+    const posisiB =
+        urutanMutu.indexOf(
+            String(b.mutu || "").toUpperCase()
+        );
+
+    const nilaiA =
+        posisiA === -1
+            ? 999
+            : posisiA;
+
+    const nilaiB =
+        posisiB === -1
+            ? 999
+            : posisiB;
+
+    return nilaiA - nilaiB;
+
+});
 
     data.forEach(function(item){
 
