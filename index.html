@@ -1022,12 +1022,11 @@ async function loadData(){
 
 
         statusBox.textContent =
-            "MENAMPILKAN " +
-            formatBatang(
-                (hasil.data || []).length
-            ) +
-            " UKURAN";
-
+    "UPDATE S/D " +
+    (
+        hasil.tanggalUpdate ||
+        "-"
+    );
 
     }
 
