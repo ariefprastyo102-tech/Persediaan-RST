@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -180,7 +180,7 @@ tbody tr:hover{
 }
 
 .col-ukuran{
-    width:190px;
+    width:155px;
 }
 
 .col-batang{
@@ -322,7 +322,7 @@ input:focus{
     }
 
     .col-ukuran{
-        width:180px;
+        width:145px;
     }
 
     .col-batang{
@@ -365,7 +365,7 @@ input:focus{
     }
 
     .col-ukuran{
-        width:165px;
+        width:135px;
     }
 
     .col-batang{
@@ -377,205 +377,209 @@ input:focus{
     }
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- =================================================
-         HEADER
-    ================================================== -->
+```
+<!-- =================================================
+     HEADER
+================================================== -->
 
-    <div class="header">
-        <h1>PERSEDIAAN RST</h1>
-        <p>Persediaan RST yang masih tersedia</p>
-    </div>
-
-
-    <!-- =================================================
-         STATUS
-    ================================================== -->
-
-    <div
-        id="status"
-        class="status">
-
-        MEMUAT DATA...
-
-    </div>
+<div class="header">
+    <h1>PERSEDIAAN RST</h1>
+    <p>Persediaan RST yang masih tersedia</p>
+</div>
 
 
-    <!-- =================================================
-         RINGKASAN
-    ================================================== -->
+<!-- =================================================
+     STATUS
+================================================== -->
 
-    <div class="summary">
+<div
+    id="status"
+    class="status">
 
-        <div class="card">
+    MEMUAT DATA...
 
-            <div class="card-label">
-                TOTAL BATANG
-            </div>
+</div>
 
-            <div
-                id="totalBatang"
-                class="card-value">
 
-                0
+<!-- =================================================
+     RINGKASAN
+================================================== -->
 
-            </div>
+<div
+    id="summary"
+    class="summary">
 
+    <div class="card">
+
+        <div class="card-label">
+            TOTAL BATANG
         </div>
 
+        <div
+            id="totalBatang"
+            class="card-value">
 
-        <div class="card">
-
-            <div class="card-label">
-                TOTAL VOLUME
-            </div>
-
-            <div
-                id="totalVolume"
-                class="card-value">
-
-                0.000000
-
-            </div>
+            0
 
         </div>
 
     </div>
 
 
-    <!-- =================================================
-         TABEL
-    ================================================== -->
+    <div class="card">
 
-    <div class="table-wrap">
+        <div class="card-label">
+            TOTAL VOLUME
+        </div>
 
-        <table>
+        <div
+            id="totalVolume"
+            class="card-value">
 
-            <colgroup>
+            0.000000
 
-                <col class="col-tahun">
-                <col class="col-sortimen">
-                <col class="col-mutu">
-                <col class="col-ukuran">
-                <col class="col-batang">
-                <col class="col-volume">
-
-            </colgroup>
-
-
-            <thead>
-
-                <!-- JUDUL KOLOM -->
-
-                <tr>
-
-                    <th>TAHUN</th>
-                    <th>SORTIMEN</th>
-                    <th>MUTU</th>
-                    <th>UKURAN</th>
-                    <th>BATANG</th>
-                    <th>VOLUME</th>
-
-                </tr>
-
-
-                <!-- FILTER -->
-
-                <tr class="filter-row">
-
-                    <th>
-
-                        <select id="filterTahun">
-
-                            <option value="SEMUA">
-                                SEMUA
-                            </option>
-
-                            <option value="2025">
-                                2025
-                            </option>
-
-                            <option value="2026">
-                                2026
-                            </option>
-
-                        </select>
-
-                    </th>
-
-
-                    <th>
-
-                        <select id="filterSortimen">
-
-                            <option value="SEMUA">
-                                SEMUA
-                            </option>
-
-                        </select>
-
-                    </th>
-
-
-                    <th>
-
-                        <select id="filterMutu">
-
-                            <option value="SEMUA">
-                                SEMUA
-                            </option>
-
-                        </select>
-
-                    </th>
-
-
-                    <th>
-
-                        <input
-                            id="filterUkuran"
-                            type="text"
-                            placeholder="18 100 550">
-
-                    </th>
-
-
-                    <th></th>
-
-                    <th></th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="tbody">
-
-                <tr>
-
-                    <td
-                        colspan="6"
-                        class="loading">
-
-                        MEMUAT DATA...
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- =================================================
+     TABEL
+================================================== -->
+
+<div class="table-wrap">
+
+    <table>
+
+        <colgroup>
+
+            <col class="col-tahun">
+            <col class="col-sortimen">
+            <col class="col-mutu">
+            <col class="col-ukuran">
+            <col class="col-batang">
+            <col class="col-volume">
+
+        </colgroup>
+
+
+        <thead>
+
+            <!-- JUDUL KOLOM -->
+
+            <tr>
+
+                <th>TAHUN</th>
+                <th>SORTIMEN</th>
+                <th>MUTU</th>
+                <th>UKURAN</th>
+                <th>BATANG</th>
+                <th>VOLUME</th>
+
+            </tr>
+
+
+            <!-- FILTER -->
+
+            <tr class="filter-row">
+
+                <th>
+
+                    <select id="filterTahun">
+
+                        <option value="SEMUA">
+                            SEMUA
+                        </option>
+
+                        <option value="2025">
+                            2025
+                        </option>
+
+                        <option value="2026">
+                            2026
+                        </option>
+
+                    </select>
+
+                </th>
+
+
+                <th>
+
+                    <select id="filterSortimen">
+
+                        <option value="SEMUA">
+                            SEMUA
+                        </option>
+
+                    </select>
+
+                </th>
+
+
+                <th>
+
+                    <select id="filterMutu">
+
+                        <option value="SEMUA">
+                            SEMUA
+                        </option>
+
+                    </select>
+
+                </th>
+
+
+                <th>
+
+                    <input
+                        id="filterUkuran"
+                        type="text"
+                        placeholder="18 100 550">
+
+                </th>
+
+
+                <th></th>
+
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="tbody">
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="loading">
+
+                    MEMUAT DATA...
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+```
+
+</div>
 
 <script>
 
@@ -596,6 +600,9 @@ const statusBox =
 
 const tbody =
     document.getElementById("tbody");
+
+const summary =
+    document.getElementById("summary");
 
 const totalBatang =
     document.getElementById("totalBatang");
@@ -949,6 +956,10 @@ async function loadData(){
             "0,000000";
 
 
+        summary.style.display =
+            "none";
+
+
         statusBox.textContent =
             "ERROR: " +
             error.message;
@@ -989,7 +1000,30 @@ function tampilkanData(data){
         totalVolume.textContent =
             "0,000000";
 
+
+        summary.style.display =
+            "none";
+
+
         return;
+
+    }
+
+
+    /*
+     * TOTAL HANYA MUNCUL JIKA
+     * HASIL YANG DITAMPILKAN LEBIH DARI 1
+     */
+
+    if(data.length > 1){
+
+        summary.style.display =
+            "grid";
+
+    }else{
+
+        summary.style.display =
+            "none";
 
     }
 
@@ -1153,4 +1187,3 @@ mulai();
 
 </body>
 </html>
-
