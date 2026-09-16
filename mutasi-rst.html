@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>MUTASI RST</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f4f7;
+    color:#222;
+}
+
+.header{
+    background:#1f2937;
+    color:white;
+    padding:18px 15px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:22px;
+}
+
+.header p{
+    margin:6px 0 0;
+    font-size:13px;
+    opacity:.85;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:15px;
+}
+
+.kontrol{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    margin-bottom:15px;
+}
+
+.kontrol label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.kontrol select{
+    width:100%;
+    max-width:250px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:15px;
+}
+
+button{
+    margin-top:10px;
+    padding:10px 18px;
+    border:0;
+    border-radius:7px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.status{
+    margin-top:10px;
+    font-size:13px;
+}
+
+.kartu{
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.kartu h2{
+    margin-top:0;
+    font-size:18px;
+}
+
+.tabel-wrap{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+th,
+td{
+    border:1px solid #ddd;
+    padding:9px 8px;
+    font-size:13px;
+}
+
+th{
+    background:#e5e7eb;
+    font-weight:bold;
+    text-align:center;
+}
+
+td{
+    text-align:right;
+}
+
+td:first-child{
+    text-align:left;
+    font-weight:bold;
+}
+
+.total{
+    font-weight:bold;
+    background:#f3f4f6;
+}
+
+.kosong{
+    padding:20px;
+    text-align:center;
+    color:#777;
+}
+
+.loading{
+    padding:15px;
+    text-align:center;
+}
+
+@media(max-width:700px){
+
+    .container{
+        padding:8px;
+    }
+
+    .header h1{
+        font-size:19px;
+    }
+
+    .kartu{
+        padding:10px;
+    }
+
+    th,
+    td{
+        padding:7px 6px;
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>MUTASI RST</h1>
+
+    <p>PERSEDIAAN • PRODUKSI • TERJUAL</p>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     KONTROL
+===================================================== -->
+
+<div class="kontrol">
+
+    <label for="bulan">
+        PILIH BULAN
+    </label>
+
+    <select id="bulan">
+
+        <option value="1">JANUARI</option>
+        <option value="2">FEBRUARI</option>
+        <option value="3">MARET</option>
+        <option value="4">APRIL</option>
+        <option value="5">MEI</option>
+        <option value="6">JUNI</option>
+        <option value="7">JULI</option>
+        <option value="8">AGUSTUS</option>
+        <option value="9" selected>SEPTEMBER</option>
+        <option value="10">OKTOBER</option>
+        <option value="11">NOVEMBER</option>
+        <option value="12">DESEMBER</option>
+
+    </select>
+
+    <br>
+
+    <button onclick="muatMutasi()">
+        TAMPILKAN
+    </button>
+
+    <div
+        id="status"
+        class="status">
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MUTASI
+===================================================== -->
+
+<div class="kartu">
+
+    <h2 id="judulMutasi">
+        MUTASI
+    </h2>
+
+    <div
+        id="mutasi"
+        class="loading">
+
+        Silakan pilih bulan.
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     RINCIAN TERJUAL
+===================================================== -->
+
+<div class="kartu">
+
+    <h2>
+        RINCIAN TERJUAL
+    </h2>
+
+    <div
+        id="rincian"
+        class="loading">
+
+        -
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   BACKEND
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbypJNYC6-NBlrCsNyyHEArB6UcgyZNUQ8IQTXF7AO716jxlatYe0V0b6oyctjBrhIo/exec";
+
+
+/* =====================================================
+   BULAN
+===================================================== */
+
+const namaBulan = [
+
+    "",
+    "JANUARI",
+    "FEBRUARI",
+    "MARET",
+    "APRIL",
+    "MEI",
+    "JUNI",
+    "JULI",
+    "AGUSTUS",
+    "SEPTEMBER",
+    "OKTOBER",
+    "NOVEMBER",
+    "DESEMBER"
+
+];
+
+
+
+/* =====================================================
+   FORMAT ANGKA
+===================================================== */
+
+function formatBatang(angka){
+
+    return Number(
+        angka || 0
+    ).toLocaleString(
+        "id-ID",
+        {
+            maximumFractionDigits:0
+        }
+    );
+
+}
+
+
+function formatVolume(angka){
+
+    return Number(
+        angka || 0
+    ).toLocaleString(
+        "id-ID",
+        {
+            minimumFractionDigits:3,
+            maximumFractionDigits:3
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   JSONP
+===================================================== */
+
+function panggilAPI(
+    action,
+    bulan,
+    callback
+){
+
+    const callbackName =
+        "callback_" +
+        Date.now() +
+        "_" +
+        Math.floor(
+            Math.random()*10000
+        );
+
+
+    window[callbackName] =
+        function(response){
+
+            try{
+
+                callback(
+                    response
+                );
+
+            }
+            finally{
+
+                delete window[
+                    callbackName
+                ];
+
+            }
+
+        };
+
+
+    const script =
+        document.createElement(
+            "script"
+        );
+
+
+    script.src =
+        API_URL +
+        "?action=" +
+        encodeURIComponent(
+            action
+        ) +
+        "&bulan=" +
+        encodeURIComponent(
+            bulan
+        ) +
+        "&callback=" +
+        encodeURIComponent(
+            callbackName
+        ) +
+        "&_=" +
+        Date.now();
+
+
+    script.onerror =
+        function(){
+
+            delete window[
+                callbackName
+            ];
+
+            callback({
+
+                status:"error",
+
+                message:
+                    "Gagal menghubungi Apps Script."
+
+            });
+
+        };
+
+
+    document.body.appendChild(
+        script
+    );
+
+}
+
+
+
+/* =====================================================
+   MUAT MUTASI
+===================================================== */
+
+function muatMutasi(){
+
+    const bulan =
+        document.getElementById(
+            "bulan"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const boxMutasi =
+        document.getElementById(
+            "mutasi"
+        );
+
+
+    const boxRincian =
+        document.getElementById(
+            "rincian"
+        );
+
+
+    status.innerText =
+        "⏳ MEMUAT DATA...";
+
+
+    boxMutasi.innerHTML =
+        "⏳ Sedang mengambil mutasi...";
+
+
+    boxRincian.innerHTML =
+        "⏳ Sedang mengambil rincian...";
+
+
+    document.getElementById(
+        "judulMutasi"
+    ).innerText =
+        "MUTASI " +
+        namaBulan[
+            Number(bulan)
+        ];
+
+
+
+    panggilAPI(
+        "mutasi",
+        bulan,
+        function(response){
+
+            if(
+                !response ||
+                response.status !== "success"
+            ){
+
+                boxMutasi.innerHTML =
+                    "<div class='kosong'>" +
+                    (
+                        response &&
+                        response.message
+                            ? response.message
+                            : "Gagal mengambil data."
+                    ) +
+                    "</div>";
+
+                status.innerText =
+                    "❌ GAGAL";
+
+                return;
+
+            }
+
+
+            tampilkanMutasi(
+                response.data || []
+            );
+
+
+            status.innerText =
+                "✅ DATA BERHASIL DIMUAT";
+
+        }
+
+    );
+
+
+
+    panggilAPI(
+        "rincian",
+        bulan,
+        function(response){
+
+            if(
+                !response ||
+                response.status !== "success"
+            ){
+
+                boxRincian.innerHTML =
+                    "<div class='kosong'>" +
+                    "Gagal mengambil rincian." +
+                    "</div>";
+
+                return;
+
+            }
+
+
+            tampilkanRincian(
+                response.data || []
+            );
+
+        }
+
+    );
+
+}
+
+
+
+/* =====================================================
+   TAMPILKAN MUTASI
+===================================================== */
+
+function tampilkanMutasi(
+    data
+){
+
+    const box =
+        document.getElementById(
+            "mutasi"
+        );
+
+
+    if(
+        !Array.isArray(data) ||
+        !data.length
+    ){
+
+        box.innerHTML =
+            "<div class='kosong'>" +
+            "Tidak ada data." +
+            "</div>";
+
+        return;
+
+    }
+
+
+    let totalAwalBatang = 0;
+    let totalAwalVolume = 0;
+
+    let totalProduksiBatang = 0;
+    let totalProduksiVolume = 0;
+
+    let totalTerjualBatang = 0;
+    let totalTerjualVolume = 0;
+
+    let totalAkhirBatang = 0;
+    let totalAkhirVolume = 0;
+
+
+    let html = `
+
+    <div class="tabel-wrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th rowspan="2">
+                    SORTIMEN
+                </th>
+
+                <th colspan="2">
+                    SISA AWAL
+                </th>
+
+                <th colspan="2">
+                    PRODUKSI
+                </th>
+
+                <th colspan="2">
+                    TERJUAL
+                </th>
+
+                <th colspan="2">
+                    SISA AKHIR
+                </th>
+
+            </tr>
+
+            <tr>
+
+                <th>BATANG</th>
+                <th>VOLUME</th>
+
+                <th>BATANG</th>
+                <th>VOLUME</th>
+
+                <th>BATANG</th>
+                <th>VOLUME</th>
+
+                <th>BATANG</th>
+                <th>VOLUME</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+        function(item){
+
+            const awalBatang =
+                Number(
+                    item.awalBatang || 0
+                );
+
+            const awalVolume =
+                Number(
+                    item.awalVolume || 0
+                );
+
+            const produksiBatang =
+                Number(
+                    item.produksiBatang || 0
+                );
+
+            const produksiVolume =
+                Number(
+                    item.produksiVolume || 0
+                );
+
+            const terjualBatang =
+                Number(
+                    item.terjualBatang || 0
+                );
+
+            const terjualVolume =
+                Number(
+                    item.terjualVolume || 0
+                );
+
+            const akhirBatang =
+                Number(
+                    item.akhirBatang || 0
+                );
+
+            const akhirVolume =
+                Number(
+                    item.akhirVolume || 0
+                );
+
+
+            totalAwalBatang +=
+                awalBatang;
+
+            totalAwalVolume +=
+                awalVolume;
+
+            totalProduksiBatang +=
+                produksiBatang;
+
+            totalProduksiVolume +=
+                produksiVolume;
+
+            totalTerjualBatang +=
+                terjualBatang;
+
+            totalTerjualVolume +=
+                terjualVolume;
+
+            totalAkhirBatang +=
+                akhirBatang;
+
+            totalAkhirVolume +=
+                akhirVolume;
+
+
+            html += `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(
+                        item.sortimen || ""
+                    )}
+                </td>
+
+                <td>
+                    ${formatBatang(
+                        awalBatang
+                    )}
+                </td>
+
+                <td>
+                    ${formatVolume(
+                        awalVolume
+                    )}
+                </td>
+
+                <td>
+                    ${formatBatang(
+                        produksiBatang
+                    )}
+                </td>
+
+                <td>
+                    ${formatVolume(
+                        produksiVolume
+                    )}
+                </td>
+
+                <td>
+                    ${formatBatang(
+                        terjualBatang
+                    )}
+                </td>
+
+                <td>
+                    ${formatVolume(
+                        terjualVolume
+                    )}
+                </td>
+
+                <td>
+                    ${formatBatang(
+                        akhirBatang
+                    )}
+                </td>
+
+                <td>
+                    ${formatVolume(
+                        akhirVolume
+                    )}
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+        <tr class="total">
+
+            <td>
+                TOTAL
+            </td>
+
+            <td>
+                ${formatBatang(
+                    totalAwalBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    totalAwalVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    totalProduksiBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    totalProduksiVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    totalTerjualBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    totalTerjualVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    totalAkhirBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    totalAkhirVolume
+                )}
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+
+    box.innerHTML =
+        html;
+
+}
+
+
+
+/* =====================================================
+   RINCIAN TERJUAL
+===================================================== */
+
+function tampilkanRincian(
+    data
+){
+
+    const box =
+        document.getElementById(
+            "rincian"
+        );
+
+
+    if(
+        !Array.isArray(data) ||
+        !data.length
+    ){
+
+        box.innerHTML =
+            "<div class='kosong'>" +
+            "Belum ada penjualan pada bulan ini." +
+            "</div>";
+
+        return;
+
+    }
+
+
+    let totalBatang = 0;
+    let totalVolume = 0;
+
+
+    let html = `
+
+    <div class="tabel-wrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    BULAN
+                </th>
+
+                <th>
+                    SORTIMEN
+                </th>
+
+                <th>
+                    PEMBELI
+                </th>
+
+                <th>
+                    BATANG
+                </th>
+
+                <th>
+                    VOLUME
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+    `;
+
+
+    data.forEach(
+        function(item){
+
+            const batang =
+                Number(
+                    item.batang || 0
+                );
+
+            const volume =
+                Number(
+                    item.volume || 0
+                );
+
+
+            totalBatang +=
+                batang;
+
+            totalVolume +=
+                volume;
+
+
+            html += `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(
+                        item.bulan || ""
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.sortimen || ""
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.pembeli || ""
+                    )}
+                </td>
+
+                <td>
+                    ${formatBatang(
+                        batang
+                    )}
+                </td>
+
+                <td>
+                    ${formatVolume(
+                        volume
+                    )}
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+        <tr class="total">
+
+            <td colspan="3">
+                TOTAL
+            </td>
+
+            <td>
+                ${formatBatang(
+                    totalBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    totalVolume
+                )}
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+
+    box.innerHTML =
+        html;
+
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(
+    teks
+){
+
+    return String(
+        teks ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =====================================================
+   OTOMATIS MUAT
+===================================================== */
+
+muatMutasi();
+
+</script>
+
+
+</body>
+
+</html>
