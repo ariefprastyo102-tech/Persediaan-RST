@@ -343,9 +343,51 @@ function formatVolume(angka){
     ).toLocaleString(
         "id-ID",
         {
-            minimumFractionDigits:3,
-            maximumFractionDigits:3
+            minimumFractionDigits:6,
+            maximumFractionDigits:6
         }
+    );
+
+}
+
+
+
+/* =====================================================
+   FORMAT TANGGAL
+===================================================== */
+
+function formatTanggal(tanggal){
+
+    if(!tanggal){
+        return "";
+    }
+
+    const d =
+        new Date(tanggal);
+
+    if(isNaN(d.getTime())){
+        return String(tanggal);
+    }
+
+    const hari =
+        String(
+            d.getDate()
+        ).padStart(2,"0");
+
+    const bulan =
+        String(
+            d.getMonth() + 1
+        ).padStart(2,"0");
+
+    const tahun =
+        d.getFullYear();
+
+    return (
+        hari +
+        "-" +
+        bulan +
+        "-" +
+        tahun
     );
 
 }
@@ -918,7 +960,7 @@ function tampilkanRincian(
             <tr>
 
                 <th>
-                    BULAN
+                    TANGGAL
                 </th>
 
                 <th>
@@ -973,7 +1015,9 @@ function tampilkanRincian(
 
                 <td>
                     ${escapeHTML(
-                        item.bulan || ""
+                        formatTanggal(
+                            item.tanggal
+                        )
                     )}
                 </td>
 
