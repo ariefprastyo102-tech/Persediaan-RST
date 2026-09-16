@@ -625,6 +625,184 @@ function panggilAPI(
 
 }
 
+/* =====================================================
+   CACHE MUTASI RST DI BROWSER
+===================================================== */
+
+const CACHE_MUTASI_RST =
+    "MUTASI_RST_LOCAL_CACHE_V2";
+
+
+/* =====================================================
+   BULAN BERJALAN
+===================================================== */
+
+function bulanBerjalan(){
+
+    return new Date().getMonth() + 1;
+
+}
+
+
+/* =====================================================
+   AMBIL CACHE
+===================================================== */
+
+function ambilCacheMutasi(){
+
+    try{
+
+        const data =
+            localStorage.getItem(
+                CACHE_MUTASI_RST
+            );
+
+        if(!data){
+
+            return {};
+
+        }
+
+        const hasil =
+            JSON.parse(data);
+
+        return (
+            hasil &&
+            typeof hasil === "object"
+                ? hasil
+                : {}
+        );
+
+    }
+    catch(e){
+
+        console.error(
+            "Cache MUTASI RST rusak:",
+            e
+        );
+
+        return {};
+
+    }
+
+}
+
+
+/* =====================================================
+   SIMPAN CACHE
+===================================================== */
+
+function simpanCacheMutasi(
+    cache
+){
+
+    try{
+
+        localStorage.setItem(
+            CACHE_MUTASI_RST,
+            JSON.stringify(cache)
+        );
+
+    }
+    catch(e){
+
+        console.error(
+            "Gagal menyimpan cache MUTASI RST:",
+            e
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SIMPAN DATA BULAN KE CACHE
+===================================================== */
+
+function simpanBulanKeCache(
+    bulan,
+    mutasi,
+    rincian
+){
+
+    const cache =
+        ambilCacheMutasi();
+
+
+    cache[String(bulan)] = {
+
+        mutasi:
+            Array.isArray(mutasi)
+                ? mutasi
+                : [],
+
+        rincian:
+            Array.isArray(rincian)
+                ? rincian
+                : [],
+
+        disimpan:
+            new Date().toISOString()
+
+    };
+
+
+    simpanCacheMutasi(
+        cache
+    );
+
+}
+
+
+/* =====================================================
+   AMBIL DATA BULAN DARI CACHE
+===================================================== */
+
+function ambilBulanDariCache(
+    bulan
+){
+
+    const cache =
+        ambilCacheMutasi();
+
+
+    return (
+        cache[String(bulan)] ||
+        null
+    );
+
+}
+
+
+/* =====================================================
+   TAMPILKAN BULAN
+===================================================== */
+
+function tampilkanBulan(
+    bulan,
+    data
+){
+
+    document.getElementById(
+        "judulMutasi"
+    ).innerText =
+        "MUTASI " +
+        namaBulan[
+            Number(bulan)
+        ];
+
+
+    tampilkanMutasi(
+        data.mutasi || []
+    );
+
+
+    tampilkanRincian(
+        data.rincian || []
+    );
+
+}
 
 
 /* =====================================================
@@ -634,9 +812,11 @@ function panggilAPI(
 function muatMutasi(){
 
     const bulan =
-        document.getElementById(
-            "bulan"
-        ).value;
+        Number(
+            document.getElementById(
+                "bulan"
+            ).value
+        );
 
 
     const status =
@@ -657,8 +837,161 @@ function muatMutasi(){
         );
 
 
+    const sekarang =
+        bulanBerjalan();
+
+
+
+    /* =================================================
+       JIKA BULAN LAMA
+       → LANGSUNG DARI LOCALSTORAGE
+    ================================================= */
+
+    if(
+        bulan < sekarang
+    ){
+
+        const cache =
+            ambilBulanDariCache(
+                bulan
+            );
+
+
+        if(cache){
+
+            tampilkanBulan(
+                bulan,
+                cache
+            );
+
+
+            status.innerText =
+                "⚡ DATA DARI PENYIMPANAN BROWSER";
+
+            return;
+
+        }
+
+
+        /*
+         * Kalau belum ada di cache,
+         * ambil SEKALI dari Apps Script.
+         * Setelah itu langsung disimpan.
+         */
+
+        status.innerText =
+            "⏳ DATA LAMA BELUM ADA DI CACHE...";
+
+
+        boxMutasi.innerHTML =
+            "⏳ Mengambil data bulan " +
+            namaBulan[bulan] +
+            "...";
+
+
+        boxRincian.innerHTML =
+            "⏳ Mengambil rincian...";
+
+
+        panggilAPI(
+            "mutasi",
+            bulan,
+            function(responseMutasi){
+
+                if(
+                    !responseMutasi ||
+                    responseMutasi.status !==
+                    "success"
+                ){
+
+                    boxMutasi.innerHTML =
+                        "<div class='kosong'>" +
+                        (
+                            responseMutasi &&
+                            responseMutasi.message
+                                ? responseMutasi.message
+                                : "Gagal mengambil data."
+                        ) +
+                        "</div>";
+
+                    status.innerText =
+                        "❌ GAGAL";
+
+                    return;
+
+                }
+
+
+                panggilAPI(
+                    "rincian",
+                    bulan,
+                    function(responseRincian){
+
+                        if(
+                            !responseRincian ||
+                            responseRincian.status !==
+                            "success"
+                        ){
+
+                            boxRincian.innerHTML =
+                                "<div class='kosong'>" +
+                                "Gagal mengambil rincian." +
+                                "</div>";
+
+                            return;
+
+                        }
+
+
+                        const hasil = {
+
+                            mutasi:
+                                responseMutasi.data ||
+                                [],
+
+                            rincian:
+                                responseRincian.data ||
+                                []
+
+                        };
+
+
+                        simpanBulanKeCache(
+                            bulan,
+                            hasil.mutasi,
+                            hasil.rincian
+                        );
+
+
+                        tampilkanBulan(
+                            bulan,
+                            hasil
+                        );
+
+
+                        status.innerText =
+                            "✅ DATA DIMUAT & DISIMPAN DI BROWSER";
+
+                    }
+                );
+
+            }
+        );
+
+
+        return;
+
+    }
+
+
+
+    /* =================================================
+       BULAN BERJALAN
+       → SELALU LIVE DARI APPS SCRIPT
+    ================================================= */
+
     status.innerText =
-        "⏳ MEMUAT DATA...";
+        "⏳ MEMUAT DATA BULAN BERJALAN...";
 
 
     boxMutasi.innerHTML =
@@ -673,14 +1006,12 @@ function muatMutasi(){
         "judulMutasi"
     ).innerText =
         "MUTASI " +
-        namaBulan[
-            Number(bulan)
-        ];
+        namaBulan[bulan];
 
 
 
     /* =================================================
-       MUTASI
+       MUTASI LIVE
     ================================================= */
 
     panggilAPI(
@@ -719,7 +1050,7 @@ function muatMutasi(){
 
 
             status.innerText =
-                "✅ DATA BERHASIL DIMUAT";
+                "✅ MUTASI BULAN BERJALAN DIMUAT";
 
         }
 
@@ -728,7 +1059,7 @@ function muatMutasi(){
 
 
     /* =================================================
-       RINCIAN TERJUAL
+       RINCIAN LIVE
     ================================================= */
 
     panggilAPI(
@@ -761,8 +1092,6 @@ function muatMutasi(){
     );
 
 }
-
-
 
 /* =====================================================
    TAMPILKAN MUTASI
