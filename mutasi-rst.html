@@ -294,6 +294,7 @@ const API_URL =
 "https://script.google.com/macros/s/AKfycbypJNYC6-NBlrCsNyyHEArB6UcgyZNUQ8IQTXF7AO716jxlatYe0V0b6oyctjBrhIo/exec";
 
 
+
 /* =====================================================
    BULAN
 ===================================================== */
@@ -301,17 +302,29 @@ const API_URL =
 const namaBulan = [
 
     "",
+
     "JANUARI",
+
     "FEBRUARI",
+
     "MARET",
+
     "APRIL",
+
     "MEI",
+
     "JUNI",
+
     "JULI",
+
     "AGUSTUS",
+
     "SEPTEMBER",
+
     "OKTOBER",
+
     "NOVEMBER",
+
     "DESEMBER"
 
 ];
@@ -319,7 +332,7 @@ const namaBulan = [
 
 
 /* =====================================================
-   FORMAT ANGKA
+   FORMAT BATANG
 ===================================================== */
 
 function formatBatang(angka){
@@ -335,6 +348,11 @@ function formatBatang(angka){
 
 }
 
+
+
+/* =====================================================
+   FORMAT VOLUME
+===================================================== */
 
 function formatVolume(angka){
 
@@ -354,33 +372,157 @@ function formatVolume(angka){
 
 /* =====================================================
    FORMAT TANGGAL
+   AMAN UNTUK:
+   DD-MM-YYYY
+   YYYY-MM-DD
+   DATE
 ===================================================== */
 
 function formatTanggal(tanggal){
 
     if(!tanggal){
+
         return "";
+
     }
+
+
+    /* =================================================
+       KALAU SUDAH STRING DD-MM-YYYY
+    ================================================= */
+
+    if(
+        typeof tanggal === "string"
+    ){
+
+        const text =
+            tanggal.trim();
+
+
+        const cocok =
+            text.match(
+                /^(\d{1,2})-(\d{1,2})-(\d{4})$/
+            );
+
+
+        if(cocok){
+
+            const hari =
+                String(
+                    cocok[1]
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+            const bulan =
+                String(
+                    cocok[2]
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+            const tahun =
+                cocok[3];
+
+
+            return (
+                hari +
+                "-" +
+                bulan +
+                "-" +
+                tahun
+            );
+
+        }
+
+
+        const iso =
+            text.match(
+                /^(\d{4})-(\d{1,2})-(\d{1,2})/
+            );
+
+
+        if(iso){
+
+            const tahun =
+                iso[1];
+
+            const bulan =
+                String(
+                    iso[2]
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+            const hari =
+                String(
+                    iso[3]
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            return (
+                hari +
+                "-" +
+                bulan +
+                "-" +
+                tahun
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       KALAU DATE OBJECT / FORMAT LAIN
+    ================================================= */
 
     const d =
-        new Date(tanggal);
+        new Date(
+            tanggal
+        );
 
-    if(isNaN(d.getTime())){
-        return String(tanggal);
+
+    if(
+        isNaN(
+            d.getTime()
+        )
+    ){
+
+        return String(
+            tanggal
+        );
+
     }
+
 
     const hari =
         String(
             d.getDate()
-        ).padStart(2,"0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const bulan =
         String(
             d.getMonth() + 1
-        ).padStart(2,"0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const tahun =
         d.getFullYear();
+
 
     return (
         hari +
@@ -409,7 +551,7 @@ function panggilAPI(
         Date.now() +
         "_" +
         Math.floor(
-            Math.random()*10000
+            Math.random() * 10000
         );
 
 
@@ -537,6 +679,10 @@ function muatMutasi(){
 
 
 
+    /* =================================================
+       MUTASI
+    ================================================= */
+
     panggilAPI(
         "mutasi",
         bulan,
@@ -544,7 +690,8 @@ function muatMutasi(){
 
             if(
                 !response ||
-                response.status !== "success"
+                response.status !==
+                "success"
             ){
 
                 boxMutasi.innerHTML =
@@ -556,6 +703,7 @@ function muatMutasi(){
                             : "Gagal mengambil data."
                     ) +
                     "</div>";
+
 
                 status.innerText =
                     "❌ GAGAL";
@@ -579,6 +727,10 @@ function muatMutasi(){
 
 
 
+    /* =================================================
+       RINCIAN TERJUAL
+    ================================================= */
+
     panggilAPI(
         "rincian",
         bulan,
@@ -586,7 +738,8 @@ function muatMutasi(){
 
             if(
                 !response ||
-                response.status !== "success"
+                response.status !==
+                "success"
             ){
 
                 boxRincian.innerHTML =
@@ -641,16 +794,24 @@ function tampilkanMutasi(
 
 
     let totalAwalBatang = 0;
+
     let totalAwalVolume = 0;
 
+
     let totalProduksiBatang = 0;
+
     let totalProduksiVolume = 0;
 
+
     let totalTerjualBatang = 0;
+
     let totalTerjualVolume = 0;
 
+
     let totalAkhirBatang = 0;
+
     let totalAkhirVolume = 0;
+
 
 
     let html = `
@@ -685,26 +846,37 @@ function tampilkanMutasi(
 
             </tr>
 
+
             <tr>
 
                 <th>BATANG</th>
+
                 <th>VOLUME</th>
 
-                <th>BATANG</th>
-                <th>VOLUME</th>
 
                 <th>BATANG</th>
+
                 <th>VOLUME</th>
 
+
                 <th>BATANG</th>
+
+                <th>VOLUME</th>
+
+
+                <th>BATANG</th>
+
                 <th>VOLUME</th>
 
             </tr>
 
         </thead>
 
+
         <tbody>
+
     `;
+
 
 
     data.forEach(
@@ -715,35 +887,42 @@ function tampilkanMutasi(
                     item.awalBatang || 0
                 );
 
+
             const awalVolume =
                 Number(
                     item.awalVolume || 0
                 );
+
 
             const produksiBatang =
                 Number(
                     item.produksiBatang || 0
                 );
 
+
             const produksiVolume =
                 Number(
                     item.produksiVolume || 0
                 );
+
 
             const terjualBatang =
                 Number(
                     item.terjualBatang || 0
                 );
 
+
             const terjualVolume =
                 Number(
                     item.terjualVolume || 0
                 );
 
+
             const akhirBatang =
                 Number(
                     item.akhirBatang || 0
                 );
+
 
             const akhirVolume =
                 Number(
@@ -751,29 +930,38 @@ function tampilkanMutasi(
                 );
 
 
+
             totalAwalBatang +=
                 awalBatang;
+
 
             totalAwalVolume +=
                 awalVolume;
 
+
             totalProduksiBatang +=
                 produksiBatang;
+
 
             totalProduksiVolume +=
                 produksiVolume;
 
+
             totalTerjualBatang +=
                 terjualBatang;
+
 
             totalTerjualVolume +=
                 terjualVolume;
 
+
             totalAkhirBatang +=
                 akhirBatang;
 
+
             totalAkhirVolume +=
                 akhirVolume;
+
 
 
             html += `
@@ -786,11 +974,13 @@ function tampilkanMutasi(
                     )}
                 </td>
 
+
                 <td>
                     ${formatBatang(
                         awalBatang
                     )}
                 </td>
+
 
                 <td>
                     ${formatVolume(
@@ -798,11 +988,13 @@ function tampilkanMutasi(
                     )}
                 </td>
 
+
                 <td>
                     ${formatBatang(
                         produksiBatang
                     )}
                 </td>
+
 
                 <td>
                     ${formatVolume(
@@ -810,11 +1002,13 @@ function tampilkanMutasi(
                     )}
                 </td>
 
+
                 <td>
                     ${formatBatang(
                         terjualBatang
                     )}
                 </td>
+
 
                 <td>
                     ${formatVolume(
@@ -822,11 +1016,13 @@ function tampilkanMutasi(
                     )}
                 </td>
 
+
                 <td>
                     ${formatBatang(
                         akhirBatang
                     )}
                 </td>
+
 
                 <td>
                     ${formatVolume(
@@ -842,6 +1038,7 @@ function tampilkanMutasi(
     );
 
 
+
     html += `
 
         <tr class="total">
@@ -850,11 +1047,13 @@ function tampilkanMutasi(
                 TOTAL
             </td>
 
+
             <td>
                 ${formatBatang(
                     totalAwalBatang
                 )}
             </td>
+
 
             <td>
                 ${formatVolume(
@@ -862,11 +1061,13 @@ function tampilkanMutasi(
                 )}
             </td>
 
+
             <td>
                 ${formatBatang(
                     totalProduksiBatang
                 )}
             </td>
+
 
             <td>
                 ${formatVolume(
@@ -874,11 +1075,13 @@ function tampilkanMutasi(
                 )}
             </td>
 
+
             <td>
                 ${formatBatang(
                     totalTerjualBatang
                 )}
             </td>
+
 
             <td>
                 ${formatVolume(
@@ -886,11 +1089,13 @@ function tampilkanMutasi(
                 )}
             </td>
 
+
             <td>
                 ${formatBatang(
                     totalAkhirBatang
                 )}
             </td>
+
 
             <td>
                 ${formatVolume(
@@ -899,6 +1104,7 @@ function tampilkanMutasi(
             </td>
 
         </tr>
+
 
         </tbody>
 
@@ -918,6 +1124,12 @@ function tampilkanMutasi(
 
 /* =====================================================
    RINCIAN TERJUAL
+   GROUP:
+   TANGGAL + SORTIMEN + PEMBELI
+
+   JADI:
+   09-02-2026 | FLOORING | CV EXCELCON
+   YANG SAMA DIGABUNG MENJADI 1 BARIS
 ===================================================== */
 
 function tampilkanRincian(
@@ -945,8 +1157,134 @@ function tampilkanRincian(
     }
 
 
+
+    /* =================================================
+       GROUP DATA
+    ================================================= */
+
+    const group = {};
+
+
+
+    data.forEach(
+        function(item){
+
+            const tanggal =
+                formatTanggal(
+                    item.tanggal
+                );
+
+
+            const sortimen =
+                String(
+                    item.sortimen || ""
+                ).trim();
+
+
+            const pembeli =
+                String(
+                    item.pembeli || ""
+                ).trim();
+
+
+
+            /* -----------------------------------------
+               KEY GROUP
+            ----------------------------------------- */
+
+            const key =
+                tanggal +
+                "|" +
+                sortimen +
+                "|" +
+                pembeli;
+
+
+
+            if(!group[key]){
+
+                group[key] = {
+
+                    tanggal:
+                        tanggal,
+
+                    sortimen:
+                        sortimen,
+
+                    pembeli:
+                        pembeli,
+
+                    batang:0,
+
+                    volume:0
+
+                };
+
+            }
+
+
+
+            group[key].batang +=
+                Number(
+                    item.batang || 0
+                );
+
+
+            group[key].volume +=
+                Number(
+                    item.volume || 0
+                );
+
+        }
+    );
+
+
+
+    /* =================================================
+       UBAH OBJECT MENJADI ARRAY
+    ================================================= */
+
+    const hasil =
+        Object.values(
+            group
+        );
+
+
+
+    /* =================================================
+       URUTKAN TANGGAL
+    ================================================= */
+
+    hasil.sort(
+        function(a,b){
+
+            const da =
+                tanggalKeAngka(
+                    a.tanggal
+                );
+
+
+            const db =
+                tanggalKeAngka(
+                    b.tanggal
+                );
+
+
+            return da - db;
+
+        }
+    );
+
+
+
+    /* =================================================
+       TOTAL
+    ================================================= */
+
     let totalBatang = 0;
+
     let totalVolume = 0;
+
 
 
     let html = `
@@ -983,12 +1321,14 @@ function tampilkanRincian(
 
         </thead>
 
+
         <tbody>
 
     `;
 
 
-    data.forEach(
+
+    hasil.forEach(
         function(item){
 
             const batang =
@@ -996,17 +1336,21 @@ function tampilkanRincian(
                     item.batang || 0
                 );
 
+
             const volume =
                 Number(
                     item.volume || 0
                 );
 
 
+
             totalBatang +=
                 batang;
 
+
             totalVolume +=
                 volume;
+
 
 
             html += `
@@ -1015,29 +1359,31 @@ function tampilkanRincian(
 
                 <td>
                     ${escapeHTML(
-                        formatTanggal(
-                            item.tanggal
-                        )
+                        item.tanggal
                     )}
                 </td>
 
-                <td>
-                    ${escapeHTML(
-                        item.sortimen || ""
-                    )}
-                </td>
 
                 <td>
                     ${escapeHTML(
-                        item.pembeli || ""
+                        item.sortimen
                     )}
                 </td>
+
+
+                <td>
+                    ${escapeHTML(
+                        item.pembeli
+                    )}
+                </td>
+
 
                 <td>
                     ${formatBatang(
                         batang
                     )}
                 </td>
+
 
                 <td>
                     ${formatVolume(
@@ -1053,6 +1399,11 @@ function tampilkanRincian(
     );
 
 
+
+    /* =================================================
+       TOTAL
+    ================================================= */
+
     html += `
 
         <tr class="total">
@@ -1061,11 +1412,13 @@ function tampilkanRincian(
                 TOTAL
             </td>
 
+
             <td>
                 ${formatBatang(
                     totalBatang
                 )}
             </td>
+
 
             <td>
                 ${formatVolume(
@@ -1074,6 +1427,7 @@ function tampilkanRincian(
             </td>
 
         </tr>
+
 
         </tbody>
 
@@ -1084,8 +1438,67 @@ function tampilkanRincian(
     `;
 
 
+
     box.innerHTML =
         html;
+
+}
+
+
+
+/* =====================================================
+   KONVERSI TANGGAL UNTUK SORTING
+
+   DD-MM-YYYY
+   MENJADI ANGKA YYYYMMDD
+===================================================== */
+
+function tanggalKeAngka(
+    tanggal
+){
+
+    const text =
+        String(
+            tanggal || ""
+        ).trim();
+
+
+    const match =
+        text.match(
+            /^(\d{2})-(\d{2})-(\d{4})$/
+        );
+
+
+    if(!match){
+
+        return 99999999;
+
+    }
+
+
+    const hari =
+        Number(
+            match[1]
+        );
+
+
+    const bulan =
+        Number(
+            match[2]
+        );
+
+
+    const tahun =
+        Number(
+            match[3]
+        );
+
+
+    return (
+        tahun * 10000 +
+        bulan * 100 +
+        hari
+    );
 
 }
 
@@ -1132,6 +1545,7 @@ function escapeHTML(
 ===================================================== */
 
 muatMutasi();
+
 
 </script>
 
