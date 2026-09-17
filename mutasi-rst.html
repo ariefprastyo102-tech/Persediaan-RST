@@ -1013,86 +1013,66 @@ function muatMutasi(){
     /* =================================================
        MUTASI LIVE
     ================================================= */
+panggilAPI(
+    "mutasirincian",
+    bulan,
+    function(response){
 
-    panggilAPI(
-        "mutasi",
-        bulan,
-        function(response){
+        if(
+            !response ||
+            response.status !==
+            "success"
+        ){
 
-            if(
-                !response ||
-                response.status !==
-                "success"
-            ){
-
-                boxMutasi.innerHTML =
-                    "<div class='kosong'>" +
-                    (
-                        response &&
-                        response.message
-                            ? response.message
-                            : "Gagal mengambil data."
-                    ) +
-                    "</div>";
-
-
-                status.innerText =
-                    "❌ GAGAL";
-
-                return;
-
-            }
+            boxMutasi.innerHTML =
+                "<div class='kosong'>" +
+                (
+                    response &&
+                    response.message
+                        ? response.message
+                        : "Gagal mengambil data."
+                ) +
+                "</div>";
 
 
-            tampilkanMutasi(
-                response.data || []
-            );
+            boxRincian.innerHTML =
+                "<div class='kosong'>" +
+                "Gagal mengambil rincian." +
+                "</div>";
 
 
             status.innerText =
-                "✅ MUTASI BULAN BERJALAN DIMUAT";
+                "❌ GAGAL";
+
+            return;
 
         }
 
-    );
+
+        // =================================================
+        // MUTASI
+        // =================================================
+
+        tampilkanMutasi(
+            response.data || []
+        );
 
 
+        // =================================================
+        // RINCIAN TERJUAL
+        // =================================================
 
-    /* =================================================
-       RINCIAN LIVE
-    ================================================= */
-
-    panggilAPI(
-        "rincian",
-        bulan,
-        function(response){
-
-            if(
-                !response ||
-                response.status !==
-                "success"
-            ){
-
-                boxRincian.innerHTML =
-                    "<div class='kosong'>" +
-                    "Gagal mengambil rincian." +
-                    "</div>";
-
-                return;
-
-            }
+        tampilkanRincian(
+            response.rincian || []
+        );
 
 
-            tampilkanRincian(
-                response.data || []
-            );
+        status.innerText =
+            "✅ MUTASI BULAN BERJALAN DIMUAT";
 
-        }
+    }
 
-    );
-
-}
-
+);
 /* =====================================================
    TAMPILKAN MUTASI
 ===================================================== */
