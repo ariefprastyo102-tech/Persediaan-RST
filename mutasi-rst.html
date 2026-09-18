@@ -654,8 +654,6 @@ function tampilkanBulan(
 
 }
 
-      const CACHE_MUTASI_RST =
-  "MUTASI_RST_HTML_CACHE_V1";
 
 /* =====================================================
    MUAT MUTASI
@@ -665,179 +663,118 @@ function tampilkanBulan(
 
 function muatMutasi(){
 
-  const bulan =
-    Number(
-      document.getElementById("bulan").value
-    );
-
-  const status =
-    document.getElementById("status");
-
-
-  // =========================================================
-  // BULAN BERJALAN
-  // =========================================================
-
-  const bulanBerjalan =
-    new Date().getMonth() + 1;
+    const bulan =
+        Number(
+            document.getElementById(
+                "bulan"
+            ).value
+        );
 
 
-  // =========================================================
-  // BULAN SELESAI
-  // → PAKAI LOCAL STORAGE
-  // =========================================================
-
-  if(
-    bulan < bulanBerjalan
-  ){
-
-    const key =
-      CACHE_MUTASI_RST +
-      "_" +
-      bulan;
-
-    try{
-
-      const tersimpan =
-        localStorage.getItem(key);
-
-      if(tersimpan){
-
-        const cache =
-          JSON.parse(tersimpan);
-
-        if(
-          cache &&
-          Array.isArray(cache.data) &&
-          Array.isArray(cache.rincian)
-        ){
-
-          tampilkanMutasi(
-            cache.data
-          );
-
-          tampilkanRincian(
-            cache.rincian
-          );
-
-          status.innerText =
-            "⚡ DATA " +
-            namaBulan[bulan] +
-            " DARI CACHE";
-
-          return;
-
-        }
-
-      }
-
-    }
-    catch(err){
-
-      console.log(
-        "Cache lokal rusak:",
-        err
-      );
-
-    }
+    const status =
+        document.getElementById(
+            "status"
+        );
 
 
-    // =======================================================
-    // BELUM ADA CACHE LOKAL
-    // → AMBIL DARI APPS SCRIPT
-    // → SIMPAN KE LOCAL STORAGE
-    // =======================================================
+    const boxMutasi =
+        document.getElementById(
+            "mutasi"
+        );
+
+
+    const boxRincian =
+        document.getElementById(
+            "rincian"
+        );
+
+
+    document.getElementById(
+        "judulMutasi"
+    ).innerText =
+        "MUTASI " +
+        namaBulan[bulan];
+
 
     status.innerText =
-      "⏳ MEMUAT " +
-      namaBulan[bulan] +
-      "...";
+        "⏳ MEMUAT DATA " +
+        namaBulan[bulan] +
+        "...";
+
+
+    boxMutasi.innerHTML =
+        "⏳ Sedang mengambil mutasi...";
+
+
+    boxRincian.innerHTML =
+        "⏳ Sedang mengambil rincian...";
+
+
+    /* =================================================
+       AMBIL MUTASI + RINCIAN DARI APPS SCRIPT
+    ================================================= */
 
     panggilAPI(
-      "mutasirincian",
-      bulan,
-      function(response){
+        "mutasirincian",
+        bulan,
+        function(response){
 
-        tampilkanMutasi(
-          response.data || []
-        );
+            if(
+                !response ||
+                response.status !==
+                "success"
+            ){
 
-        tampilkanRincian(
-          response.rincian || []
-        );
+                boxMutasi.innerHTML =
+                    "<div class='kosong'>" +
+                    (
+                        response &&
+                        response.message
+                            ? response.message
+                            : "Gagal mengambil data."
+                    ) +
+                    "</div>";
 
 
-        try{
+                boxRincian.innerHTML =
+                    "<div class='kosong'>" +
+                    "Gagal mengambil rincian." +
+                    "</div>";
 
-          localStorage.setItem(
-            key,
-            JSON.stringify({
 
-              data:
-                response.data || [],
+                status.innerText =
+                    "❌ GAGAL";
 
-              rincian:
+                return;
+
+            }
+
+
+            /* =========================================
+               TAMPILKAN MUTASI
+            ========================================= */
+
+            tampilkanMutasi(
+                response.data || []
+            );
+
+
+            /* =========================================
+               TAMPILKAN RINCIAN TERJUAL
+            ========================================= */
+
+            tampilkanRincian(
                 response.rincian || []
+            );
 
-            })
-          );
 
-        }
-        catch(err){
-
-          console.log(
-            "Gagal simpan cache lokal:",
-            err
-          );
+            status.innerText =
+                "✅ DATA " +
+                namaBulan[bulan] +
+                " DIMUAT";
 
         }
-
-
-        status.innerText =
-          "✅ DATA " +
-          namaBulan[bulan] +
-          " DIMUAT & DISIMPAN";
-
-      }
     );
-
-    return;
-
-  }
-
-
-  // =========================================================
-  // BULAN BERJALAN
-  // → SELALU LIVE
-  // → TIDAK PAKAI LOCAL STORAGE
-  // =========================================================
-
-  status.innerText =
-    "⏳ MEMUAT DATA " +
-    namaBulan[bulan] +
-    "...";
-
-
-  panggilAPI(
-    "mutasirincian",
-    bulan,
-    function(response){
-
-      tampilkanMutasi(
-        response.data || []
-      );
-
-      tampilkanRincian(
-        response.rincian || []
-      );
-
-      status.innerText =
-        "✅ DATA " +
-        namaBulan[bulan] +
-        " LIVE";
-
-    }
-  );
 
 }
 
