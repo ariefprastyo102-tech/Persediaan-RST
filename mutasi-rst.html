@@ -11,7 +11,6 @@
 <title>MUTASI RST</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -19,27 +18,39 @@
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#f2f4f7;
-    color:#222;
+    background:#f1f5f2;
+    color:#1f2937;
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
 .header{
-    background:#1f2937;
+    background:#166534;
     color:white;
-    padding:18px 15px;
+    padding:20px 15px;
     text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
 
 .header h1{
     margin:0;
-    font-size:22px;
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:.5px;
 }
 
 .header p{
     margin:6px 0 0;
     font-size:13px;
-    opacity:.85;
+    opacity:.9;
 }
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
 
 .container{
     max-width:1400px;
@@ -47,84 +58,135 @@ body{
     padding:15px;
 }
 
+
+/* =====================================================
+   KONTROL
+===================================================== */
+
 .kontrol{
     background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(22,101,52,.10);
     margin-bottom:15px;
+    border:1px solid #dce9df;
 }
 
 .kontrol label{
     display:block;
     font-weight:bold;
-    margin-bottom:6px;
+    margin-bottom:7px;
+    color:#166534;
 }
 
 .kontrol select{
     width:100%;
-    max-width:250px;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:7px;
+    max-width:280px;
+    padding:11px 12px;
+    border:1px solid #a7c7af;
+    border-radius:8px;
     font-size:15px;
+    background:white;
+    color:#1f2937;
+    outline:none;
 }
+
+.kontrol select:focus{
+    border-color:#16a34a;
+    box-shadow:0 0 0 3px rgba(22,163,74,.12);
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
 
 button{
     margin-top:10px;
-    padding:10px 18px;
+    padding:11px 20px;
     border:0;
-    border-radius:7px;
-    background:#2563eb;
+    border-radius:8px;
+    background:#16a34a;
     color:white;
     font-weight:bold;
     cursor:pointer;
+    font-size:14px;
+    box-shadow:0 2px 5px rgba(22,101,52,.20);
 }
 
 button:hover{
-    opacity:.9;
+    background:#15803d;
 }
+
+button:active{
+    transform:translateY(1px);
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
 
 .status{
     margin-top:10px;
     font-size:13px;
+    font-weight:bold;
+    color:#166534;
 }
+
+
+/* =====================================================
+   KARTU
+===================================================== */
 
 .kartu{
     background:white;
-    border-radius:10px;
+    border-radius:12px;
     padding:15px;
     margin-bottom:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    box-shadow:0 2px 8px rgba(22,101,52,.09);
+    border:1px solid #dce9df;
 }
 
 .kartu h2{
-    margin-top:0;
+    margin:0 0 12px;
     font-size:18px;
+    color:#166534;
+    border-left:5px solid #16a34a;
+    padding-left:10px;
 }
+
+
+/* =====================================================
+   TABEL
+===================================================== */
 
 .tabel-wrap{
     width:100%;
     overflow-x:auto;
+    border-radius:8px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
     min-width:900px;
+    background:white;
 }
 
 th,
 td{
-    border:1px solid #ddd;
+    border:1px solid #d7e3da;
     padding:9px 8px;
     font-size:13px;
 }
 
 th{
-    background:#e5e7eb;
+    background:#dcfce7;
+    color:#14532d;
     font-weight:bold;
     text-align:center;
+    white-space:nowrap;
 }
 
 td{
@@ -134,23 +196,70 @@ td{
 td:first-child{
     text-align:left;
     font-weight:bold;
+    color:#166534;
 }
+
+
+/* =====================================================
+   HEADER KELOMPOK MUTASI
+===================================================== */
+
+table thead tr:first-child th{
+    background:#166534;
+    color:white;
+    border-color:#14532d;
+}
+
+table thead tr:nth-child(2) th{
+    background:#dcfce7;
+    color:#14532d;
+}
+
+
+/* =====================================================
+   TOTAL
+===================================================== */
 
 .total{
     font-weight:bold;
-    background:#f3f4f6;
+    background:#ecfdf5;
+    color:#14532d;
 }
 
+.total td{
+    border-top:2px solid #16a34a;
+}
+
+
+/* =====================================================
+   HOVER BARIS
+===================================================== */
+
+tbody tr:hover:not(.total){
+    background:#f0fdf4;
+}
+
+
+/* =====================================================
+   KOSONG / LOADING
+===================================================== */
+
 .kosong{
-    padding:20px;
+    padding:22px;
     text-align:center;
-    color:#777;
+    color:#6b7280;
 }
 
 .loading{
-    padding:15px;
+    padding:18px;
     text-align:center;
+    color:#6b7280;
 }
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:700px){
 
@@ -158,17 +267,45 @@ td:first-child{
         padding:8px;
     }
 
+    .header{
+        padding:17px 10px;
+    }
+
     .header h1{
-        font-size:19px;
+        font-size:20px;
+    }
+
+    .header p{
+        font-size:12px;
+    }
+
+    .kontrol{
+        padding:12px;
+        border-radius:10px;
+    }
+
+    .kontrol select{
+        max-width:none;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
     }
 
     .kartu{
         padding:10px;
+        border-radius:10px;
+    }
+
+    .kartu h2{
+        font-size:16px;
+        margin-bottom:10px;
     }
 
     th,
     td{
-        padding:7px 6px;
+        padding:8px 7px;
         font-size:12px;
     }
 
