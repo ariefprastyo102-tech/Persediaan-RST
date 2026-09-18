@@ -190,12 +190,12 @@ th{
 }
 
 td{
-    text-align:right;
+    text-align:center;
     color:#111827;
 }
 
 td:first-child{
-    text-align:left;
+    text-align:center;
     font-weight:bold;
     color:#166534;
 }
@@ -338,41 +338,71 @@ tbody tr:hover:not(.total){
 
 <div class="kontrol">
 
-    <label for="bulan">
-        PILIH BULAN
-    </label>
+    <div class="filter-bulan">
 
-    <select id="bulan">
+        <label for="bulan">BULAN</label>
 
-        <option value="1">JANUARI</option>
-        <option value="2">FEBRUARI</option>
-        <option value="3">MARET</option>
-        <option value="4">APRIL</option>
-        <option value="5">MEI</option>
-        <option value="6">JUNI</option>
-        <option value="7">JULI</option>
-        <option value="8">AGUSTUS</option>
-        <option value="9" selected>SEPTEMBER</option>
-        <option value="10">OKTOBER</option>
-        <option value="11">NOVEMBER</option>
-        <option value="12">DESEMBER</option>
+        <select id="bulan">
+            <option value="1">JANUARI</option>
+            <option value="2">FEBRUARI</option>
+            <option value="3">MARET</option>
+            <option value="4">APRIL</option>
+            <option value="5">MEI</option>
+            <option value="6">JUNI</option>
+            <option value="7">JULI</option>
+            <option value="8">AGUSTUS</option>
+            <option value="9" selected>SEPTEMBER</option>
+            <option value="10">OKTOBER</option>
+            <option value="11">NOVEMBER</option>
+            <option value="12">DESEMBER</option>
+        </select>
 
-    </select>
+        <button type="button" onclick="muatMutasi()">
+            TAMPILKAN
+        </button>
 
-    <br>
+        <div id="status" class="status"></div>
 
-    <button onclick="muatMutasi()">
-        TAMPILKAN
-    </button>
+    </div>
 
-    <div
-        id="status"
-        class="status">
+
+    <div class="ringkasan">
+
+        <div class="ringkasan-title">
+            RINGKASAN BULAN
+        </div>
+
+        <div class="ringkasan-grid">
+
+            <div class="ringkas-item">
+                <div class="ringkas-label">SISA AWAL</div>
+                <div id="ringkasAwalBatang">0</div>
+                <small id="ringkasAwalVolume">0 m³</small>
+            </div>
+
+            <div class="ringkas-item">
+                <div class="ringkas-label">PENAMBAHAN</div>
+                <div id="ringkasProduksiBatang">0</div>
+                <small id="ringkasProduksiVolume">0 m³</small>
+            </div>
+
+            <div class="ringkas-item">
+                <div class="ringkas-label">TERJUAL</div>
+                <div id="ringkasTerjualBatang">0</div>
+                <small id="ringkasTerjualVolume">0 m³</small>
+            </div>
+
+            <div class="ringkas-item">
+                <div class="ringkas-label">SISA AKHIR</div>
+                <div id="ringkasAkhirBatang">0</div>
+                <small id="ringkasAkhirVolume">0 m³</small>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
-
-
 
 <!-- =====================================================
      MUTASI
