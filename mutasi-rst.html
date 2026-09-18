@@ -1382,6 +1382,29 @@ function tampilkanMutasi(
 
     box.innerHTML =
         html;
+      document.getElementById("ringkasAwalBatang").innerText =
+    formatBatang(totalAwalBatang);
+
+document.getElementById("ringkasAwalVolume").innerText =
+    formatVolume(totalAwalVolume);
+
+document.getElementById("ringkasProduksiBatang").innerText =
+    formatBatang(totalProduksiBatang);
+
+document.getElementById("ringkasProduksiVolume").innerText =
+    formatVolume(totalProduksiVolume);
+
+document.getElementById("ringkasTerjualBatang").innerText =
+    formatBatang(totalTerjualBatang);
+
+document.getElementById("ringkasTerjualVolume").innerText =
+    formatVolume(totalTerjualVolume);
+
+document.getElementById("ringkasAkhirBatang").innerText =
+    formatBatang(totalAkhirBatang);
+
+document.getElementById("ringkasAkhirVolume").innerText =
+    formatVolume(totalAkhirVolume);
 }
 /* =====================================================
    RINCIAN TERJUAL
