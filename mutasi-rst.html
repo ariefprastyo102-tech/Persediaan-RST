@@ -311,7 +311,80 @@ tbody tr:hover:not(.total){
     }
 
 }
+/* =====================================================
+   FILTER + RINGKASAN
+===================================================== */
 
+.kontrol{
+    display:flex;
+    gap:20px;
+    align-items:stretch;
+}
+
+.filter-bulan{
+    width:280px;
+    flex-shrink:0;
+}
+
+.ringkasan{
+    flex:1;
+}
+
+.ringkasan-title{
+    font-size:15px;
+    font-weight:bold;
+    color:#166534;
+    margin-bottom:8px;
+}
+
+.tabel-ringkasan{
+    width:100%;
+    min-width:0;
+    border-collapse:collapse;
+}
+
+.tabel-ringkasan th{
+    background:#166534;
+    color:white;
+    text-align:center;
+    padding:9px 8px;
+    border:1px solid #14532d;
+    font-size:12px;
+}
+
+.tabel-ringkasan td{
+    background:#f0fdf4;
+    color:#111827;
+    text-align:center;
+    padding:10px 8px;
+    border:1px solid #bbf7d0;
+    font-size:13px;
+}
+
+.tabel-ringkasan td b{
+    font-size:15px;
+}
+
+.tabel-ringkasan td span{
+    font-size:12px;
+    color:#111827;
+}
+
+@media(max-width:700px){
+
+    .kontrol{
+        display:block;
+    }
+
+    .filter-bulan{
+        width:100%;
+    }
+
+    .ringkasan{
+        margin-top:15px;
+    }
+
+}
 </style>
 
 </head>
@@ -365,40 +438,48 @@ tbody tr:hover:not(.total){
 
     </div>
 
-
     <div class="ringkasan">
 
         <div class="ringkasan-title">
             RINGKASAN BULAN
         </div>
 
-        <div class="ringkasan-grid">
+        <table class="tabel-ringkasan">
 
-            <div class="ringkas-item">
-                <div class="ringkas-label">SISA AWAL</div>
-                <div id="ringkasAwalBatang">0</div>
-                <small id="ringkasAwalVolume">0 m³</small>
-            </div>
+            <thead>
+                <tr>
+                    <th>SISA AWAL</th>
+                    <th>PENAMBAHAN</th>
+                    <th>TERJUAL</th>
+                    <th>SISA AKHIR</th>
+                </tr>
+            </thead>
 
-            <div class="ringkas-item">
-                <div class="ringkas-label">PENAMBAHAN</div>
-                <div id="ringkasProduksiBatang">0</div>
-                <small id="ringkasProduksiVolume">0 m³</small>
-            </div>
+            <tbody>
+                <tr>
+                    <td>
+                        <b id="ringkasAwalBatang">0</b><br>
+                        <span id="ringkasAwalVolume">0 m³</span>
+                    </td>
 
-            <div class="ringkas-item">
-                <div class="ringkas-label">TERJUAL</div>
-                <div id="ringkasTerjualBatang">0</div>
-                <small id="ringkasTerjualVolume">0 m³</small>
-            </div>
+                    <td>
+                        <b id="ringkasProduksiBatang">0</b><br>
+                        <span id="ringkasProduksiVolume">0 m³</span>
+                    </td>
 
-            <div class="ringkas-item">
-                <div class="ringkas-label">SISA AKHIR</div>
-                <div id="ringkasAkhirBatang">0</div>
-                <small id="ringkasAkhirVolume">0 m³</small>
-            </div>
+                    <td>
+                        <b id="ringkasTerjualBatang">0</b><br>
+                        <span id="ringkasTerjualVolume">0 m³</span>
+                    </td>
 
-        </div>
+                    <td>
+                        <b id="ringkasAkhirBatang">0</b><br>
+                        <span id="ringkasAkhirVolume">0 m³</span>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
 
     </div>
 
