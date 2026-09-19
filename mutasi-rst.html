@@ -374,15 +374,25 @@ tbody tr:hover:not(.total){
 .label-satuan,
 .nilai-satuan{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:12px;
+    justify-content:space-between;
+    gap:0;
+}
+
+.label-satuan span,
+.nilai-satuan b,
+.nilai-satuan span{
+    flex:1;
+    text-align:center;
+    border:1px solid #bbf7d0;
+    padding:4px 6px;
+    box-sizing:border-box;
 }
 
 .label-satuan{
     font-size:11px;
     font-weight:bold;
-    margin-bottom:5px;
+    margin-bottom:0;
 }
 
 .nilai-satuan{
