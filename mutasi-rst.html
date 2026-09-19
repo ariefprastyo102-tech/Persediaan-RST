@@ -442,50 +442,41 @@ tbody tr:hover:not(.total){
 
     <div class="ringkasan">
 
-        <div class="ringkasan-title">
-            RINGKASAN BULAN
-        </div>
+```
+<div class="ringkasan-title">
+    RINGKASAN BULAN
+</div>
 
-        <table class="tabel-ringkasan">
+<div class="ringkasan-grid">
 
-            <thead>
-                <tr>
-                    <th>SISA AWAL</th>
-                    <th>PENAMBAHAN</th>
-                    <th>TERJUAL</th>
-                    <th>SISA AKHIR</th>
-                </tr>
-            </thead>
+    <div class="ringkas-card">
+        <div class="ringkas-label">SISA AWAL</div>
+        <div class="ringkas-batang" id="ringkasAwalBatang">0</div>
+        <div class="ringkas-volume" id="ringkasAwalVolume">0 m³</div>
+    </div>
 
-            <tbody>
-                <tr>
-                    <td>
-                        <b id="ringkasAwalBatang">0</b><br>
-                        <span id="ringkasAwalVolume">0 m³</span>
-                    </td>
+    <div class="ringkas-card">
+        <div class="ringkas-label">PENAMBAHAN</div>
+        <div class="ringkas-batang" id="ringkasProduksiBatang">0</div>
+        <div class="ringkas-volume" id="ringkasProduksiVolume">0 m³</div>
+    </div>
 
-                    <td>
-                        <b id="ringkasProduksiBatang">0</b><br>
-                        <span id="ringkasProduksiVolume">0 m³</span>
-                    </td>
+    <div class="ringkas-card">
+        <div class="ringkas-label">TERJUAL</div>
+        <div class="ringkas-batang" id="ringkasTerjualBatang">0</div>
+        <div class="ringkas-volume" id="ringkasTerjualVolume">0 m³</div>
+    </div>
 
-                    <td>
-                        <b id="ringkasTerjualBatang">0</b><br>
-                        <span id="ringkasTerjualVolume">0 m³</span>
-                    </td>
-
-                    <td>
-                        <b id="ringkasAkhirBatang">0</b><br>
-                        <span id="ringkasAkhirVolume">0 m³</span>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
+    <div class="ringkas-card">
+        <div class="ringkas-label">SISA AKHIR</div>
+        <div class="ringkas-batang" id="ringkasAkhirBatang">0</div>
+        <div class="ringkas-volume" id="ringkasAkhirVolume">0 m³</div>
     </div>
 
 </div>
+
+</div>
+
 
 <!-- =====================================================
      MUTASI
