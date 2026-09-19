@@ -958,7 +958,14 @@ function muatDataTerakhir(){
                 response.dataTerakhir ||
                 {};
 
-
+              document.getElementById(
+    "judulPersediaan"
+).innerText =
+    "PERSEDIAAN SD TGL TERAKHIR " +
+    (
+        data.tanggalTerakhir ||
+        ""
+    );
             document.getElementById(
                 "ringkasAwalBatang"
             ).innerText =
