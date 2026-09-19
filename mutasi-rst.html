@@ -2738,73 +2738,151 @@ async function exportExcel(){
 
 
         // Data
-        for(
-            let i = 1;
-            i < dataRincian.length;
-            i++
-        ){
+for(
+    let i = 1;
+    i < dataRincian.length;
+    i++
+){
 
-            const sumber =
-                dataRincian[i];
+    const sumber =
+        dataRincian[i];
 
-            const row =
-                wr.addRow([
-                    tanggal(sumber[0]),
-                    sumber[1] || "",
-                    sumber[2] || "",
-                    angka(sumber[3]),
-                    angka(sumber[4])
-                ]);
+    // ==============================
+    // BARIS TOTAL
+    // ==============================
+    if(
+        String(sumber[0]).trim().toUpperCase() === "TOTAL"
+    ){
+
+        const row =
+            wr.addRow([
+                "TOTAL",
+                angka(sumber[1]),
+                angka(sumber[2]),
+                angka(sumber[3]),
+                angka(sumber[4])
+            ]);
+
+        row.font = {
+            bold:true
+        };
+
+        row.eachCell(
+            {
+                includeEmpty:true
+            },
+            cell => {
+
+                cell.border = {
+
+                    top:{
+                        style:"medium"
+                    },
+
+                    bottom:{
+                        style:"medium"
+                    },
+
+                    left:{
+                        style:"thin"
+                    },
+
+                    right:{
+                        style:"thin"
+                    }
+
+                };
+
+                cell.alignment = {
+
+                    horizontal:"center",
+
+                    vertical:"middle",
+
+                    wrapText:true
+
+                };
+
+            }
+        );
+
+        row.getCell(2).numFmt =
+            "#,##0";
+
+        row.getCell(3).numFmt =
+            "#,##0.000000";
+
+        row.getCell(4).numFmt =
+            "#,##0";
+
+        row.getCell(5).numFmt =
+            "#,##0.000000";
+
+        continue;
+    }
 
 
-            row.eachCell(
-                {
-                    includeEmpty:true
+    // ==============================
+    // DATA RINCIAN
+    // ==============================
+
+    const row =
+        wr.addRow([
+            tanggal(sumber[0]),
+            sumber[1] || "",
+            sumber[2] || "",
+            angka(sumber[3]),
+            angka(sumber[4])
+        ]);
+
+
+    row.eachCell(
+        {
+            includeEmpty:true
+        },
+        cell => {
+
+            cell.border = {
+
+                top:{
+                    style:"thin"
                 },
-                cell => {
 
-                    cell.border = {
+                bottom:{
+                    style:"thin"
+                },
 
-                        top:{
-                            style:"thin"
-                        },
+                left:{
+                    style:"thin"
+                },
 
-                        bottom:{
-                            style:"thin"
-                        },
-
-                        left:{
-                            style:"thin"
-                        },
-
-                        right:{
-                            style:"thin"
-                        }
-
-                    };
-
-                    cell.alignment = {
-
-                        horizontal:"center",
-
-                        vertical:"middle",
-
-                        wrapText:true
-
-                    };
-
+                right:{
+                    style:"thin"
                 }
-            );
 
+            };
 
-            row.getCell(4).numFmt =
-                "#,##0";
+            cell.alignment = {
 
-            row.getCell(5).numFmt =
-                "#,##0.000000";
+                horizontal:"center",
+
+                vertical:"middle",
+
+                wrapText:true
+
+            };
 
         }
+    );
 
+
+    row.getCell(4).numFmt =
+        "#,##0";
+
+    row.getCell(5).numFmt =
+        "#,##0.000000";
+
+}
 
         // Lebar
         wr.getColumn(1).width = 16;
