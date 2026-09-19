@@ -328,13 +328,14 @@ tbody tr:hover:not(.total){
 
 .ringkasan{
     flex:1;
+    overflow-x:auto;
+    width:100%;
 }
 
-.ringkasan-title{
-    font-size:15px;
-    font-weight:bold;
-    color:#166534;
-    margin-bottom:8px;
+.tabel-ringkasan{
+    width:100%;
+    min-width:700px;
+    border-collapse:collapse;
 }
 
 .tabel-ringkasan{
@@ -1053,7 +1054,7 @@ function tampilkanBulan(
 ===================================================== */
 
 function muatMutasi(){
-          muatDataTerakhir();
+         
     const bulan =
         Number(
             document.getElementById(
@@ -1140,7 +1141,6 @@ function muatMutasi(){
 
             }
 
-
             /* =========================================
                TAMPILKAN MUTASI
             ========================================= */
@@ -1159,6 +1159,9 @@ function muatMutasi(){
             );
 
 
+            muatDataTerakhir();
+
+
             status.innerText =
                 "✅ DATA " +
                 namaBulan[bulan] +
@@ -1168,7 +1171,6 @@ function muatMutasi(){
     );
 
 }
-
 /* =====================================================
    TAMPILKAN MUTASI
 ===================================================== */
@@ -1282,7 +1284,43 @@ function tampilkanMutasi(
 
     `;
 
+const urutanSortimen = [
+    "DECKING",
+    "FLOORING",
+    "LONGSTRIP",
+    "PB PANJANG",
+    "PB PENDEK",
+    "P STOCK",
+    "FJL",
+    "RENG",
+    "LIST",
+    "HOUSING COMPONENT"
+    "HOUSING COMPONENT GRAHADI"
+    "HOUSING COMPONENT HALL"
+    "HOUSING COMPONENT PAVILLIUN"
+    "BLOCKWARE"
+];
 
+data.sort(
+    function(a, b){
+
+        const ia =
+            urutanSortimen.indexOf(
+                String(a.sortimen || "")
+                    .trim()
+                    .toUpperCase()
+            );
+
+        const ib =
+            urutanSortimen.indexOf(
+                String(b.sortimen || "")
+                    .trim()
+                    .toUpperCase()
+            );
+
+        return ia - ib;
+    }
+);
 
     data.forEach(
         function(item){
@@ -1333,8 +1371,18 @@ function tampilkanMutasi(
                 Number(
                     item.akhirVolume || 0
                 );
-
-
+              if(
+    awalBatang === 0 &&
+    awalVolume === 0 &&
+    produksiBatang === 0 &&
+    produksiVolume === 0 &&
+    terjualBatang === 0 &&
+    terjualVolume === 0 &&
+    akhirBatang === 0 &&
+    akhirVolume === 0
+){
+    return;
+}
 
             totalAwalBatang +=
                 awalBatang;
