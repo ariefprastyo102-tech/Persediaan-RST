@@ -256,7 +256,16 @@ tbody tr:hover:not(.total){
     text-align:center;
     color:#6b7280;
 }
+.judul-aksi{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
 
+.judul-aksi h2{
+    margin:0;
+}
 
 /* =====================================================
    MOBILE
@@ -536,10 +545,15 @@ tbody tr:hover:not(.total){
 ===================================================== -->
 
 <div class="kartu">
+    <div class="judul-aksi">
+        <h2 id="judulMutasi">
+            MUTASI
+        </h2>
 
-    <h2 id="judulMutasi">
-        MUTASI
-    </h2>
+        <button type="button" onclick="cetakMutasi()">
+            CETAK
+        </button>
+    </div>
 
     <div
         id="mutasi"
@@ -1999,7 +2013,122 @@ function escapeHTML(
 
 }
 
+/* =====================================================
+   CETAK MUTASI
+===================================================== */
 
+function cetakMutasi(){
+
+    const bulan =
+        Number(
+            document.getElementById("bulan").value
+        );
+
+    const isiMutasi =
+        document.getElementById("mutasi").innerHTML;
+
+    const isiRincian =
+        document.getElementById("rincian").innerHTML;
+
+    const jendela =
+        window.open(
+            "",
+            "_blank"
+        );
+
+    jendela.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+MUTASI RST ${namaBulan[bulan]}
+</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    margin:20px;
+    color:#111;
+}
+
+h1{
+    text-align:center;
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+h2{
+    font-size:16px;
+    margin-top:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:20px;
+}
+
+th,
+td{
+    border:1px solid #000;
+    padding:6px;
+    font-size:11px;
+    text-align:center;
+}
+
+th{
+    background:#ddd;
+}
+
+.total{
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+MUTASI RST IK SARADAN
+</h1>
+
+<div style="text-align:center;">
+${namaBulan[bulan]}
+</div>
+
+<h2>
+MUTASI
+</h2>
+
+${isiMutasi}
+
+<h2>
+RINCIAN TERJUAL
+</h2>
+
+${isiRincian}
+
+<script>
+
+window.onload=function(){
+    window.print();
+};
+
+<\/script>
+
+</body>
+</html>
+`);
+
+    jendela.document.close();
+
+}
 
 /* =====================================================
    OTOMATIS MUAT
