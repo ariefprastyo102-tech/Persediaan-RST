@@ -925,6 +925,97 @@ function panggilAPI(
 
 }
 
+function muatDataTerakhir(){
+
+    panggilAPI(
+        "dataterakhir",
+        "",
+        function(response){
+
+            if(
+                !response ||
+                response.status !==
+                "success"
+            ){
+
+                return;
+
+            }
+
+
+            const data =
+                response.dataTerakhir ||
+                {};
+
+
+            document.getElementById(
+                "ringkasAwalBatang"
+            ).innerText =
+                formatBatang(
+                    data.awalBatang
+                );
+
+
+            document.getElementById(
+                "ringkasAwalVolume"
+            ).innerText =
+                formatVolume(
+                    data.awalVolume
+                );
+
+
+            document.getElementById(
+                "ringkasProduksiBatang"
+            ).innerText =
+                formatBatang(
+                    data.produksiBatang
+                );
+
+
+            document.getElementById(
+                "ringkasProduksiVolume"
+            ).innerText =
+                formatVolume(
+                    data.produksiVolume
+                );
+
+
+            document.getElementById(
+                "ringkasTerjualBatang"
+            ).innerText =
+                formatBatang(
+                    data.terjualBatang
+                );
+
+
+            document.getElementById(
+                "ringkasTerjualVolume"
+            ).innerText =
+                formatVolume(
+                    data.terjualVolume
+                );
+
+
+            document.getElementById(
+                "ringkasAkhirBatang"
+            ).innerText =
+                formatBatang(
+                    data.akhirBatang
+                );
+
+
+            document.getElementById(
+                "ringkasAkhirVolume"
+            ).innerText =
+                formatVolume(
+                    data.akhirVolume
+                );
+
+        }
+    );
+
+}
+      
 /* =====================================================
    TAMPILKAN BULAN
 ===================================================== */
@@ -962,7 +1053,7 @@ function tampilkanBulan(
 ===================================================== */
 
 function muatMutasi(){
-
+          muatDataTerakhir();
     const bulan =
         Number(
             document.getElementById(
