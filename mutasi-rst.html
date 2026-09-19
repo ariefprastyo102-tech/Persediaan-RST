@@ -3,8 +3,7 @@
 
 <head>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -2133,12 +2132,10 @@ window.onload=function(){
     jendela.document.close();
 
 }
-function exportExcel(){
+async function exportExcel(){
 
     const bulan =
-        Number(
-            document.getElementById("bulan").value
-        );
+        Number(document.getElementById("bulan").value);
 
     const tabelMutasi =
         document.querySelector("#mutasi table");
@@ -2147,36 +2144,35 @@ function exportExcel(){
         document.querySelector("#rincian table");
 
     if(!tabelMutasi){
-
         alert("Data mutasi belum tersedia.");
         return;
+    }
+
+
+    // =====================================================
+    // FORMAT DATA HTML KE ARRAY
+    // =====================================================
+
+    function ambilDataTabel(tabel){
+
+        return [...tabel.rows].map(
+            row => [...row.cells].map(
+                cell => cell.innerText.trim()
+            )
+        );
 
     }
 
 
-    const wb =
-        XLSX.utils.book_new();
+    function formatTanggal(nilai){
 
-
-    // =====================================================
-    // FORMAT TANGGAL
-    // =====================================================
-
-    function tanggalExcel(nilai){
-
-        if(!nilai){
-            return "";
-        }
+        if(!nilai) return "";
 
         if(
-            typeof nilai === "string" &&
-            /^\d{1,2}-\d{1,2}-\d{4}$/.test(
-                nilai.trim()
-            )
+            /^\d{1,2}-\d{1,2}-\d{4}$/.test(nilai)
         ){
 
-            const p =
-                nilai.trim().split("-");
+            const p = nilai.split("-");
 
             return (
                 p[0].padStart(2,"0") +
@@ -2188,612 +2184,356 @@ function exportExcel(){
 
         }
 
+        return nilai;
 
-        if(
-            typeof nilai === "number" &&
-            nilai > 30000
-        ){
-
-            const d =
-                new Date(
-                    Math.round(
-                        (nilai - 25569) *
-                        86400 *
-                        1000
-                    )
-                );
-
-            return (
-                String(
-                    d.getUTCDate()
-                ).padStart(2,"0") +
-                "-" +
-                String(
-                    d.getUTCMonth() + 1
-                ).padStart(2,"0") +
-                "-" +
-                d.getUTCFullYear()
-            );
-
-        }
-
-        return String(nilai);
     }
 
 
-    // =====================================================
-    // FORMAT SEL
-    // =====================================================
+    function angka(nilai){
 
-    function formatSheet(ws){
+        if(!nilai) return 0;
 
-        const range =
-            XLSX.utils.decode_range(
-                ws["!ref"]
+        return Number(
+            String(nilai)
+                .replace(/\./g,"")
+                .replace(",",".")
+        ) || 0;
+
+    }
+
+
+    function buatSheet(workbook,nama,data){
+
+        const sheet =
+            workbook.addWorksheet(nama);
+
+        const jumlahKolom =
+            Math.max(
+                ...data.map(baris => baris.length)
             );
 
 
-        // -------------------------------------------------
-        // SEMUA SEL = GARIS
-        // -------------------------------------------------
+        // Judul
+        const judul =
+            sheet.addRow([
+                nama === "MUTASI"
+                    ? "MUTASI RST IK SARADAN"
+                    : "RINCIAN TERJUAL RST"
+            ]);
 
-        for(
-            let r = range.s.r;
-            r <= range.e.r;
-            r++
-        ){
+        sheet.mergeCells(
+            1,
+            1,
+            1,
+            jumlahKolom
+        );
 
-            for(
-                let c = range.s.c;
-                c <= range.e.c;
-                c++
-            ){
+        judul.height = 28;
 
-                const alamat =
-                    XLSX.utils.encode_cell({
-                        r:r,
-                        c:c
-                    });
+        judul.font = {
+            bold:true,
+            size:16
+        };
 
-                if(!ws[alamat]){
-                    ws[alamat] = {
-                        v:"",
-                        t:"s"
-                    };
-                }
+        judul.alignment = {
+            horizontal:"center",
+            vertical:"middle"
+        };
 
-                ws[alamat].s = {
 
-                    border:{
-                        top:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        bottom:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        left:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        right:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        }
+        // Bulan
+        const subjudul =
+            sheet.addRow([
+                namaBulan[bulan]
+            ]);
+
+        sheet.mergeCells(
+            2,
+            1,
+            2,
+            jumlahKolom
+        );
+
+        subjudul.font = {
+            bold:true,
+            size:12
+        };
+
+        subjudul.alignment = {
+            horizontal:"center"
+        };
+
+
+        sheet.addRow([]);
+
+
+        // Data tabel
+        data.forEach(
+            (baris,index) => {
+
+                const row =
+                    sheet.addRow(baris);
+
+                row.height =
+                    index === 0
+                        ? 38
+                        : 22;
+
+
+                row.eachCell(
+                    {
+                        includeEmpty:true
                     },
+                    cell => {
 
-                    alignment:{
-                        vertical:"center",
-                        horizontal:"center",
-                        wrap_text:true
-                    }
-
-                };
-
-            }
-
-        }
-
-
-        // -------------------------------------------------
-        // JUDUL
-        // -------------------------------------------------
-
-        for(
-            let c = range.s.c;
-            c <= range.e.c;
-            c++
-        ){
-
-            const alamat =
-                XLSX.utils.encode_cell({
-                    r:0,
-                    c:c
-                });
-
-            if(ws[alamat]){
-
-                ws[alamat].s = {
-
-                    font:{
-                        bold:true,
-                        sz:16
-                    },
-
-                    alignment:{
-                        horizontal:"center",
-                        vertical:"center"
-                    }
-
-                };
-
-            }
-
-        }
-
-
-        // -------------------------------------------------
-        // NAMA BULAN
-        // -------------------------------------------------
-
-        for(
-            let c = range.s.c;
-            c <= range.e.c;
-            c++
-        ){
-
-            const alamat =
-                XLSX.utils.encode_cell({
-                    r:1,
-                    c:c
-                });
-
-            if(ws[alamat]){
-
-                ws[alamat].s = {
-
-                    font:{
-                        bold:true,
-                        sz:12
-                    },
-
-                    alignment:{
-                        horizontal:"center",
-                        vertical:"center"
-                    }
-
-                };
-
-            }
-
-        }
-
-
-        // -------------------------------------------------
-        // HEADER TABEL
-        // -------------------------------------------------
-
-        // Mutasi: baris ke-4 Excel = index 3
-        // Rincian juga sama
-
-        for(
-            let c = range.s.c;
-            c <= range.e.c;
-            c++
-        ){
-
-            const alamat =
-                XLSX.utils.encode_cell({
-                    r:3,
-                    c:c
-                });
-
-            if(ws[alamat]){
-
-                ws[alamat].s = {
-
-                    font:{
-                        bold:true,
-                        sz:11
-                    },
-
-                    alignment:{
-                        horizontal:"center",
-                        vertical:"center",
-                        wrap_text:true
-                    },
-
-                    border:{
-                        top:{
-                            style:"medium",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        bottom:{
-                            style:"medium",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        left:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        },
-                        right:{
-                            style:"thin",
-                            color:{
-                                rgb:"000000"
-                            }
-                        }
-                    }
-
-                };
-
-            }
-
-        }
-
-
-        // -------------------------------------------------
-        // BARIS TOTAL
-        // -------------------------------------------------
-
-        for(
-            let r = range.s.r;
-            r <= range.e.r;
-            r++
-        ){
-
-            const alamat =
-                XLSX.utils.encode_cell({
-                    r:r,
-                    c:0
-                });
-
-            if(
-                ws[alamat] &&
-                String(ws[alamat].v)
-                    .toUpperCase()
-                    === "TOTAL"
-            ){
-
-                for(
-                    let c = range.s.c;
-                    c <= range.e.c;
-                    c++
-                ){
-
-                    const cell =
-                        ws[
-                            XLSX.utils.encode_cell({
-                                r:r,
-                                c:c
-                            })
-                        ];
-
-                    if(cell){
-
-                        cell.s = {
-
-                            font:{
-                                bold:true,
-                                sz:11
+                        cell.border = {
+                            top:{
+                                style:"thin"
                             },
-
-                            border:{
-                                top:{
-                                    style:"medium",
-                                    color:{
-                                        rgb:"000000"
-                                    }
-                                },
-                                bottom:{
-                                    style:"medium",
-                                    color:{
-                                        rgb:"000000"
-                                    }
-                                },
-                                left:{
-                                    style:"thin",
-                                    color:{
-                                        rgb:"000000"
-                                    }
-                                },
-                                right:{
-                                    style:"thin",
-                                    color:{
-                                        rgb:"000000"
-                                    }
-                                }
+                            left:{
+                                style:"thin"
                             },
-
-                            alignment:{
-                                horizontal:"center",
-                                vertical:"center"
+                            bottom:{
+                                style:"thin"
+                            },
+                            right:{
+                                style:"thin"
                             }
+                        };
 
+                        cell.alignment = {
+                            horizontal:"center",
+                            vertical:"middle",
+                            wrapText:true
                         };
 
                     }
+                );
+
+
+                // Header
+                if(index === 0){
+
+                    row.font = {
+                        bold:true,
+                        size:11
+                    };
 
                 }
 
-            }
 
-        }
-
-
-        // -------------------------------------------------
-        // FORMAT ANGKA
-        // -------------------------------------------------
-
-        for(
-            let r = range.s.r;
-            r <= range.e.r;
-            r++
-        ){
-
-            for(
-                let c = range.s.c;
-                c <= range.e.c;
-                c++
-            ){
-
-                const alamat =
-                    XLSX.utils.encode_cell({
-                        r:r,
-                        c:c
-                    });
-
-                const cell =
-                    ws[alamat];
-
+                // TOTAL
                 if(
-                    cell &&
-                    typeof cell.v === "number"
+                    String(baris[0])
+                        .trim()
+                        .toUpperCase()
+                        === "TOTAL"
                 ){
 
-                    cell.z =
-                        c === 0
-                            ? "#,##0"
-                            : "#,##0.000000";
+                    row.font = {
+                        bold:true,
+                        size:11
+                    };
+
+                    row.eachCell(
+                        {
+                            includeEmpty:true
+                        },
+                        cell => {
+
+                            cell.border = {
+                                top:{
+                                    style:"medium"
+                                },
+                                left:{
+                                    style:"thin"
+                                },
+                                bottom:{
+                                    style:"medium"
+                                },
+                                right:{
+                                    style:"thin"
+                                }
+                            };
+
+                        }
+                    );
 
                 }
 
             }
-
-        }
-
-
-        // -------------------------------------------------
-        // TINGGI BARIS
-        // -------------------------------------------------
-
-        ws["!rows"] = [];
-
-        ws["!rows"][0] = {
-            hpt:25
-        };
-
-        ws["!rows"][1] = {
-            hpt:20
-        };
-
-        ws["!rows"][3] = {
-            hpt:40
-        };
+        );
 
 
-        // -------------------------------------------------
-        // FREEZE HEADER
-        // -------------------------------------------------
+        // Format angka berdasarkan judul kolom
+        const header =
+            data[0].map(
+                x => String(x).toUpperCase()
+            );
 
-        ws["!freeze"] = {
-            xSplit:0,
-            ySplit:4
-        };
+
+        sheet.eachRow(
+            (row,rowNumber) => {
+
+                if(rowNumber <= 3) return;
+
+                row.eachCell(
+                    (cell,colNumber) => {
+
+                        const namaKolom =
+                            header[colNumber - 1] || "";
+
+
+                        if(
+                            namaKolom.includes("BATANG") ||
+                            namaKolom.includes("PCS")
+                        ){
+
+                            const n =
+                                angka(cell.value);
+
+                            cell.value = n;
+
+                            cell.numFmt = "#,##0";
+
+                        }
+
+
+                        if(
+                            namaKolom.includes("VOLUME")
+                        ){
+
+                            const n =
+                                angka(cell.value);
+
+                            cell.value = n;
+
+                            cell.numFmt = "#,##0.000000";
+
+                        }
+
+
+                        // Kolom tanggal selalu teks
+                        if(
+                            namaKolom.includes("TANGGAL")
+                        ){
+
+                            cell.value =
+                                formatTanggal(
+                                    String(cell.value)
+                                );
+
+                            cell.numFmt = "@";
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        // Lebar kolom
+        sheet.columns.forEach(
+            column => {
+
+                let max = 12;
+
+                column.eachCell(
+                    {
+                        includeEmpty:true
+                    },
+                    cell => {
+
+                        const panjang =
+                            String(
+                                cell.value ?? ""
+                            ).length;
+
+                        if(panjang > max){
+                            max = panjang;
+                        }
+
+                    }
+                );
+
+                column.width =
+                    Math.min(max + 3,40);
+
+            }
+        );
+
+
+        sheet.views = [
+            {
+                state:"frozen",
+                ySplit:4
+            }
+        ];
 
     }
 
 
     // =====================================================
-    // SHEET MUTASI
+    // BUAT WORKBOOK
     // =====================================================
 
-    const dataMutasi =
-        XLSX.utils.sheet_to_json(
-            XLSX.utils.table_to_sheet(
-                tabelMutasi
-            ),
-            {
-                header:1,
-                raw:true
-            }
-        );
+    const workbook =
+        new ExcelJS.Workbook();
 
 
-    const wsM =
-        XLSX.utils.aoa_to_sheet(
-            [
-                [
-                    "MUTASI RST IK SARADAN"
-                ],
-                [
-                    namaBulan[bulan]
-                ],
-                [],
-                ...dataMutasi
-            ]
-        );
-
-
-    wsM["!merges"] = [
-        {
-            s:{
-                r:0,
-                c:0
-            },
-            e:{
-                r:0,
-                c:8
-            }
-        },
-        {
-            s:{
-                r:1,
-                c:0
-            },
-            e:{
-                r:1,
-                c:8
-            }
-        }
-    ];
-
-
-    wsM["!cols"] = [
-        {wch:26},
-        {wch:18},
-        {wch:18},
-        {wch:18},
-        {wch:18},
-        {wch:18},
-        {wch:18},
-        {wch:18},
-        {wch:18}
-    ];
-
-
-    formatSheet(wsM);
-
-
-    XLSX.utils.book_append_sheet(
-        wb,
-        wsM,
-        "MUTASI"
+    buatSheet(
+        workbook,
+        "MUTASI",
+        ambilDataTabel(tabelMutasi)
     );
 
-
-    // =====================================================
-    // SHEET RINCIAN TERJUAL
-    // =====================================================
 
     if(tabelRincian){
 
-        let dataRincian =
-            XLSX.utils.sheet_to_json(
-                XLSX.utils.table_to_sheet(
-                    tabelRincian
-                ),
-                {
-                    header:1,
-                    raw:true
-                }
-            );
+        const dataRincian =
+            ambilDataTabel(tabelRincian);
 
-
-        // TANGGAL JANGAN JADI 46062
-        dataRincian =
-            dataRincian.map(
-                function(baris,index){
-
-                    if(index > 0){
-
-                        baris[0] =
-                            tanggalExcel(
-                                baris[0]
-                            );
-
-                    }
-
-                    return baris;
-
-                }
-            );
-
-
-        const wsR =
-            XLSX.utils.aoa_to_sheet(
-                [
-                    [
-                        "RINCIAN TERJUAL RST"
-                    ],
-                    [
-                        namaBulan[bulan]
-                    ],
-                    [],
-                    ...dataRincian
-                ]
-            );
-
-
-        wsR["!merges"] = [
-            {
-                s:{
-                    r:0,
-                    c:0
-                },
-                e:{
-                    r:0,
-                    c:4
-                }
-            },
-            {
-                s:{
-                    r:1,
-                    c:0
-                },
-                e:{
-                    r:1,
-                    c:4
-                }
-            }
-        ];
-
-
-        wsR["!cols"] = [
-            {wch:16},
-            {wch:25},
-            {wch:32},
-            {wch:16},
-            {wch:18}
-        ];
-
-
-        formatSheet(wsR);
-
-
-        XLSX.utils.book_append_sheet(
-            wb,
-            wsR,
-            "RINCIAN TERJUAL"
+        buatSheet(
+            workbook,
+            "RINCIAN TERJUAL",
+            dataRincian
         );
 
     }
 
 
-    // =====================================================
-    // DOWNLOAD
-    // =====================================================
+    const buffer =
+        await workbook.xlsx.writeBuffer();
 
-    XLSX.writeFile(
-        wb,
+
+    const blob =
+        new Blob(
+            [
+                buffer
+            ],
+            {
+                type:
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+        );
+
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
         "MUTASI_RST_" +
         namaBulan[bulan] +
-        ".xlsx"
-    );
+        ".xlsx";
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
 
 }
 /* =====================================================
