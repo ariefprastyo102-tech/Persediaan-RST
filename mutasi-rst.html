@@ -338,12 +338,6 @@ tbody tr:hover:not(.total){
     border-collapse:collapse;
 }
 
-.tabel-ringkasan{
-    width:100%;
-    min-width:0;
-    border-collapse:collapse;
-}
-
 .tabel-ringkasan th{
     background:#166534;
     color:white;
@@ -1294,31 +1288,56 @@ const urutanSortimen = [
     "FJL",
     "RENG",
     "LIST",
-    "HOUSING COMPONENT"
-    "HOUSING COMPONENT GRAHADI"
-    "HOUSING COMPONENT HALL"
-    "HOUSING COMPONENT PAVILLIUN"
+    "HOUSING COMPONENT",
+    "HOUSING COMPONENT GRAHADI",
+    "HOUSING COMPONENT HALL",
+    "HOUSING COMPONENT PAVILLIUN",
     "BLOCKWARE"
 ];
 
 data.sort(
     function(a, b){
 
-        const ia =
+        const namaA =
+            String(
+                a.sortimen || ""
+            )
+            .trim()
+            .toUpperCase();
+
+
+        const namaB =
+            String(
+                b.sortimen || ""
+            )
+            .trim()
+            .toUpperCase();
+
+
+        let ia =
             urutanSortimen.indexOf(
-                String(a.sortimen || "")
-                    .trim()
-                    .toUpperCase()
+                namaA
             );
 
-        const ib =
+
+        let ib =
             urutanSortimen.indexOf(
-                String(b.sortimen || "")
-                    .trim()
-                    .toUpperCase()
+                namaB
             );
+
+
+        if(ia === -1){
+            ia = 999;
+        }
+
+
+        if(ib === -1){
+            ib = 999;
+        }
+
 
         return ia - ib;
+
     }
 );
 
