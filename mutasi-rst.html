@@ -554,7 +554,9 @@ tbody tr:hover:not(.total){
             CETAK
         </button>
     </div>
-
+      <button type="button" onclick="exportExcel()">
+    EXCEL
+</button>
     <div
         id="mutasi"
         class="loading">
@@ -2129,7 +2131,83 @@ window.onload=function(){
     jendela.document.close();
 
 }
+function exportExcel(){
 
+    const bulan =
+        Number(
+            document.getElementById("bulan").value
+        );
+
+    const mutasi =
+        document.querySelector("#mutasi table");
+
+    const rincian =
+        document.querySelector("#rincian table");
+
+    if(!mutasi){
+
+        alert("Data mutasi belum tersedia.");
+
+        return;
+    }
+
+    let html = `
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+
+<body>
+
+<h2>
+MUTASI RST IK SARADAN - ${namaBulan[bulan]}
+</h2>
+
+${mutasi.outerHTML}
+
+<br><br>
+
+<h2>
+RINCIAN TERJUAL
+</h2>
+
+${rincian ? rincian.outerHTML : ""}
+
+</body>
+</html>
+`;
+
+    const blob =
+        new Blob(
+            ["\ufeff", html],
+            {
+                type:
+                    "application/vnd.ms-excel"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        "MUTASI_RST_" +
+        namaBulan[bulan] +
+        ".xls";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+}
 /* =====================================================
    OTOMATIS MUAT
 ===================================================== */
