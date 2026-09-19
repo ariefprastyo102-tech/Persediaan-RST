@@ -371,7 +371,28 @@ tbody tr:hover:not(.total){
     font-weight:600;
     color:#111827;
 }
+.label-satuan,
+.nilai-satuan{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
 
+.label-satuan{
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.nilai-satuan{
+    font-size:14px;
+}
+
+.nilai-satuan b,
+.nilai-satuan span{
+    white-space:nowrap;
+}
 @media(max-width:700px){
 
     .kontrol{
@@ -443,46 +464,75 @@ tbody tr:hover:not(.total){
     <div class="ringkasan">
 
     <div class="ringkasan-title">
-         DATA AKHIR
+         DATA TERAKHIR
     </div>
 
     <table class="tabel-ringkasan">
 
-        <thead>
-            <tr>
-                <th>SISA AWAL</th>
-                <th>PENAMBAHAN</th>
-                <th>TERJUAL</th>
-                <th>SISA AKHIR</th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th>SISA AWAL</th>
+            <th>PRODUKSI</th>
+            <th>PENJUALAN</th>
+            <th>PERSEDIAAN SAAT INI</th>
+        </tr>
+    </thead>
 
-        <tbody>
-            <tr>
-                <td>
-                    <b id="ringkasAwalBatang">0</b><br>
+    <tbody>
+        <tr>
+
+            <td>
+                <div class="label-satuan">
+                    <span>BATANG</span>
+                    <span>VOLUME</span>
+                </div>
+
+                <div class="nilai-satuan">
+                    <b id="ringkasAwalBatang">0</b>
                     <span id="ringkasAwalVolume">0 m³</span>
-                </td>
+                </div>
+            </td>
 
-                <td>
-                    <b id="ringkasProduksiBatang">0</b><br>
+            <td>
+                <div class="label-satuan">
+                    <span>BATANG</span>
+                    <span>VOLUME</span>
+                </div>
+
+                <div class="nilai-satuan">
+                    <b id="ringkasProduksiBatang">0</b>
                     <span id="ringkasProduksiVolume">0 m³</span>
-                </td>
+                </div>
+            </td>
 
-                <td>
-                    <b id="ringkasTerjualBatang">0</b><br>
+            <td>
+                <div class="label-satuan">
+                    <span>BATANG</span>
+                    <span>VOLUME</span>
+                </div>
+
+                <div class="nilai-satuan">
+                    <b id="ringkasTerjualBatang">0</b>
                     <span id="ringkasTerjualVolume">0 m³</span>
-                </td>
+                </div>
+            </td>
 
-                <td>
-                    <b id="ringkasAkhirBatang">0</b><br>
+            <td>
+                <div class="label-satuan">
+                    <span>BATANG</span>
+                    <span>VOLUME</span>
+                </div>
+
+                <div class="nilai-satuan">
+                    <b id="ringkasAkhirBatang">0</b>
                     <span id="ringkasAkhirVolume">0 m³</span>
-                </td>
-            </tr>
-        </tbody>
+                </div>
+            </td>
 
-    </table>
+        </tr>
+    </tbody>
 
+</table>
 </div>
 </div>
 <!-- =====================================================
