@@ -2140,62 +2140,150 @@ function exportExcel(){
             document.getElementById("bulan").value
         );
 
-    const mutasi =
+    const tabelMutasi =
         document.querySelector("#mutasi table");
 
-    const rincian =
+    const tabelRincian =
         document.querySelector("#rincian table");
 
-    if(!mutasi){
+    if(!tabelMutasi){
 
         alert("Data mutasi belum tersedia.");
 
         return;
     }
 
+
     const wb =
         XLSX.utils.book_new();
 
 
-    // =================================================
+    // =====================================================
     // SHEET MUTASI
-    // =================================================
+    // =====================================================
 
     const wsMutasi =
         XLSX.utils.table_to_sheet(
-            mutasi
+            tabelMutasi
         );
+
+
+    // Judul
+    XLSX.utils.sheet_add_aoa(
+        wsMutasi,
+        [
+            [
+                "MUTASI RST IK SARADAN"
+            ],
+            [
+                namaBulan[bulan]
+            ],
+            []
+        ],
+        {
+            origin:"A1"
+        }
+    );
+
+
+    // Geser tabel ke bawah
+    const dataMutasi =
+        XLSX.utils.sheet_to_json(
+            XLSX.utils.table_to_sheet(tabelMutasi),
+            {
+                header:1,
+                raw:true
+            }
+        );
+
+
+    const wsM =
+        XLSX.utils.aoa_to_sheet(
+            [
+                [
+                    "MUTASI RST IK SARADAN"
+                ],
+                [
+                    namaBulan[bulan]
+                ],
+                [],
+                ...dataMutasi
+            ]
+        );
+
+
+    wsM["!cols"] = [
+        {wch:24},
+        {wch:18},
+        {wch:18},
+        {wch:18},
+        {wch:18},
+        {wch:18},
+        {wch:18},
+        {wch:18},
+        {wch:18}
+    ];
+
 
     XLSX.utils.book_append_sheet(
         wb,
-        wsMutasi,
+        wsM,
         "MUTASI"
     );
 
 
-    // =================================================
-    // SHEET RINCIAN
-    // =================================================
+    // =====================================================
+    // SHEET RINCIAN TERJUAL
+    // =====================================================
 
-    if(rincian){
+    if(tabelRincian){
 
-        const wsRincian =
-            XLSX.utils.table_to_sheet(
-                rincian
+        const dataRincian =
+            XLSX.utils.sheet_to_json(
+                XLSX.utils.table_to_sheet(tabelRincian),
+                {
+                    header:1,
+                    raw:true
+                }
             );
+
+
+        const wsR =
+            XLSX.utils.aoa_to_sheet(
+                [
+                    [
+                        "RINCIAN TERJUAL RST"
+                    ],
+                    [
+                        namaBulan[bulan]
+                    ],
+                    [],
+                    ...dataRincian
+                ]
+            );
+
+
+        wsR["!cols"] = [
+            {wch:16},
+            {wch:24},
+            {wch:30},
+            {wch:16},
+            {wch:18}
+        ];
+
 
         XLSX.utils.book_append_sheet(
             wb,
-            wsRincian,
+            wsR,
             "RINCIAN TERJUAL"
         );
 
     }
 
 
-    // =================================================
-    // NAMA FILE
-    // =================================================
+    // =====================================================
+    // SIMPAN
+    // =====================================================
 
     XLSX.writeFile(
         wb,
