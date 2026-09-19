@@ -3,6 +3,8 @@
 
 <head>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -2151,61 +2153,56 @@ function exportExcel(){
         return;
     }
 
-    let html = `
-<html>
-<head>
-<meta charset="UTF-8">
-</head>
+    const wb =
+        XLSX.utils.book_new();
 
-<body>
 
-<h2>
-MUTASI RST IK SARADAN - ${namaBulan[bulan]}
-</h2>
+    // =================================================
+    // SHEET MUTASI
+    // =================================================
 
-${mutasi.outerHTML}
-
-<br><br>
-
-<h2>
-RINCIAN TERJUAL
-</h2>
-
-${rincian ? rincian.outerHTML : ""}
-
-</body>
-</html>
-`;
-
-    const blob =
-        new Blob(
-            ["\ufeff", html],
-            {
-                type:
-                    "application/vnd.ms-excel"
-            }
+    const wsMutasi =
+        XLSX.utils.table_to_sheet(
+            mutasi
         );
 
-    const url =
-        URL.createObjectURL(blob);
+    XLSX.utils.book_append_sheet(
+        wb,
+        wsMutasi,
+        "MUTASI"
+    );
 
-    const link =
-        document.createElement("a");
 
-    link.href = url;
+    // =================================================
+    // SHEET RINCIAN
+    // =================================================
 
-    link.download =
+    if(rincian){
+
+        const wsRincian =
+            XLSX.utils.table_to_sheet(
+                rincian
+            );
+
+        XLSX.utils.book_append_sheet(
+            wb,
+            wsRincian,
+            "RINCIAN TERJUAL"
+        );
+
+    }
+
+
+    // =================================================
+    // NAMA FILE
+    // =================================================
+
+    XLSX.writeFile(
+        wb,
         "MUTASI_RST_" +
         namaBulan[bulan] +
-        ".xls";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
+        ".xlsx"
+    );
 
 }
 /* =====================================================
