@@ -2149,8 +2149,8 @@ function exportExcel(){
     if(!tabelMutasi){
 
         alert("Data mutasi belum tersedia.");
-
         return;
+
     }
 
 
@@ -2159,37 +2159,464 @@ function exportExcel(){
 
 
     // =====================================================
+    // FORMAT TANGGAL
+    // =====================================================
+
+    function tanggalExcel(nilai){
+
+        if(!nilai){
+            return "";
+        }
+
+        if(
+            typeof nilai === "string" &&
+            /^\d{1,2}-\d{1,2}-\d{4}$/.test(
+                nilai.trim()
+            )
+        ){
+
+            const p =
+                nilai.trim().split("-");
+
+            return (
+                p[0].padStart(2,"0") +
+                "-" +
+                p[1].padStart(2,"0") +
+                "-" +
+                p[2]
+            );
+
+        }
+
+
+        if(
+            typeof nilai === "number" &&
+            nilai > 30000
+        ){
+
+            const d =
+                new Date(
+                    Math.round(
+                        (nilai - 25569) *
+                        86400 *
+                        1000
+                    )
+                );
+
+            return (
+                String(
+                    d.getUTCDate()
+                ).padStart(2,"0") +
+                "-" +
+                String(
+                    d.getUTCMonth() + 1
+                ).padStart(2,"0") +
+                "-" +
+                d.getUTCFullYear()
+            );
+
+        }
+
+        return String(nilai);
+    }
+
+
+    // =====================================================
+    // FORMAT SEL
+    // =====================================================
+
+    function formatSheet(ws){
+
+        const range =
+            XLSX.utils.decode_range(
+                ws["!ref"]
+            );
+
+
+        // -------------------------------------------------
+        // SEMUA SEL = GARIS
+        // -------------------------------------------------
+
+        for(
+            let r = range.s.r;
+            r <= range.e.r;
+            r++
+        ){
+
+            for(
+                let c = range.s.c;
+                c <= range.e.c;
+                c++
+            ){
+
+                const alamat =
+                    XLSX.utils.encode_cell({
+                        r:r,
+                        c:c
+                    });
+
+                if(!ws[alamat]){
+                    ws[alamat] = {
+                        v:"",
+                        t:"s"
+                    };
+                }
+
+                ws[alamat].s = {
+
+                    border:{
+                        top:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        bottom:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        left:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        right:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        }
+                    },
+
+                    alignment:{
+                        vertical:"center",
+                        horizontal:"center",
+                        wrap_text:true
+                    }
+
+                };
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // JUDUL
+        // -------------------------------------------------
+
+        for(
+            let c = range.s.c;
+            c <= range.e.c;
+            c++
+        ){
+
+            const alamat =
+                XLSX.utils.encode_cell({
+                    r:0,
+                    c:c
+                });
+
+            if(ws[alamat]){
+
+                ws[alamat].s = {
+
+                    font:{
+                        bold:true,
+                        sz:16
+                    },
+
+                    alignment:{
+                        horizontal:"center",
+                        vertical:"center"
+                    }
+
+                };
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // NAMA BULAN
+        // -------------------------------------------------
+
+        for(
+            let c = range.s.c;
+            c <= range.e.c;
+            c++
+        ){
+
+            const alamat =
+                XLSX.utils.encode_cell({
+                    r:1,
+                    c:c
+                });
+
+            if(ws[alamat]){
+
+                ws[alamat].s = {
+
+                    font:{
+                        bold:true,
+                        sz:12
+                    },
+
+                    alignment:{
+                        horizontal:"center",
+                        vertical:"center"
+                    }
+
+                };
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // HEADER TABEL
+        // -------------------------------------------------
+
+        // Mutasi: baris ke-4 Excel = index 3
+        // Rincian juga sama
+
+        for(
+            let c = range.s.c;
+            c <= range.e.c;
+            c++
+        ){
+
+            const alamat =
+                XLSX.utils.encode_cell({
+                    r:3,
+                    c:c
+                });
+
+            if(ws[alamat]){
+
+                ws[alamat].s = {
+
+                    font:{
+                        bold:true,
+                        sz:11
+                    },
+
+                    alignment:{
+                        horizontal:"center",
+                        vertical:"center",
+                        wrap_text:true
+                    },
+
+                    border:{
+                        top:{
+                            style:"medium",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        bottom:{
+                            style:"medium",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        left:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        },
+                        right:{
+                            style:"thin",
+                            color:{
+                                rgb:"000000"
+                            }
+                        }
+                    }
+
+                };
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // BARIS TOTAL
+        // -------------------------------------------------
+
+        for(
+            let r = range.s.r;
+            r <= range.e.r;
+            r++
+        ){
+
+            const alamat =
+                XLSX.utils.encode_cell({
+                    r:r,
+                    c:0
+                });
+
+            if(
+                ws[alamat] &&
+                String(ws[alamat].v)
+                    .toUpperCase()
+                    === "TOTAL"
+            ){
+
+                for(
+                    let c = range.s.c;
+                    c <= range.e.c;
+                    c++
+                ){
+
+                    const cell =
+                        ws[
+                            XLSX.utils.encode_cell({
+                                r:r,
+                                c:c
+                            })
+                        ];
+
+                    if(cell){
+
+                        cell.s = {
+
+                            font:{
+                                bold:true,
+                                sz:11
+                            },
+
+                            border:{
+                                top:{
+                                    style:"medium",
+                                    color:{
+                                        rgb:"000000"
+                                    }
+                                },
+                                bottom:{
+                                    style:"medium",
+                                    color:{
+                                        rgb:"000000"
+                                    }
+                                },
+                                left:{
+                                    style:"thin",
+                                    color:{
+                                        rgb:"000000"
+                                    }
+                                },
+                                right:{
+                                    style:"thin",
+                                    color:{
+                                        rgb:"000000"
+                                    }
+                                }
+                            },
+
+                            alignment:{
+                                horizontal:"center",
+                                vertical:"center"
+                            }
+
+                        };
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // FORMAT ANGKA
+        // -------------------------------------------------
+
+        for(
+            let r = range.s.r;
+            r <= range.e.r;
+            r++
+        ){
+
+            for(
+                let c = range.s.c;
+                c <= range.e.c;
+                c++
+            ){
+
+                const alamat =
+                    XLSX.utils.encode_cell({
+                        r:r,
+                        c:c
+                    });
+
+                const cell =
+                    ws[alamat];
+
+                if(
+                    cell &&
+                    typeof cell.v === "number"
+                ){
+
+                    cell.z =
+                        c === 0
+                            ? "#,##0"
+                            : "#,##0.000000";
+
+                }
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // TINGGI BARIS
+        // -------------------------------------------------
+
+        ws["!rows"] = [];
+
+        ws["!rows"][0] = {
+            hpt:25
+        };
+
+        ws["!rows"][1] = {
+            hpt:20
+        };
+
+        ws["!rows"][3] = {
+            hpt:40
+        };
+
+
+        // -------------------------------------------------
+        // FREEZE HEADER
+        // -------------------------------------------------
+
+        ws["!freeze"] = {
+            xSplit:0,
+            ySplit:4
+        };
+
+    }
+
+
+    // =====================================================
     // SHEET MUTASI
     // =====================================================
 
-    const wsMutasi =
-        XLSX.utils.table_to_sheet(
-            tabelMutasi
-        );
-
-
-    // Judul
-    XLSX.utils.sheet_add_aoa(
-        wsMutasi,
-        [
-            [
-                "MUTASI RST IK SARADAN"
-            ],
-            [
-                namaBulan[bulan]
-            ],
-            []
-        ],
-        {
-            origin:"A1"
-        }
-    );
-
-
-    // Geser tabel ke bawah
     const dataMutasi =
         XLSX.utils.sheet_to_json(
-            XLSX.utils.table_to_sheet(tabelMutasi),
+            XLSX.utils.table_to_sheet(
+                tabelMutasi
+            ),
             {
                 header:1,
                 raw:true
@@ -2212,8 +2639,32 @@ function exportExcel(){
         );
 
 
+    wsM["!merges"] = [
+        {
+            s:{
+                r:0,
+                c:0
+            },
+            e:{
+                r:0,
+                c:8
+            }
+        },
+        {
+            s:{
+                r:1,
+                c:0
+            },
+            e:{
+                r:1,
+                c:8
+            }
+        }
+    ];
+
+
     wsM["!cols"] = [
-        {wch:24},
+        {wch:26},
         {wch:18},
         {wch:18},
         {wch:18},
@@ -2223,6 +2674,9 @@ function exportExcel(){
         {wch:18},
         {wch:18}
     ];
+
+
+    formatSheet(wsM);
 
 
     XLSX.utils.book_append_sheet(
@@ -2238,12 +2692,34 @@ function exportExcel(){
 
     if(tabelRincian){
 
-        const dataRincian =
+        let dataRincian =
             XLSX.utils.sheet_to_json(
-                XLSX.utils.table_to_sheet(tabelRincian),
+                XLSX.utils.table_to_sheet(
+                    tabelRincian
+                ),
                 {
                     header:1,
                     raw:true
+                }
+            );
+
+
+        // TANGGAL JANGAN JADI 46062
+        dataRincian =
+            dataRincian.map(
+                function(baris,index){
+
+                    if(index > 0){
+
+                        baris[0] =
+                            tanggalExcel(
+                                baris[0]
+                            );
+
+                    }
+
+                    return baris;
+
                 }
             );
 
@@ -2263,13 +2739,40 @@ function exportExcel(){
             );
 
 
+        wsR["!merges"] = [
+            {
+                s:{
+                    r:0,
+                    c:0
+                },
+                e:{
+                    r:0,
+                    c:4
+                }
+            },
+            {
+                s:{
+                    r:1,
+                    c:0
+                },
+                e:{
+                    r:1,
+                    c:4
+                }
+            }
+        ];
+
+
         wsR["!cols"] = [
             {wch:16},
-            {wch:24},
-            {wch:30},
+            {wch:25},
+            {wch:32},
             {wch:16},
             {wch:18}
         ];
+
+
+        formatSheet(wsR);
 
 
         XLSX.utils.book_append_sheet(
@@ -2282,7 +2785,7 @@ function exportExcel(){
 
 
     // =====================================================
-    // SIMPAN
+    // DOWNLOAD
     // =====================================================
 
     XLSX.writeFile(
