@@ -2150,135 +2150,432 @@ async function exportExcel(){
 
 
     // =====================================================
-    // FORMAT DATA HTML KE ARRAY
+    // UTILITAS
     // =====================================================
 
-    function ambilDataTabel(tabel){
+    function angka(nilai){
 
-        return [...tabel.rows].map(
-            row => [...row.cells].map(
-                cell => cell.innerText.trim()
-            )
-        );
+        if(nilai === null || nilai === undefined){
+            return 0;
+        }
 
+        if(typeof nilai === "number"){
+            return nilai;
+        }
+
+        let s =
+            String(nilai)
+                .trim()
+                .replace(/\./g,"")
+                .replace(",", ".");
+
+        return Number(s) || 0;
     }
 
 
-    function formatTanggal(nilai){
+    function tanggal(nilai){
 
-        if(!nilai) return "";
+        if(!nilai){
+            return "";
+        }
 
-        if(
-            /^\d{1,2}-\d{1,2}-\d{4}$/.test(nilai)
-        ){
+        let s =
+            String(nilai).trim();
 
-            const p = nilai.split("-");
+        // DD-MM-YYYY
+        let p =
+            s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+
+        if(p){
 
             return (
-                p[0].padStart(2,"0") +
-                "-" +
                 p[1].padStart(2,"0") +
                 "-" +
-                p[2]
+                p[2].padStart(2,"0") +
+                "-" +
+                p[3]
             );
 
         }
 
-        return nilai;
+        // Serial Excel
+        if(
+            typeof nilai === "number" &&
+            nilai > 30000
+        ){
+
+            const d =
+                new Date(
+                    Math.round(
+                        (nilai - 25569) *
+                        86400 *
+                        1000
+                    )
+                );
+
+            return (
+                String(d.getUTCDate()).padStart(2,"0") +
+                "-" +
+                String(d.getUTCMonth()+1).padStart(2,"0") +
+                "-" +
+                d.getUTCFullYear()
+            );
+
+        }
+
+        return s;
 
     }
 
 
-    function angka(nilai){
+    function ambilTabel(tabel){
 
-        if(!nilai) return 0;
-
-        return Number(
-            String(nilai)
-                .replace(/\./g,"")
-                .replace(",",".")
-        ) || 0;
+        return [...tabel.rows].map(
+            row =>
+                [...row.cells].map(
+                    cell => cell.innerText.trim()
+                )
+        );
 
     }
 
 
-    function buatSheet(workbook,nama,data){
+    function styleSemuaSel(
+        worksheet,
+        startRow,
+        endRow,
+        startCol,
+        endCol
+    ){
 
-        const sheet =
-            workbook.addWorksheet(nama);
+        for(
+            let r = startRow;
+            r <= endRow;
+            r++
+        ){
 
-        const jumlahKolom =
-            Math.max(
-                ...data.map(baris => baris.length)
+            for(
+                let c = startCol;
+                c <= endCol;
+                c++
+            ){
+
+                const cell =
+                    worksheet.getCell(r,c);
+
+                cell.border = {
+
+                    top:{
+                        style:"thin"
+                    },
+
+                    bottom:{
+                        style:"thin"
+                    },
+
+                    left:{
+                        style:"thin"
+                    },
+
+                    right:{
+                        style:"thin"
+                    }
+
+                };
+
+                cell.alignment = {
+
+                    horizontal:"center",
+
+                    vertical:"middle",
+
+                    wrapText:true
+
+                };
+
+            }
+
+        }
+
+    }
+
+
+    // =====================================================
+    // WORKBOOK
+    // =====================================================
+
+    const workbook =
+        new ExcelJS.Workbook();
+
+
+    // =====================================================
+    // SHEET MUTASI
+    // =====================================================
+
+    const ws =
+        workbook.addWorksheet("MUTASI");
+
+
+    // -----------------------------------------------------
+    // JUDUL
+    // -----------------------------------------------------
+
+    ws.mergeCells("A1:I1");
+
+    ws.getCell("A1").value =
+        "MUTASI RST IK SARADAN";
+
+    ws.getCell("A1").font = {
+        bold:true,
+        size:16
+    };
+
+    ws.getCell("A1").alignment = {
+        horizontal:"center",
+        vertical:"middle"
+    };
+
+    ws.getRow(1).height = 28;
+
+
+    ws.mergeCells("A2:I2");
+
+    ws.getCell("A2").value =
+        namaBulan[bulan];
+
+    ws.getCell("A2").font = {
+        bold:true,
+        size:12
+    };
+
+    ws.getCell("A2").alignment = {
+        horizontal:"center",
+        vertical:"middle"
+    };
+
+
+    // -----------------------------------------------------
+    // HEADER MUTASI
+    // -----------------------------------------------------
+
+    ws.mergeCells("A4:A5");
+
+    ws.getCell("A4").value =
+        "SORTIMEN";
+
+
+    ws.mergeCells("B4:C4");
+
+    ws.getCell("B4").value =
+        "SISA AWAL";
+
+
+    ws.mergeCells("D4:E4");
+
+    ws.getCell("D4").value =
+        "PRODUKSI";
+
+
+    ws.mergeCells("F4:G4");
+
+    ws.getCell("F4").value =
+        "TERJUAL/OPER";
+
+
+    ws.mergeCells("H4:I4");
+
+    ws.getCell("H4").value =
+        "SISA AKHIR";
+
+
+    ws.getCell("B5").value =
+        "BATANG";
+
+    ws.getCell("C5").value =
+        "VOLUME";
+
+    ws.getCell("D5").value =
+        "BATANG";
+
+    ws.getCell("E5").value =
+        "VOLUME";
+
+    ws.getCell("F5").value =
+        "BATANG";
+
+    ws.getCell("G5").value =
+        "VOLUME";
+
+    ws.getCell("H5").value =
+        "BATANG";
+
+    ws.getCell("I5").value =
+        "VOLUME";
+
+
+    // Header style
+    for(let r = 4; r <= 5; r++){
+
+        for(let c = 1; c <= 9; c++){
+
+            const cell =
+                ws.getCell(r,c);
+
+            cell.font = {
+                bold:true,
+                size:11
+            };
+
+            cell.alignment = {
+                horizontal:"center",
+                vertical:"middle",
+                wrapText:true
+            };
+
+            cell.border = {
+
+                top:{
+                    style:"thin"
+                },
+
+                bottom:{
+                    style:"thin"
+                },
+
+                left:{
+                    style:"thin"
+                },
+
+                right:{
+                    style:"thin"
+                }
+
+            };
+
+        }
+
+    }
+
+    ws.getRow(4).height = 28;
+    ws.getRow(5).height = 28;
+
+
+    // -----------------------------------------------------
+    // DATA MUTASI
+    // -----------------------------------------------------
+
+    const dataMutasi =
+        ambilTabel(tabelMutasi);
+
+
+    // Lewati 2 baris header HTML
+    // Kita ambil data mulai baris ke-3
+    for(
+        let i = 2;
+        i < dataMutasi.length;
+        i++
+    ){
+
+        const sumber =
+            dataMutasi[i];
+
+        const row =
+            ws.addRow([
+                sumber[0] || "",
+                angka(sumber[1]),
+                angka(sumber[2]),
+                angka(sumber[3]),
+                angka(sumber[4]),
+                angka(sumber[5]),
+                angka(sumber[6]),
+                angka(sumber[7]),
+                angka(sumber[8])
+            ]);
+
+
+        row.eachCell(
+            {
+                includeEmpty:true
+            },
+            cell => {
+
+                cell.border = {
+
+                    top:{
+                        style:"thin"
+                    },
+
+                    bottom:{
+                        style:"thin"
+                    },
+
+                    left:{
+                        style:"thin"
+                    },
+
+                    right:{
+                        style:"thin"
+                    }
+
+                };
+
+                cell.alignment = {
+
+                    horizontal:"center",
+
+                    vertical:"middle"
+
+                };
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------------------
+    // FORMAT ANGKA
+    // -----------------------------------------------------
+
+    ws.eachRow(
+        (row,rowNumber) => {
+
+            if(rowNumber <= 5){
+                return;
+            }
+
+            // BATANG
+            [2,4,6,8].forEach(
+                col => {
+
+                    row.getCell(col).numFmt =
+                        "#,##0";
+
+                }
             );
 
 
-        // Judul
-        const judul =
-            sheet.addRow([
-                nama === "MUTASI"
-                    ? "MUTASI RST IK SARADAN"
-                    : "RINCIAN TERJUAL RST"
-            ]);
+            // VOLUME
+            [3,5,7,9].forEach(
+                col => {
 
-        sheet.mergeCells(
-            1,
-            1,
-            1,
-            jumlahKolom
-        );
+                    row.getCell(col).numFmt =
+                        "#,##0.000000";
 
-        judul.height = 28;
-
-        judul.font = {
-            bold:true,
-            size:16
-        };
-
-        judul.alignment = {
-            horizontal:"center",
-            vertical:"middle"
-        };
+                }
+            );
 
 
-        // Bulan
-        const subjudul =
-            sheet.addRow([
-                namaBulan[bulan]
-            ]);
+            // TOTAL
+            if(
+                String(
+                    row.getCell(1).value
+                ).toUpperCase() === "TOTAL"
+            ){
 
-        sheet.mergeCells(
-            2,
-            1,
-            2,
-            jumlahKolom
-        );
-
-        subjudul.font = {
-            bold:true,
-            size:12
-        };
-
-        subjudul.alignment = {
-            horizontal:"center"
-        };
-
-
-        sheet.addRow([]);
-
-
-        // Data tabel
-        data.forEach(
-            (baris,index) => {
-
-                const row =
-                    sheet.addRow(baris);
-
-                row.height =
-                    index === 0
-                        ? 38
-                        : 22;
-
+                row.font = {
+                    bold:true
+                };
 
                 row.eachCell(
                     {
@@ -2287,188 +2584,240 @@ async function exportExcel(){
                     cell => {
 
                         cell.border = {
+
                             top:{
-                                style:"thin"
+                                style:"medium"
                             },
+
+                            bottom:{
+                                style:"medium"
+                            },
+
                             left:{
                                 style:"thin"
                             },
-                            bottom:{
-                                style:"thin"
-                            },
+
                             right:{
                                 style:"thin"
                             }
-                        };
 
-                        cell.alignment = {
-                            horizontal:"center",
-                            vertical:"middle",
-                            wrapText:true
                         };
 
                     }
                 );
 
-
-                // Header
-                if(index === 0){
-
-                    row.font = {
-                        bold:true,
-                        size:11
-                    };
-
-                }
-
-
-                // TOTAL
-                if(
-                    String(baris[0])
-                        .trim()
-                        .toUpperCase()
-                        === "TOTAL"
-                ){
-
-                    row.font = {
-                        bold:true,
-                        size:11
-                    };
-
-                    row.eachCell(
-                        {
-                            includeEmpty:true
-                        },
-                        cell => {
-
-                            cell.border = {
-                                top:{
-                                    style:"medium"
-                                },
-                                left:{
-                                    style:"thin"
-                                },
-                                bottom:{
-                                    style:"medium"
-                                },
-                                right:{
-                                    style:"thin"
-                                }
-                            };
-
-                        }
-                    );
-
-                }
-
             }
-        );
+
+        }
+    );
 
 
-        // Format angka berdasarkan judul kolom
-        const header =
-            data[0].map(
-                x => String(x).toUpperCase()
+    // -----------------------------------------------------
+    // LEBAR KOLOM
+    // -----------------------------------------------------
+
+    ws.getColumn(1).width = 26;
+
+    for(let c = 2; c <= 9; c++){
+
+        ws.getColumn(c).width = 16;
+
+    }
+
+
+    // Freeze
+    ws.views = [
+        {
+            state:"frozen",
+            ySplit:5
+        }
+    ];
+
+
+    // =====================================================
+    // SHEET RINCIAN TERJUAL
+    // =====================================================
+
+    if(tabelRincian){
+
+        const wr =
+            workbook.addWorksheet(
+                "RINCIAN TERJUAL"
             );
 
 
-        sheet.eachRow(
-            (row,rowNumber) => {
+        wr.mergeCells("A1:E1");
 
-                if(rowNumber <= 3) return;
+        wr.getCell("A1").value =
+            "RINCIAN TERJUAL RST";
 
-                row.eachCell(
-                    (cell,colNumber) => {
+        wr.getCell("A1").font = {
+            bold:true,
+            size:16
+        };
 
-                        const namaKolom =
-                            header[colNumber - 1] || "";
+        wr.getCell("A1").alignment = {
+            horizontal:"center",
+            vertical:"middle"
+        };
 
-
-                        if(
-                            namaKolom.includes("BATANG") ||
-                            namaKolom.includes("PCS")
-                        ){
-
-                            const n =
-                                angka(cell.value);
-
-                            cell.value = n;
-
-                            cell.numFmt = "#,##0";
-
-                        }
+        wr.getRow(1).height = 28;
 
 
-                        if(
-                            namaKolom.includes("VOLUME")
-                        ){
+        wr.mergeCells("A2:E2");
 
-                            const n =
-                                angka(cell.value);
+        wr.getCell("A2").value =
+            namaBulan[bulan];
 
-                            cell.value = n;
+        wr.getCell("A2").font = {
+            bold:true,
+            size:12
+        };
 
-                            cell.numFmt = "#,##0.000000";
-
-                        }
-
-
-                        // Kolom tanggal selalu teks
-                        if(
-                            namaKolom.includes("TANGGAL")
-                        ){
-
-                            cell.value =
-                                formatTanggal(
-                                    String(cell.value)
-                                );
-
-                            cell.numFmt = "@";
-
-                        }
-
-                    }
-                );
-
-            }
-        );
+        wr.getCell("A2").alignment = {
+            horizontal:"center"
+        };
 
 
-        // Lebar kolom
-        sheet.columns.forEach(
-            column => {
+        const dataRincian =
+            ambilTabel(tabelRincian);
 
-                let max = 12;
 
-                column.eachCell(
-                    {
-                        includeEmpty:true
+        // Header
+        const headerR =
+            dataRincian[0];
+
+        const rowHeader =
+            wr.addRow(headerR);
+
+        rowHeader.height = 32;
+
+        rowHeader.font = {
+            bold:true
+        };
+
+
+        rowHeader.eachCell(
+            {
+                includeEmpty:true
+            },
+            cell => {
+
+                cell.border = {
+
+                    top:{
+                        style:"thin"
                     },
-                    cell => {
 
-                        const panjang =
-                            String(
-                                cell.value ?? ""
-                            ).length;
+                    bottom:{
+                        style:"thin"
+                    },
 
-                        if(panjang > max){
-                            max = panjang;
-                        }
+                    left:{
+                        style:"thin"
+                    },
 
+                    right:{
+                        style:"thin"
                     }
-                );
 
-                column.width =
-                    Math.min(max + 3,40);
+                };
+
+                cell.alignment = {
+
+                    horizontal:"center",
+
+                    vertical:"middle",
+
+                    wrapText:true
+
+                };
 
             }
         );
 
 
-        sheet.views = [
+        // Data
+        for(
+            let i = 1;
+            i < dataRincian.length;
+            i++
+        ){
+
+            const sumber =
+                dataRincian[i];
+
+            const row =
+                wr.addRow([
+                    tanggal(sumber[0]),
+                    sumber[1] || "",
+                    sumber[2] || "",
+                    angka(sumber[3]),
+                    angka(sumber[4])
+                ]);
+
+
+            row.eachCell(
+                {
+                    includeEmpty:true
+                },
+                cell => {
+
+                    cell.border = {
+
+                        top:{
+                            style:"thin"
+                        },
+
+                        bottom:{
+                            style:"thin"
+                        },
+
+                        left:{
+                            style:"thin"
+                        },
+
+                        right:{
+                            style:"thin"
+                        }
+
+                    };
+
+                    cell.alignment = {
+
+                        horizontal:"center",
+
+                        vertical:"middle",
+
+                        wrapText:true
+
+                    };
+
+                }
+            );
+
+
+            row.getCell(4).numFmt =
+                "#,##0";
+
+            row.getCell(5).numFmt =
+                "#,##0.000000";
+
+        }
+
+
+        // Lebar
+        wr.getColumn(1).width = 16;
+        wr.getColumn(2).width = 25;
+        wr.getColumn(3).width = 32;
+        wr.getColumn(4).width = 16;
+        wr.getColumn(5).width = 18;
+
+
+        wr.views = [
             {
                 state:"frozen",
-                ySplit:4
+                ySplit:3
             }
         ];
 
@@ -2476,43 +2825,15 @@ async function exportExcel(){
 
 
     // =====================================================
-    // BUAT WORKBOOK
+    // DOWNLOAD
     // =====================================================
-
-    const workbook =
-        new ExcelJS.Workbook();
-
-
-    buatSheet(
-        workbook,
-        "MUTASI",
-        ambilDataTabel(tabelMutasi)
-    );
-
-
-    if(tabelRincian){
-
-        const dataRincian =
-            ambilDataTabel(tabelRincian);
-
-        buatSheet(
-            workbook,
-            "RINCIAN TERJUAL",
-            dataRincian
-        );
-
-    }
-
 
     const buffer =
         await workbook.xlsx.writeBuffer();
 
-
     const blob =
         new Blob(
-            [
-                buffer
-            ],
+            [buffer],
             {
                 type:
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -2533,7 +2854,10 @@ async function exportExcel(){
 
     link.click();
 
-    URL.revokeObjectURL(link.href);
+    setTimeout(
+        () => URL.revokeObjectURL(link.href),
+        1000
+    );
 
 }
 /* =====================================================
