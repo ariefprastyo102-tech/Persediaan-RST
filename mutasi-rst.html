@@ -2751,77 +2751,87 @@ for(
     // BARIS TOTAL
     // ==============================
     if(
-        String(sumber[0]).trim().toUpperCase() === "TOTAL"
-    ){
+    String(sumber[0]).trim().toUpperCase() === "TOTAL"
+){
 
-        const row =
-            wr.addRow([
-                "TOTAL",
-                angka(sumber[1]),
-                angka(sumber[2]),
-                angka(sumber[3]),
-                angka(sumber[4])
-            ]);
+    const row =
+        wr.addRow([
+            "TOTAL",
+            "",
+            "",
+            angka(sumber[3]),
+            angka(sumber[4])
+        ]);
 
-        row.font = {
-            bold:true
-        };
+    // MERGE A:C
+    wr.mergeCells(
+        row.number,
+        1,
+        row.number,
+        3
+    );
 
-        row.eachCell(
-            {
-                includeEmpty:true
-            },
-            cell => {
+    wr.getCell(row.number, 1).value = "TOTAL";
 
-                cell.border = {
+    // CENTER TOTAL
+    wr.getCell(row.number, 1).alignment = {
+        horizontal:"center",
+        vertical:"middle"
+    };
 
-                    top:{
-                        style:"medium"
-                    },
+    // CENTER BATANG
+    wr.getCell(row.number, 4).alignment = {
+        horizontal:"center",
+        vertical:"middle"
+    };
 
-                    bottom:{
-                        style:"medium"
-                    },
+    // CENTER VOLUME
+    wr.getCell(row.number, 5).alignment = {
+        horizontal:"center",
+        vertical:"middle"
+    };
 
-                    left:{
-                        style:"thin"
-                    },
+    row.font = {
+        bold:true
+    };
 
-                    right:{
-                        style:"thin"
-                    }
+    row.eachCell(
+        {
+            includeEmpty:true
+        },
+        cell => {
 
-                };
+            cell.border = {
 
-                cell.alignment = {
+                top:{
+                    style:"medium"
+                },
 
-                    horizontal:"center",
+                bottom:{
+                    style:"medium"
+                },
 
-                    vertical:"middle",
+                left:{
+                    style:"thin"
+                },
 
-                    wrapText:true
+                right:{
+                    style:"thin"
+                }
 
-                };
+            };
 
-            }
-        );
+        }
+    );
 
-        row.getCell(2).numFmt =
-            "#,##0";
+    row.getCell(4).numFmt =
+        "#,##0";
 
-        row.getCell(3).numFmt =
-            "#,##0.000000";
+    row.getCell(5).numFmt =
+        "#,##0.000000";
 
-        row.getCell(4).numFmt =
-            "#,##0";
-
-        row.getCell(5).numFmt =
-            "#,##0.000000";
-
-        continue;
-    }
-
-
+    continue;
+}
     // ==============================
     // DATA RINCIAN
     // ==============================
