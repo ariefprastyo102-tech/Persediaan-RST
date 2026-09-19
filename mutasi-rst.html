@@ -958,13 +958,14 @@ function muatDataTerakhir(){
                 response.dataTerakhir ||
                 {};
 
-              document.getElementById(
+             document.getElementById(
     "judulPersediaan"
 ).innerText =
-    "PERSEDIAAN SD" +
+    "PERSEDIAAN SD " +
     (
-        data.tanggalTerakhir ||
-        ""
+        data.tanggalTerakhir
+            ? " " + data.tanggalTerakhir
+            : ""
     );
             document.getElementById(
                 "ringkasAwalBatang"
