@@ -2295,13 +2295,30 @@ th{
 .total{
     font-weight:bold;
 }
-.tabel-data-total .baris-total td{
-    background:#166534;
-    color:white;
-    font-weight:800;
+/* =====================================================
+   DATA TOTAL - GARIS
+===================================================== */
+
+.tabel-data-total th,
+.tabel-data-total td{
+    border:1px solid #b7cdbd;
 }
-.tabel-data-total th:nth-child(1),
-.tabel-data-total td:nth-child(1),
+
+/* BATAS SETIAP KOLOM BATANG | VOLUME */
+.tabel-data-total th:nth-child(2),
+.tabel-data-total td:nth-child(2),
+.tabel-data-total th:nth-child(4),
+.tabel-data-total td:nth-child(4),
+.tabel-data-total th:nth-child(6),
+.tabel-data-total td:nth-child(6),
+.tabel-data-total th:nth-child(8),
+.tabel-data-total td:nth-child(8),
+.tabel-data-total th:nth-child(10),
+.tabel-data-total td:nth-child(10){
+    border-right:3px solid #166534;
+}
+
+/* BATAS AWAL SETIAP KELOMPOK */
 .tabel-data-total th:nth-child(3),
 .tabel-data-total td:nth-child(3),
 .tabel-data-total th:nth-child(5),
@@ -2310,13 +2327,25 @@ th{
 .tabel-data-total td:nth-child(7),
 .tabel-data-total th:nth-child(9),
 .tabel-data-total td:nth-child(9){
+    border-left:3px solid #166534;
+}
+
+/* PINGGIR TABEL */
+.tabel-data-total th:first-child,
+.tabel-data-total td:first-child{
+    border-left:3px solid #166534;
+}
+
+.tabel-data-total th:last-child,
+.tabel-data-total td:last-child{
     border-right:3px solid #166534;
 }
+
+/* BARIS TOTAL */
 .tabel-data-total .baris-total td{
     border-top:3px solid #14532d;
     border-bottom:3px solid #14532d;
 }
-
 </style>
 
 </head>
