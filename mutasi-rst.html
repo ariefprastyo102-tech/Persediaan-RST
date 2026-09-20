@@ -435,121 +435,61 @@ tbody tr:hover:not(.total){
      KONTROL
 ===================================================== -->
 
-<div class="kontrol">
+<!-- =====================================================
+     DATA TOTAL
+===================================================== -->
 
-    <div class="filter-bulan">
+<div class="kartu">
 
-        <label for="bulan">BULAN</label>
+    <h2 id="judulDataTotal">
+        DATA TOTAL SD TGL
+    </h2>
 
-        <select id="bulan">
-            <option value="1">JANUARI</option>
-            <option value="2">FEBRUARI</option>
-            <option value="3">MARET</option>
-            <option value="4">APRIL</option>
-            <option value="5">MEI</option>
-            <option value="6">JUNI</option>
-            <option value="7">JULI</option>
-            <option value="8">AGUSTUS</option>
-            <option value="9" selected>SEPTEMBER</option>
-            <option value="10">OKTOBER</option>
-            <option value="11">NOVEMBER</option>
-            <option value="12">DESEMBER</option>
-        </select>
+    <div
+        id="dataTotal"
+        class="loading">
 
-        <button type="button" onclick="muatMutasi()">
-            TAMPILKAN
-        </button>
-
-        <div id="status" class="status"></div>
+        Memuat data total...
 
     </div>
 
-    <div class="ringkasan">
-
-   <div class="ringkasan-title">
-     DATA TOTAL SD TGL
 </div>
 
-   <table class="tabel-ringkasan">
-
-    <thead>
-
-        <tr>
-    <th colspan="2">SISA AWAL</th>
-    <th colspan="2">PRODUKSI</th>
-    <th colspan="2">PENJUALAN/OPER</th>
-    <th colspan="2" id="judulPersediaan">
-        PERSEDIAAN
-    </th>
-</tr>
-
-<tr>
-            <th>BATANG</th>
-            <th>VOLUME</th>
-
-            <th>BATANG</th>
-            <th>VOLUME</th>
-
-            <th>BATANG</th>
-            <th>VOLUME</th>
-
-            <th>BATANG</th>
-            <th>VOLUME</th>
-        </tr>
-
-    </thead>
-
-    <tbody>
-
-        <tr>
-            <td>
-                <b id="ringkasAwalBatang">0</b>
-            </td>
-
-            <td>
-                <span id="ringkasAwalVolume">0</span>
-            </td>
-
-
-            <td>
-                <b id="ringkasProduksiBatang">0</b>
-            </td>
-
-            <td>
-                <span id="ringkasProduksiVolume">0</span>
-            </td>
-
-
-            <td>
-                <b id="ringkasTerjualBatang">0</b>
-            </td>
-
-            <td>
-                <span id="ringkasTerjualVolume">0</span>
-            </td>
-
-
-            <td>
-                <b id="ringkasAkhirBatang">0</b>
-            </td>
-
-            <td>
-                <span id="ringkasAkhirVolume">0</span>
-            </td>
-        </tr>
-
-    </tbody>
-
-</table>
-
-</div>
-</div>
 <!-- =====================================================
      MUTASI
 ===================================================== -->
 
 <div class="kartu">
+
+    <div class="kontrol">
+
+        <div class="filter-bulan">
+
+            <label for="bulan">BULAN</label>
+
+            <select id="bulan" onchange="muatMutasi()">
+                <option value="1">JANUARI</option>
+                <option value="2">FEBRUARI</option>
+                <option value="3">MARET</option>
+                <option value="4">APRIL</option>
+                <option value="5">MEI</option>
+                <option value="6">JUNI</option>
+                <option value="7">JULI</option>
+                <option value="8">AGUSTUS</option>
+                <option value="9" selected>SEPTEMBER</option>
+                <option value="10">OKTOBER</option>
+                <option value="11">NOVEMBER</option>
+                <option value="12">DESEMBER</option>
+            </select>
+
+            <div id="status" class="status"></div>
+
+        </div>
+
+    </div>
+
     <div class="judul-aksi">
+
         <h2 id="judulMutasi">
             MUTASI
         </h2>
@@ -557,10 +497,13 @@ tbody tr:hover:not(.total){
         <button type="button" onclick="cetakMutasi()">
             CETAK
         </button>
+
     </div>
-      <button type="button" onclick="exportExcel()">
-    EXCEL
-</button>
+
+    <button type="button" onclick="exportExcel()">
+        EXCEL
+    </button>
+
     <div
         id="mutasi"
         class="loading">
@@ -570,8 +513,6 @@ tbody tr:hover:not(.total){
     </div>
 
 </div>
-
-
 
 <!-- =====================================================
      RINCIAN TERJUAL
@@ -955,89 +896,336 @@ function muatDataTerakhir(){
             }
 
 
-            const data =
-                response.dataTerakhir ||
-                {};
+           const data =
+    response ||
+    {};
 
-            document.getElementById(
-    "judulPersediaan"
-).innerText =
-    "PERSEDIAAN";
-
-document.querySelector(
-    ".ringkasan-title"
+document.getElementById(
+    "judulDataTotal"
 ).innerText =
     data.tanggalTerakhir
         ? "DATA TOTAL SD TGL " + data.tanggalTerakhir
         : "DATA TOTAL SD TGL";
               
-            document.getElementById(
-                "ringkasAwalBatang"
-            ).innerText =
-                formatBatang(
-                    data.awalBatang
-                );
+// ========================================================
+// RENDER DATA TOTAL PER SORTIMEN
+// ========================================================
 
-
-            document.getElementById(
-                "ringkasAwalVolume"
-            ).innerText =
-                formatVolume(
-                    data.awalVolume
-                );
-
-
-            document.getElementById(
-                "ringkasProduksiBatang"
-            ).innerText =
-                formatBatang(
-                    data.produksiBatang
-                );
-
-
-            document.getElementById(
-                "ringkasProduksiVolume"
-            ).innerText =
-                formatVolume(
-                    data.produksiVolume
-                );
-
-
-            document.getElementById(
-                "ringkasTerjualBatang"
-            ).innerText =
-                formatBatang(
-                    data.terjualBatang
-                );
-
-
-            document.getElementById(
-                "ringkasTerjualVolume"
-            ).innerText =
-                formatVolume(
-                    data.terjualVolume
-                );
-
-
-            document.getElementById(
-                "ringkasAkhirBatang"
-            ).innerText =
-                formatBatang(
-                    data.akhirBatang
-                );
-
-
-            document.getElementById(
-                "ringkasAkhirVolume"
-            ).innerText =
-                formatVolume(
-                    data.akhirVolume
-                );
-
-        }
+const container =
+    document.getElementById(
+        "dataTotal"
     );
 
+if(!container){
+    return;
 }
+
+
+const rows =
+    data.data ||
+    [];
+
+
+// ========================================================
+// URUTAN SORTIMEN
+// ========================================================
+
+const urutanSortimen = [
+
+    "DECKING",
+    "FLOORING",
+    "LONGSTRIP",
+    "PB PANJANG",
+    "PB PENDEK",
+    "P STOCK",
+    "FJL",
+    "RENG",
+    "LIST",
+    "HOUSING COMPONENT",
+    "HOUSING COMPONENT GRAHADI",
+    "HOUSING COMPONENT HALL",
+    "HOUSING COMPONENT PAVILLIUN",
+    "BLOCKWARE"
+
+];
+
+
+rows.sort(function(a,b){
+
+    const ia =
+        urutanSortimen.indexOf(
+            String(
+                a.sortimen || ""
+            ).toUpperCase()
+        );
+
+    const ib =
+        urutanSortimen.indexOf(
+            String(
+                b.sortimen || ""
+            ).toUpperCase()
+        );
+
+    if(ia === -1 && ib === -1){
+        return String(a.sortimen || "")
+            .localeCompare(
+                String(b.sortimen || "")
+            );
+    }
+
+    if(ia === -1){
+        return 1;
+    }
+
+    if(ib === -1){
+        return -1;
+    }
+
+    return ia - ib;
+
+});
+
+
+// ========================================================
+// TOTAL BAWAH
+// ========================================================
+
+const total =
+    data.total || {};
+
+
+// ========================================================
+// HTML TABEL
+// ========================================================
+
+let html = `
+
+<table class="tabel-ringkasan tabel-data-total">
+
+    <thead>
+
+        <tr>
+
+            <th rowspan="2">
+                SORTIMEN
+            </th>
+
+            <th colspan="2">
+                SISA AWAL
+            </th>
+
+            <th colspan="2">
+                PRODUKSI
+            </th>
+
+            <th colspan="2">
+                PENJUALAN/OPER
+            </th>
+
+            <th colspan="2">
+                PERSEDIAAN
+            </th>
+
+            <th colspan="2">
+                TOTAL
+            </th>
+
+        </tr>
+
+        <tr>
+
+            <th>BATANG</th>
+            <th>VOLUME</th>
+
+            <th>BATANG</th>
+            <th>VOLUME</th>
+
+            <th>BATANG</th>
+            <th>VOLUME</th>
+
+            <th>BATANG</th>
+            <th>VOLUME</th>
+
+            <th>BATANG</th>
+            <th>VOLUME</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+`;
+
+
+// ========================================================
+// BARIS SORTIMEN
+// ========================================================
+
+rows.forEach(function(item){
+
+    html += `
+
+        <tr>
+
+            <td>
+                ${item.sortimen || "-"}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    item.awalBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    item.awalVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    item.produksiBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    item.produksiVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    item.terjualBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    item.terjualVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    item.akhirBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    item.akhirVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    item.totalBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    item.totalVolume
+                )}
+            </td>
+
+        </tr>
+
+    `;
+
+});
+
+
+// ========================================================
+// TOTAL
+// ========================================================
+
+html += `
+
+        <tr class="baris-total">
+
+            <td>
+                TOTAL
+            </td>
+
+            <td>
+                ${formatBatang(
+                    total.awalBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    total.awalVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    total.produksiBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    total.produksiVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    total.terjualBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    total.terjualVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    total.akhirBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    total.akhirVolume
+                )}
+            </td>
+
+            <td>
+                ${formatBatang(
+                    total.akhirBatang
+                )}
+            </td>
+
+            <td>
+                ${formatVolume(
+                    total.akhirVolume
+                )}
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+`;
+
+
+// ========================================================
+// TAMPILKAN
+// ========================================================
+
+container.innerHTML =
+    html;
+
       
 /* =====================================================
    TAMPILKAN BULAN
