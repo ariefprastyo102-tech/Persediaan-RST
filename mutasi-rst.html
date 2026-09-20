@@ -466,9 +466,9 @@ tbody tr:hover:not(.total){
 
     <div class="ringkasan">
 
-    <div class="ringkasan-title">
-         DATA TERAKHIR
-    </div>
+   <div class="ringkasan-title">
+     DATA TOTAL SD TGL
+</div>
 
    <table class="tabel-ringkasan">
 
@@ -479,7 +479,7 @@ tbody tr:hover:not(.total){
     <th colspan="2">PRODUKSI</th>
     <th colspan="2">PENJUALAN/OPER</th>
     <th colspan="2" id="judulPersediaan">
-        PERSEDIAAN SD TGL
+        PERSEDIAAN
     </th>
 </tr>
 
@@ -541,6 +541,7 @@ tbody tr:hover:not(.total){
     </tbody>
 
 </table>
+
 </div>
 </div>
 <!-- =====================================================
@@ -958,15 +959,18 @@ function muatDataTerakhir(){
                 response.dataTerakhir ||
                 {};
 
-             document.getElementById(
+            document.getElementById(
     "judulPersediaan"
 ).innerText =
-    "PERSEDIAAN SD " +
-    (
-        data.tanggalTerakhir
-            ? " " + data.tanggalTerakhir
-            : ""
-    );
+    "PERSEDIAAN";
+
+document.querySelector(
+    ".ringkasan-title"
+).innerText =
+    data.tanggalTerakhir
+        ? "DATA TOTAL SD TGL " + data.tanggalTerakhir
+        : "DATA TOTAL SD TGL";
+              
             document.getElementById(
                 "ringkasAwalBatang"
             ).innerText =
