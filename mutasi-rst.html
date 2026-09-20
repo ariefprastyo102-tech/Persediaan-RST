@@ -441,9 +441,9 @@ tbody tr:hover:not(.total){
 
 <div class="kartu">
 
-    <h2 id="judulDataTotal">
-        DATA TOTAL SD TGL
-    </h2>
+   <h2 id="judulDataTotal">
+    DATA TOTAL
+</h2>
 
     <div
         id="dataTotal"
@@ -905,7 +905,7 @@ document.getElementById(
 ).innerText =
     data.tanggalTerakhir
         ? "DATA TOTAL SD TGL " + data.tanggalTerakhir
-        : "DATA TOTAL SD TGL";
+        : "DATA TOTAL";
               
 // ========================================================
 // RENDER DATA TOTAL PER SORTIMEN
@@ -2294,6 +2294,27 @@ th{
 
 .total{
     font-weight:bold;
+}
+.tabel-data-total .baris-total td{
+    background:#166534;
+    color:white;
+    font-weight:800;
+}
+.tabel-data-total th:nth-child(1),
+.tabel-data-total td:nth-child(1),
+.tabel-data-total th:nth-child(3),
+.tabel-data-total td:nth-child(3),
+.tabel-data-total th:nth-child(5),
+.tabel-data-total td:nth-child(5),
+.tabel-data-total th:nth-child(7),
+.tabel-data-total td:nth-child(7),
+.tabel-data-total th:nth-child(9),
+.tabel-data-total td:nth-child(9){
+    border-right:3px solid #166534;
+}
+.tabel-data-total .baris-total td{
+    border-top:3px solid #14532d;
+    border-bottom:3px solid #14532d;
 }
 
 </style>
