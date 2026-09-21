@@ -416,40 +416,102 @@ tbody tr:hover:not(.total){
    DATA TOTAL
 ===================================================== */
 
+/* SEMUA ISI RATA TENGAH */
 .tabel-data-total th,
 .tabel-data-total td {
     text-align: center !important;
     vertical-align: middle !important;
 }
 
-/* HEADER UTAMA */
+/* =====================================================
+   GARIS NORMAL SEMUA KOLOM
+   MEMATIKAN GARIS TEBAL DARI .tabel-ringkasan
+===================================================== */
+
+.tabel-data-total th,
+.tabel-data-total td {
+    border: 1px solid #d7e3da !important;
+}
+
+/* PAKSA GARIS KIRI/KANAN TETAP NORMAL */
+.tabel-data-total th:first-child,
+.tabel-data-total td:first-child,
+.tabel-data-total th:last-child,
+.tabel-data-total td:last-child {
+    border-left: 1px solid #d7e3da !important;
+    border-right: 1px solid #d7e3da !important;
+}
+
+/* KOLOM BATANG/VOLUME JUGA NORMAL */
+.tabel-data-total th:nth-child(2),
+.tabel-data-total td:nth-child(2),
+.tabel-data-total th:nth-child(4),
+.tabel-data-total td:nth-child(4),
+.tabel-data-total th:nth-child(6),
+.tabel-data-total td:nth-child(6) {
+    border-right: 1px solid #d7e3da !important;
+}
+
+/* =====================================================
+   HEADER DATA TOTAL
+===================================================== */
+
+/* HEADER ATAS */
 .tabel-data-total thead tr:first-child th {
+    background: #166534 !important;
+    color: white !important;
+    border: 1px solid #14532d !important;
     text-align: center !important;
     vertical-align: middle !important;
     font-weight: 700 !important;
 }
 
-/* HEADER SUB */
+/* HEADER BAWAH */
 .tabel-data-total thead tr:nth-child(2) th {
+    background: #dcfce7 !important;
+    color: #14532d !important;
+    border: 1px solid #d7e3da !important;
     text-align: center !important;
     vertical-align: middle !important;
     font-weight: 600 !important;
 }
 
-/* ISI */
+/* =====================================================
+   ISI DATA
+===================================================== */
+
 .tabel-data-total tbody td {
+    background: white !important;
+    color: #111827 !important;
     text-align: center !important;
+    vertical-align: middle !important;
 }
 
-/* BARIS TOTAL */
+/* =====================================================
+   BARIS TOTAL BAWAH
+===================================================== */
+
 .tabel-data-total tbody tr.baris-total td {
-    text-align: center !important;
-    font-weight: 600 !important;
     background: #f1f3f5 !important;
+    color: #111827 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+
     border-top: 2px solid #6b7280 !important;
+    border-bottom: 1px solid #d7e3da !important;
 }
 
-/* JARAK */
+/* JANGAN BIKIN TOTAL KANAN TERLALU TEBAL */
+.tabel-data-total tbody tr.baris-total td:nth-child(10),
+.tabel-data-total tbody tr.baris-total td:nth-child(11) {
+    font-weight: 600 !important;
+}
+
+/* =====================================================
+   JARAK
+===================================================== */
+
 .tabel-data-total th,
 .tabel-data-total td {
     padding: 9px 8px !important;
