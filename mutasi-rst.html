@@ -416,17 +416,29 @@ tbody tr:hover:not(.total){
    DATA TOTAL
 ===================================================== */
 
-/* SEMUA ISI TABEL RATA TENGAH */
 .tabel-data-total th,
 .tabel-data-total td {
     text-align: center !important;
     vertical-align: middle !important;
 }
 
-/* SORTIMEN */
-.tabel-data-total tbody td:first-child {
+/* HEADER UTAMA */
+.tabel-data-total thead tr:first-child th {
     text-align: center !important;
-    padding-left: 8px !important;
+    vertical-align: middle !important;
+    font-weight: 700 !important;
+}
+
+/* HEADER SUB */
+.tabel-data-total thead tr:nth-child(2) th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-weight: 600 !important;
+}
+
+/* ISI */
+.tabel-data-total tbody td {
+    text-align: center !important;
 }
 
 /* BARIS TOTAL */
@@ -437,25 +449,8 @@ tbody tr:hover:not(.total){
     border-top: 2px solid #6b7280 !important;
 }
 
-/* HEADER UTAMA */
-.tabel-data-total thead tr:first-child th {
-    text-align: center !important;
-    font-weight: 700 !important;
-    vertical-align: middle !important;
-}
-
-/* HEADER SUB */
-.tabel-data-total thead tr:nth-child(2) th {
-    text-align: center !important;
-    font-weight: 600 !important;
-    vertical-align: middle !important;
-}
-
 /* JARAK */
-.tabel-data-total th {
-    padding: 9px 8px !important;
-}
-
+.tabel-data-total th,
 .tabel-data-total td {
     padding: 9px 8px !important;
     line-height: 1.3 !important;
