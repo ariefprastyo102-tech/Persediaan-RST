@@ -535,6 +535,54 @@ tbody tr:hover:not(.total){
     min-width:1100px !important;
     max-width:none !important;
 }
+
+/* =====================================================
+   DATA TOTAL - CENTER
+===================================================== */
+
+#dataTotal{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.tabel-wrap-data-total{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+}
+
+.tabel-wrap-data-total .tabel-data-total{
+    width:1100px !important;
+    min-width:1100px !important;
+    margin:0 auto;
+}
+
+/* =====================================================
+   DATA TOTAL - DETAIL
+===================================================== */
+
+.detail-data-total{
+    display:none;
+    margin-top:12px;
+}
+
+.detail-data-total.muncul{
+    display:block;
+}
+
+#btnDetailDataTotal{
+    width:auto;
+    padding:8px 16px;
+    font-size:12px;
+    font-weight:600;
+    border-radius:7px;
+    cursor:pointer;
+}
+      
 </style>
 
 </head>
@@ -565,9 +613,20 @@ tbody tr:hover:not(.total){
 
 <div class="kartu">
 
-   <h2 id="judulDataTotal">
-    DATA TOTAL
-</h2>
+    <div class="judul-aksi">
+
+        <h2 id="judulDataTotal">
+            DATA TOTAL
+        </h2>
+
+        <button
+            type="button"
+            id="btnDetailDataTotal"
+            onclick="toggleDetailDataTotal()">
+            DETAIL
+        </button>
+
+    </div>
 
     <div
         id="dataTotal"
@@ -1124,10 +1183,13 @@ const total =
 
 let html = `
 
-<div class="tabel-wrap tabel-wrap-data-total">
+<div
+    id="detailDataTotal"
+    class="detail-data-total">
 
-<table class="tabel-ringkasan tabel-data-total">
+    <div class="tabel-wrap tabel-wrap-data-total">
 
+        <table class="tabel-ringkasan tabel-data-total">
     <thead>
 
         <tr>
@@ -1338,14 +1400,15 @@ html += `
 
         </tr>
 
-    </tbody>
+           </tbody>
 
-</table>
+        </table>
+
+    </div>
 
 </div>
 
 `;
-
 
 // ========================================================
 // TAMPILKAN
@@ -3304,6 +3367,28 @@ for(
 
 muatDataTerakhir();
 muatMutasi();
+
+
+function toggleDetailDataTotal(){
+
+    const detail =
+        document.getElementById("detailDataTotal");
+
+    const tombol =
+        document.getElementById("btnDetailDataTotal");
+
+    if(!detail || !tombol){
+        return;
+    }
+
+    const muncul =
+        detail.classList.toggle("muncul");
+
+    tombol.innerText =
+        muncul
+            ? "TUTUP DETAIL"
+            : "DETAIL";
+}
 
 
 </script>
