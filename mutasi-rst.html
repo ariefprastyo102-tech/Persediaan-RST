@@ -518,13 +518,20 @@ tbody tr:hover:not(.total){
     line-height: 1.3 !important;
 }
 /* =====================================================
-   DATA TOTAL - SCROLL DI DALAM KARTU
+   DATA TOTAL - SCROLL HORIZONTAL
+   SAMA SEPERTI MUTASI DAN RINCIAN
 ===================================================== */
 
-.tabel-wrap-data-total{
-    display:block;
+#dataTotal{
     width:100%;
-    max-width:100%;
+    display:block;
+    overflow:visible;
+}
+
+.tabel-wrap-data-total{
+    width:100%;
+    max-width:none;
+    display:block;
     overflow-x:auto !important;
     overflow-y:hidden;
     -webkit-overflow-scrolling:touch;
@@ -534,33 +541,8 @@ tbody tr:hover:not(.total){
     width:1100px !important;
     min-width:1100px !important;
     max-width:none !important;
+    margin:0;
 }
-
-/* =====================================================
-   DATA TOTAL - CENTER
-===================================================== */
-
-#dataTotal{
-    width:100%;
-    display:flex;
-    justify-content:center;
-}
-
-.tabel-wrap-data-total{
-    width:100%;
-    max-width:1100px;
-    margin:0 auto;
-    overflow-x:auto;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-}
-
-.tabel-wrap-data-total .tabel-data-total{
-    width:1100px !important;
-    min-width:1100px !important;
-    margin:0 auto;
-}
-
 /* =====================================================
    DATA TOTAL - DETAIL
 ===================================================== */
