@@ -1238,8 +1238,12 @@ rows.forEach(function(item){
         <tr>
 
             <td>
-                ${item.sortimen || "-"}
-            </td>
+    ${escapeHTML(
+        String(item.sortimen || "-")
+            .trim()
+            .toUpperCase()
+    )}
+</td>
 
             <td>
                 ${formatBatang(
@@ -1829,10 +1833,12 @@ data.sort(
             <tr>
 
                 <td>
-                    ${escapeHTML(
-                        item.sortimen || ""
-                    )}
-                </td>
+    ${escapeHTML(
+        String(item.sortimen || "")
+            .trim()
+            .toUpperCase()
+    )}
+</td>
 
 
                 <td>
