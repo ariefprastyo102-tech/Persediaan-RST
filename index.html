@@ -533,6 +533,32 @@ input:focus{
 
 
 <!-- =================================================
+     DOWNLOAD EXCEL
+================================================== -->
+
+<div style="margin-bottom:9px;">
+
+    <button
+        id="btnDownloadExcel"
+        type="button"
+        style="
+            width:100%;
+            height:36px;
+            border:none;
+            border-radius:7px;
+            background:#176b3a;
+            color:white;
+            font-size:13px;
+            font-weight:bold;
+            cursor:pointer;
+        "
+    >
+        DOWNLOAD EXCEL
+    </button>
+
+</div>
+
+<!-- =================================================
      TABEL
 ================================================== -->
 
@@ -709,6 +735,7 @@ const filterUkuran =
 
 let timerUkuran = null;
 
+let dataTerakhir = [];
 
 /* =====================================================
    AUTO RESIZE UKURAN
@@ -1113,8 +1140,9 @@ async function loadData(){
 
 function tampilkanData(data){
 
-    tbody.innerHTML = "";
+    dataTerakhir = data;
 
+    tbody.innerHTML = "";
 
     let jumlahBatang = 0;
 
@@ -1324,7 +1352,170 @@ function escapeHTML(value){
 
 }
 
+/* =====================================================
+   DOWNLOAD EXCEL
+===================================================== */
 
+function muatLibraryExcel(){
+
+    return new Promise(function(resolve,reject){
+
+        if(window.XLSX){
+
+            resolve();
+
+            return;
+
+        }
+
+
+        const script =
+            document.createElement("script");
+
+
+        script.src =
+            "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+
+
+        script.onload =
+            function(){
+
+                resolve();
+
+            };
+
+
+        script.onerror =
+            function(){
+
+                reject(
+                    new Error(
+                        "GAGAL MEMUAT FITUR EXCEL."
+                    )
+                );
+
+            };
+
+
+        document.head.appendChild(script);
+
+    });
+
+}
+
+
+document
+    .getElementById("btnDownloadExcel")
+    .addEventListener(
+        "click",
+        async function(){
+
+            if(!dataTerakhir.length){
+
+                alert(
+                    "TIDAK ADA DATA UNTUK DI-DOWNLOAD."
+                );
+
+                return;
+
+            }
+
+
+            try{
+
+                this.disabled = true;
+
+                this.textContent =
+                    "MENYIAPKAN EXCEL...";
+
+
+                await muatLibraryExcel();
+
+
+                const dataExcel =
+                    dataTerakhir.map(function(item){
+
+                        return {
+
+                            "TAHUN":
+                                item.tahun,
+
+                            "SORTIMEN":
+                                item.sortimen,
+
+                            "MUTU":
+                                item.mutu,
+
+                            "UKURAN":
+                                item.ukuran,
+
+                            "BATANG":
+                                item.batang,
+
+                            "VOLUME":
+                                item.volume
+
+                        };
+
+                    });
+
+
+                const worksheet =
+                    XLSX.utils.json_to_sheet(
+                        dataExcel
+                    );
+
+
+                const workbook =
+                    XLSX.utils.book_new();
+
+
+                XLSX.utils.book_append_sheet(
+                    workbook,
+                    worksheet,
+                    "PERSEDIAAN RST"
+                );
+
+
+                worksheet["!cols"] = [
+
+                    { wch:10 },
+                    { wch:24 },
+                    { wch:10 },
+                    { wch:24 },
+                    { wch:14 },
+                    { wch:16 }
+
+                ];
+
+
+                XLSX.writeFile(
+                    workbook,
+                    "PERSEDIAAN_RST.xlsx"
+                );
+
+            }
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    error.message
+                );
+
+            }
+            finally{
+
+                this.disabled = false;
+
+                this.textContent =
+                    "DOWNLOAD EXCEL";
+
+            }
+
+        }
+    );
+    
 /* =====================================================
    EVENT FILTER
 ===================================================== */
