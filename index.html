@@ -990,7 +990,7 @@ function normalisasiUkuran(text){
 
     return String(text || "")
         .toUpperCase()
-        .split(/\n+/)
+        .split(/\r?\n/)
         .map(function(baris){
 
             return baris
@@ -1003,12 +1003,13 @@ function normalisasiUkuran(text){
 
         })
         .filter(function(baris){
+
             return baris !== "";
+
         })
         .join("|");
 
 }
-
 
 /* =====================================================
    AMBIL DATA
