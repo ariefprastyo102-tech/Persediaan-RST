@@ -130,32 +130,6 @@ body{
     font-weight:bold;
 }
 
-<!-- =================================================
-     DOWNLOAD EXCEL
-================================================== -->
-
-<div style="margin-bottom:9px;">
-
-    <button
-        id="btnDownloadExcel"
-        type="button"
-        style="
-            width:100%;
-            height:36px;
-            border:none;
-            border-radius:7px;
-            background:#176b3a;
-            color:white;
-            font-size:13px;
-            font-weight:bold;
-            cursor:pointer;
-        "
-    >
-        DOWNLOAD EXCEL
-    </button>
-
-</div>
-
 /* =====================================================
    TABEL
 ===================================================== */
@@ -686,7 +660,7 @@ input:focus{
 
 
 </div>
-    
+
 <script>
 
 /* =====================================================
@@ -735,8 +709,7 @@ const filterUkuran =
 
 let timerUkuran = null;
 
-let dataTerakhir = [];
-    
+
 /* =====================================================
    AUTO RESIZE UKURAN
 ===================================================== */
@@ -1140,8 +1113,6 @@ async function loadData(){
 
 function tampilkanData(data){
 
-dataTerakhir = data;
-    
     tbody.innerHTML = "";
 
 
@@ -1353,92 +1324,7 @@ function escapeHTML(value){
 
 }
 
-/* =====================================================
-   DOWNLOAD EXCEL
-===================================================== */
 
-document
-    .getElementById("btnDownloadExcel")
-    .addEventListener(
-        "click",
-        function(){
-
-            if(!dataTerakhir.length){
-
-                alert(
-                    "TIDAK ADA DATA UNTUK DI-DOWNLOAD."
-                );
-
-                return;
-
-            }
-
-
-            const dataExcel =
-                dataTerakhir.map(function(item){
-
-                    return {
-
-                        "TAHUN":
-                            item.tahun,
-
-                        "SORTIMEN":
-                            item.sortimen,
-
-                        "MUTU":
-                            item.mutu,
-
-                        "UKURAN":
-                            item.ukuran,
-
-                        "BATANG":
-                            item.batang,
-
-                        "VOLUME":
-                            item.volume
-
-                    };
-
-                });
-
-
-            const worksheet =
-                XLSX.utils.json_to_sheet(
-                    dataExcel
-                );
-
-
-            const workbook =
-                XLSX.utils.book_new();
-
-
-            XLSX.utils.book_append_sheet(
-                workbook,
-                worksheet,
-                "PERSEDIAAN RST"
-            );
-
-
-            worksheet["!cols"] = [
-
-                { wch:10 },
-                { wch:22 },
-                { wch:10 },
-                { wch:22 },
-                { wch:14 },
-                { wch:16 }
-
-            ];
-
-
-            XLSX.writeFile(
-                workbook,
-                "PERSEDIAAN_RST.xlsx"
-            );
-
-        }
-    );
-    
 /* =====================================================
    EVENT FILTER
 ===================================================== */
@@ -1526,4 +1412,3 @@ mulai();
 
 </body>
 </html>
-
