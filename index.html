@@ -737,6 +737,8 @@ let timerUkuran = null;
 
 let dataTerakhir = [];
 
+let nomorRequest = 0;
+
 /* =====================================================
    AUTO RESIZE UKURAN
 ===================================================== */
@@ -1017,6 +1019,9 @@ function normalisasiUkuran(text){
 
 async function loadData(){
 
+    const requestIni =
+        ++nomorRequest;
+
     try{
 
         statusBox.textContent =
@@ -1074,6 +1079,11 @@ async function loadData(){
 
         const hasil =
             await jsonp(url);
+        if(requestIni !== nomorRequest){
+
+    return;
+
+}
 
 
         if(!hasil || !hasil.sukses){
