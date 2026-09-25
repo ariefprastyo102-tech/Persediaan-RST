@@ -1142,20 +1142,8 @@ async function loadData(){
 
 function tampilkanData(data){
 
-    dataTerakhir = data.map(function(item){
-
-        return {
-            tahun: item.tahun,
-            sortimen: item.sortimen,
-            mutu: item.mutu,
-            ukuran: item.ukuran,
-            batang: Number(item.batang || 0),
-            volume: Number(item.volume || 0)
-        };
-
-    });
-
-
+dataTerakhir = data;
+    
     tbody.innerHTML = "";
 
 
