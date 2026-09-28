@@ -23,8 +23,8 @@ body{
 
 body{
     font-family:Arial,sans-serif;
-    background:#f1f5f3;
-    color:#202923;
+    background:#eef3f0;
+    color:#1f2b24;
     font-size:13px;
 }
 
@@ -34,9 +34,9 @@ body{
 
 .container{
     width:100%;
-    max-width:700px;
+    max-width:760px;
     margin:0 auto;
-    padding:10px;
+    padding:12px;
 }
 
 /* =====================================================
@@ -44,45 +44,70 @@ body{
 ===================================================== */
 
 .header{
-    background:linear-gradient(
-        135deg,
-        #0d5f35,
-        #198754
-    );
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #075b32 0%,
+            #0d7540 55%,
+            #198754 100%
+        );
 
     color:white;
 
-    border-radius:12px;
+    border-radius:16px;
 
-    padding:13px 15px;
+    padding:18px 18px;
 
-    margin-bottom:9px;
+    margin-bottom:11px;
 
     display:flex;
     align-items:center;
 
-    gap:12px;
+    gap:14px;
 
     box-shadow:
-        0 4px 12px rgba(15,107,58,.18);
+        0 8px 20px rgba(7,91,50,.22);
+
+    overflow:hidden;
+}
+
+.header::after{
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    right:-55px;
+    top:-70px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
 }
 
 .header-logo{
-    width:56px;
-    height:56px;
+    width:62px;
+    height:62px;
 
     object-fit:contain;
 
     background:white;
 
-    border-radius:9px;
+    border-radius:12px;
 
-    padding:3px;
+    padding:4px;
 
     flex-shrink:0;
 
     box-shadow:
-        0 2px 5px rgba(0,0,0,.10);
+        0 3px 8px rgba(0,0,0,.15);
+
+    position:relative;
+    z-index:1;
 }
 
 .header-text{
@@ -90,30 +115,33 @@ body{
     flex-direction:column;
 
     min-width:0;
+
+    position:relative;
+    z-index:1;
 }
 
 .header h1{
     margin:0;
 
-    font-size:21px;
+    font-size:24px;
 
-    line-height:1.2;
+    line-height:1.15;
 
     color:white;
 
-    font-weight:800;
+    font-weight:900;
 
-    letter-spacing:.2px;
+    letter-spacing:.4px;
 }
 
 .header p{
-    margin:4px 0 0;
+    margin:6px 0 0;
 
     font-size:11px;
 
-    color:#e5f4eb;
+    color:#dff3e7;
 
-    line-height:1.3;
+    line-height:1.35;
 }
 
 /* =====================================================
@@ -121,22 +149,24 @@ body{
 ===================================================== */
 
 .status{
-    background:white;
+    background:#ffffff;
 
-    border:1px solid #dce5df;
+    border:1px solid #d6e2db;
 
-    border-radius:9px;
+    border-left:5px solid #198754;
 
-    padding:8px 10px;
+    border-radius:10px;
 
-    margin-bottom:9px;
+    padding:10px 12px;
+
+    margin-bottom:11px;
 
     font-size:11px;
 
-    color:#617067;
+    color:#59675f;
 
     box-shadow:
-        0 1px 4px rgba(0,0,0,.04);
+        0 3px 9px rgba(0,0,0,.05);
 }
 
 /* =====================================================
@@ -148,22 +178,42 @@ body{
 
     grid-template-columns:1fr 1fr;
 
-    gap:8px;
+    gap:10px;
 
-    margin-bottom:10px;
+    margin-bottom:12px;
 }
 
 .card{
     background:white;
 
-    border:1px solid #dce5df;
+    border:1px solid #d7e2db;
 
-    border-radius:9px;
+    border-radius:13px;
 
-    padding:9px 11px;
+    padding:13px 14px;
+
+    min-height:76px;
 
     box-shadow:
-        0 2px 6px rgba(0,0,0,.04);
+        0 4px 12px rgba(25,70,45,.07);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:4px;
+
+    background:#198754;
 }
 
 .card-label{
@@ -171,21 +221,23 @@ body{
 
     color:#718078;
 
-    margin-bottom:3px;
-
-    font-weight:700;
-
-    letter-spacing:.2px;
-}
-
-.card-value{
-    font-size:18px;
+    margin-bottom:6px;
 
     font-weight:800;
 
-    color:#202923;
+    letter-spacing:.5px;
 
-    line-height:1.15;
+    text-transform:uppercase;
+}
+
+.card-value{
+    font-size:22px;
+
+    font-weight:900;
+
+    color:#176b3a;
+
+    line-height:1.1;
 }
 
 /* =====================================================
@@ -199,14 +251,14 @@ body{
 
     background:white;
 
-    border:1px solid #d8e2dc;
+    border:1px solid #d4e0d9;
 
-    border-radius:10px;
+    border-radius:14px;
 
     -webkit-overflow-scrolling:touch;
 
     box-shadow:
-        0 2px 8px rgba(0,0,0,.05);
+        0 5px 16px rgba(25,70,45,.08);
 }
 
 /* =====================================================
@@ -216,7 +268,7 @@ body{
 table{
     width:100%;
 
-    min-width:590px;
+    min-width:620px;
 
     border-collapse:separate;
 
@@ -227,9 +279,9 @@ table{
 
 th,
 td{
-    border-bottom:1px solid #e7ece9;
+    border-bottom:1px solid #e7ede9;
 
-    padding:7px 6px;
+    padding:9px 7px;
 
     text-align:left;
 
@@ -249,11 +301,11 @@ thead tr:first-child th{
 
     font-size:12px;
 
-    font-weight:800;
+    font-weight:900;
 
     text-align:center;
 
-    padding:8px 6px;
+    padding:10px 7px;
 
     border-bottom:0;
 
@@ -261,15 +313,17 @@ thead tr:first-child th{
 
     top:0;
 
-    z-index:4;
+    z-index:6;
+
+    letter-spacing:.2px;
 }
 
 thead tr:first-child th:first-child{
-    border-top-left-radius:7px;
+    border-top-left-radius:10px;
 }
 
 thead tr:first-child th:last-child{
-    border-top-right-radius:7px;
+    border-top-right-radius:10px;
 }
 
 /* =====================================================
@@ -277,17 +331,17 @@ thead tr:first-child th:last-child{
 ===================================================== */
 
 thead tr.filter-row th{
-    background:#f5f8f6;
+    background:#f0f5f2;
 
-    padding:5px;
+    padding:6px;
 
     position:sticky;
 
-    top:32px;
+    top:38px;
 
     z-index:5;
 
-    border-bottom:1px solid #dce5df;
+    border-bottom:1px solid #d5e0da;
 }
 
 thead tr.filter-row select,
@@ -298,25 +352,28 @@ thead tr.filter-row textarea{
 }
 
 /* =====================================================
-   BODY TABLE
+   BODY
 ===================================================== */
+
+tbody tr:nth-child(even){
+    background:#fafcfb;
+}
+
+tbody tr:hover{
+    background:#eaf6ef;
+}
 
 tbody td{
     font-size:14px;
 
     text-align:center !important;
 
-    color:#26322b;
+    color:#27332c;
 
-    font-weight:500;
-}
+    font-weight:600;
 
-tbody tr{
-    transition:background .15s ease;
-}
-
-tbody tr:hover{
-    background:#f4faf6;
+    padding-top:9px;
+    padding-bottom:9px;
 }
 
 tbody tr:last-child td{
@@ -328,13 +385,13 @@ tbody tr:last-child td{
 ===================================================== */
 
 .col-tahun{
-    width:60px;
+    width:65px;
 
     text-align:center !important;
 }
 
 .col-sortimen{
-    width:85px;
+    width:100px;
 
     text-align:center !important;
 }
@@ -346,19 +403,19 @@ tbody tr:last-child td{
 }
 
 .col-ukuran{
-    width:45px;
+    width:50px;
 
     text-align:center !important;
 }
 
 .col-batang{
-    width:80px;
+    width:90px;
 
     text-align:center !important;
 }
 
 .col-volume{
-    width:90px;
+    width:100px;
 
     text-align:center !important;
 }
@@ -371,35 +428,43 @@ select,
 input{
     width:100%;
 
-    height:29px;
+    height:32px;
 
-    border:1px solid #cfd9d3;
+    border:1px solid #c8d5cd;
 
-    border-radius:6px;
+    border-radius:7px;
 
     background:white;
 
-    padding:3px 6px;
+    padding:4px 7px;
 
     font-family:Arial,sans-serif;
 
     font-size:11px;
 
-    color:#27332c;
+    color:#26332b;
 
     outline:none;
 
     transition:
         border-color .15s ease,
-        box-shadow .15s ease;
+        box-shadow .15s ease,
+        background .15s ease;
+}
+
+select:hover,
+input:hover{
+    border-color:#9db5a6;
 }
 
 select:focus,
 input:focus{
-    border-color:#176b3a;
+    border-color:#198754;
+
+    background:#fbfefc;
 
     box-shadow:
-        0 0 0 2px rgba(23,107,58,.10);
+        0 0 0 3px rgba(25,135,84,.10);
 }
 
 /* =====================================================
@@ -409,29 +474,29 @@ input:focus{
 #filterUkuran{
     width:100%;
 
-    min-height:29px;
+    min-height:32px;
 
-    height:29px;
+    height:32px;
 
     resize:none;
 
     overflow:hidden;
 
-    border:1px solid #cfd9d3;
+    border:1px solid #c8d5cd;
 
-    border-radius:6px;
+    border-radius:7px;
 
     background:white;
 
-    padding:3px 6px;
+    padding:4px 7px;
 
     font-family:Arial,sans-serif;
 
     font-size:11px;
 
-    line-height:21px;
+    line-height:22px;
 
-    color:#27332c;
+    color:#26332b;
 
     outline:none;
 
@@ -442,11 +507,15 @@ input:focus{
         box-shadow .15s ease;
 }
 
+#filterUkuran:hover{
+    border-color:#9db5a6;
+}
+
 #filterUkuran:focus{
-    border-color:#176b3a;
+    border-color:#198754;
 
     box-shadow:
-        0 0 0 2px rgba(23,107,58,.10);
+        0 0 0 3px rgba(25,135,84,.10);
 }
 
 /* =====================================================
@@ -456,9 +525,9 @@ input:focus{
 .loading{
     text-align:center;
 
-    padding:24px 10px;
+    padding:28px 10px;
 
-    color:#718078;
+    color:#68776f;
 
     font-size:11px;
 }
@@ -470,9 +539,9 @@ input:focus{
 .empty{
     text-align:center;
 
-    padding:25px 10px;
+    padding:30px 10px;
 
-    color:#89958e;
+    color:#8a968f;
 
     font-size:11px;
 }
@@ -488,7 +557,7 @@ input:focus{
     }
 
     .container{
-        padding:6px;
+        padding:7px;
 
         max-width:100%;
     }
@@ -496,118 +565,125 @@ input:focus{
     /* HEADER */
 
     .header{
-        padding:11px 12px;
+        padding:13px 13px;
 
-        border-radius:9px;
+        border-radius:12px;
 
-        gap:10px;
+        gap:11px;
 
-        margin-bottom:7px;
+        margin-bottom:8px;
     }
 
     .header-logo{
-        width:48px;
-        height:48px;
+        width:50px;
+        height:50px;
 
-        border-radius:7px;
+        border-radius:9px;
     }
 
     .header h1{
-        font-size:17px;
+        font-size:19px;
     }
 
     .header p{
         font-size:10px;
 
-        margin-top:3px;
+        margin-top:4px;
     }
 
     /* STATUS */
 
     .status{
-        padding:7px 8px;
+        padding:8px 9px;
 
-        margin-bottom:7px;
+        margin-bottom:8px;
 
         font-size:10px;
 
-        border-radius:7px;
+        border-radius:8px;
     }
 
     /* SUMMARY */
 
     .summary{
-        gap:6px;
+        gap:7px;
 
-        margin-bottom:8px;
+        margin-bottom:9px;
     }
 
     .card{
-        padding:7px 9px;
+        padding:11px 10px;
 
-        border-radius:7px;
+        min-height:68px;
+
+        border-radius:10px;
     }
 
     .card-label{
         font-size:9px;
+
+        margin-bottom:5px;
     }
 
     .card-value{
-        font-size:16px;
+        font-size:19px;
     }
 
     /* TABLE */
 
     .table-wrap{
-        border-radius:8px;
+        border-radius:10px;
     }
 
     table{
-        min-width:560px;
+        min-width:570px;
     }
 
     th,
     td{
-        padding:6px 5px;
+        padding:7px 5px;
     }
 
     thead tr:first-child th{
         font-size:10px;
 
-        padding:7px 5px;
+        padding:8px 5px;
     }
 
     thead tr.filter-row th{
-        padding:4px;
+        padding:5px;
 
-        top:29px;
+        top:34px;
     }
 
     tbody td{
         font-size:14px;
+
+        padding-top:8px;
+        padding-bottom:8px;
     }
 
     /* FILTER */
 
     select,
     input{
-        height:27px;
+        height:29px;
 
         font-size:10px;
 
-        padding:2px 5px;
+        padding:3px 5px;
     }
 
     #filterUkuran{
-        min-height:27px;
+        min-height:29px;
 
-        height:27px;
+        height:29px;
 
         font-size:10px;
 
         line-height:20px;
 
-        padding:2px 5px;
+        padding:3px 5px;
     }
 
     /* COLUMNS */
@@ -617,7 +693,7 @@ input:focus{
     }
 
     .col-sortimen{
-        width:95px;
+        width:100px;
     }
 
     .col-mutu{
@@ -629,11 +705,11 @@ input:focus{
     }
 
     .col-batang{
-        width:70px;
+        width:75px;
     }
 
     .col-volume{
-        width:85px;
+        width:90px;
     }
 }
 
@@ -644,32 +720,36 @@ input:focus{
 @media(max-width:380px){
 
     .container{
-        padding:4px;
+        padding:5px;
     }
 
     .header{
-        padding:9px 10px;
+        padding:11px;
     }
 
     .header-logo{
-        width:44px;
-        height:44px;
+        width:46px;
+        height:46px;
     }
 
     .header h1{
-        font-size:16px;
+        font-size:17px;
     }
 
     .header p{
         font-size:9px;
     }
 
-    .status{
-        font-size:9px;
+    .card{
+        padding:10px 9px;
+    }
+
+    .card-value{
+        font-size:18px;
     }
 
     table{
-        min-width:520px;
+        min-width:535px;
     }
 
     .col-tahun{
@@ -677,7 +757,7 @@ input:focus{
     }
 
     .col-sortimen{
-        width:85px;
+        width:90px;
     }
 
     .col-mutu{
@@ -697,6 +777,7 @@ input:focus{
     }
 }
 </style>
+
 </head>
 
 <body>
