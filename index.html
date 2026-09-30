@@ -1121,88 +1121,36 @@ function formatVolume(value){
 
 function jsonp(url){
 
-    return new Promise(function(resolve,reject){
+    return fetch(url)
 
-        const callbackName =
-            "jsonp_" +
-            Date.now() +
-            "_" +
-            Math.floor(Math.random()*100000);
+        .then(function(response){
 
+            if(!response.ok){
 
-        const script =
-            document.createElement("script");
-
-        let selesai = false;
-
-
-        window[callbackName] =
-            function(data){
-
-                selesai = true;
-
-                delete window[callbackName];
-
-                script.remove();
-
-                resolve(data);
-
-            };
-
-
-        script.onerror =
-            function(){
-
-                if(selesai) return;
-
-                delete window[callbackName];
-
-                script.remove();
-
-                reject(
-                    new Error(
-                        "Gagal mengambil data dari Apps Script."
-                    )
+                throw new Error(
+                    "HTTP " + response.status
                 );
 
-            };
+            }
 
+            return response.json();
 
-        script.src =
-            url +
-            (url.includes("?") ? "&" : "?") +
-            "callback=" +
-            encodeURIComponent(callbackName) +
-            "&_=" +
-            Date.now();
+        })
 
+        .catch(function(error){
 
-        document.body.appendChild(script);
-
-
-        setTimeout(function(){
-
-            if(selesai) return;
-
-            selesai = true;
-
-            delete window[callbackName];
-
-            script.remove();
-
-            reject(
-                new Error(
-                    "Waktu mengambil data habis."
-                )
+            console.error(
+                "FETCH ERROR =",
+                error
             );
 
-        },60000);
+            throw new Error(
+                "Gagal mengambil data dari Apps Script."
+            );
 
-    });
+        });
 
 }
-
-
 /* =====================================================
    AMBIL FILTER
 ===================================================== */
