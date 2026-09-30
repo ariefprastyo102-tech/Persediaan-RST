@@ -1937,24 +1937,32 @@ function cekUpdateDiBelakang(){
 
 async function mulai(){
 
+    console.log("=== MULAI APLIKASI ===");
+
     try{
+
+        console.log("1. LOAD FILTER");
 
         await loadFilters();
 
+        console.log("2. LOAD DATA");
+
         await loadData();
 
-        /*
-         * DATA SUDAH TAMPIL.
-         * Setelah itu baru cek update
-         * tanpa mengganggu tampilan.
-         */
+        console.log("3. DATA SELESAI");
+
         cekUpdateDiBelakang();
+
+        console.log("4. CEK UPDATE DIJALANKAN");
 
     }
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "=== MULAI ERROR ===",
+            error
+        );
 
         statusBox.textContent =
             "GAGAL MEMUAT APLIKASI";
