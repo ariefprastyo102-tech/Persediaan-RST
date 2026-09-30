@@ -1861,6 +1861,75 @@ filterUkuran.addEventListener(
     }
 );
 
+function cekUpdateDiBelakang(){
+
+    fetch(
+        API_URL +
+        "?action=cekupdate" +
+        "&_=" +
+        Date.now()
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " + response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(function(hasil){
+
+        console.log(
+            "CEK UPDATE RST =",
+            hasil
+        );
+
+        if(!hasil || !hasil.sukses){
+
+            console.warn(
+                "CEK UPDATE GAGAL"
+            );
+
+            return;
+
+        }
+
+        if(
+            hasil.status ===
+            "CACHE_DIPERBARUI"
+        ){
+
+            console.log(
+                "CACHE RST BERHASIL DIPERBARUI"
+            );
+
+            /*
+             * Data yang sedang tampil masih data lama.
+             * Ambil ulang data setelah cache selesai dibangun.
+             */
+            loadData();
+
+        }
+
+    })
+
+    .catch(function(error){
+
+        console.warn(
+            "CEK UPDATE ERROR =",
+            error
+        );
+
+    });
+
+}
 
 /* =====================================================
    START
@@ -1874,6 +1943,13 @@ async function mulai(){
 
         await loadData();
 
+        /*
+         * DATA SUDAH TAMPIL.
+         * Setelah itu baru cek update
+         * tanpa mengganggu tampilan.
+         */
+        cekUpdateDiBelakang();
+
     }
 
     catch(error){
@@ -1886,57 +1962,6 @@ async function mulai(){
     }
 
 }
-
-
-mulai();
-fetch(
-    API_URL +
-    "?action=data" +
-    "&tahun=SEMUA" +
-    "&sortimen=SEMUA" +
-    "&mutu=SEMUA" +
-    "&ukuran="
-)
-.then(function(response){
-
-    console.log(
-        "FETCH STATUS =",
-        response.status
-    );
-
-    console.log(
-        "FETCH TYPE =",
-        response.type
-    );
-
-    return response.text();
-
-})
-.then(function(text){
-
-    console.log(
-        "FETCH BERHASIL"
-    );
-
-    console.log(
-        "PANJANG RESPONSE =",
-        text.length
-    );
-
-    console.log(
-        "AWAL RESPONSE =",
-        text.substring(0,200)
-    );
-
-})
-.catch(function(error){
-
-    console.error(
-        "FETCH GAGAL =",
-        error
-    );
-
-});
     
 </script>
 
