@@ -1121,34 +1121,91 @@ function formatVolume(value){
 
 function jsonp(url){
 
-    return fetch(url)
+    return new Promise(function(resolve, reject){
 
-        .then(function(response){
+        const callbackName =
+            "jsonp_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+                Math.random() * 100000
+            );
 
-            if(!response.ok){
+        const script =
+            document.createElement("script");
 
-                throw new Error(
-                    "HTTP " + response.status
+        let selesai = false;
+
+        window[callbackName] =
+            function(data){
+
+                selesai = true;
+
+                delete window[callbackName];
+
+                script.remove();
+
+                resolve(data);
+
+            };
+
+        script.onerror =
+            function(){
+
+                if(selesai) return;
+
+                selesai = true;
+
+                delete window[callbackName];
+
+                script.remove();
+
+                reject(
+                    new Error(
+                        "Gagal mengambil data dari Apps Script."
+                    )
                 );
 
-            }
+            };
 
-            return response.json();
+        script.src =
+            url +
+            (url.includes("?") ? "&" : "?") +
+            "callback=" +
+            encodeURIComponent(
+                callbackName
+            ) +
+            "&_=" +
+            Date.now();
 
-        })
+        console.log(
+            "JSONP URL =",
+            script.src
+        );
 
-        .catch(function(error){
+        document.body.appendChild(
+            script
+        );
 
-            console.error(
-                "FETCH ERROR =",
-                error
+        setTimeout(function(){
+
+            if(selesai) return;
+
+            selesai = true;
+
+            delete window[callbackName];
+
+            script.remove();
+
+            reject(
+                new Error(
+                    "Waktu mengambil data habis."
+                )
             );
 
-            throw new Error(
-                "Gagal mengambil data dari Apps Script."
-            );
+        }, 15000);
 
-        });
+    });
 
 }
 /* =====================================================
