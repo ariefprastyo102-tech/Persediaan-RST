@@ -1121,40 +1121,86 @@ function formatVolume(value){
 
 function jsonp(url){
 
-    return fetch(
-        url +
-        (url.includes("?") ? "&" : "?") +
-        "_=" +
-        Date.now(),
-        {
-            method: "GET",
-            cache: "no-store"
+    return new Promise(function(resolve, reject){
+
+        const callbackName =
+            "jsonpCallback_" +
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2);
+
+        const script =
+            document.createElement("script");
+
+        const timeout =
+            setTimeout(function(){
+
+                cleanup();
+
+                reject(
+                    new Error(
+                        "Request Apps Script timeout."
+                    )
+                );
+
+            }, 30000);
+
+
+        function cleanup(){
+
+            clearTimeout(timeout);
+
+            delete window[callbackName];
+
+            if(script.parentNode){
+
+                script.parentNode.removeChild(
+                    script
+                );
+
+            }
+
         }
-    )
-    .then(function(response){
 
-        if(!response.ok){
 
-            throw new Error(
-                "HTTP " +
-                response.status
-            );
+        window[callbackName] =
+            function(data){
 
-        }
+                cleanup();
 
-        return response.json();
+                resolve(data);
 
-    })
-    .catch(function(error){
+            };
 
-        console.error(
-            "FETCH ERROR =",
-            error
-        );
 
-        throw new Error(
-            "Gagal mengambil data dari Apps Script."
-        );
+        script.onerror =
+            function(){
+
+                cleanup();
+
+                reject(
+                    new Error(
+                        "Gagal mengambil data dari Apps Script."
+                    )
+                );
+
+            };
+
+
+        script.src =
+            url +
+            (url.includes("?") ? "&" : "?") +
+            "callback=" +
+            callbackName +
+            "&_=" +
+            Date.now();
+
+
+        document
+            .head
+            .appendChild(script);
 
     });
 
