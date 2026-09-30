@@ -1169,14 +1169,12 @@ function jsonp(url){
 
 
         script.src =
-    url +
-    (url.includes("?") ? "&" : "?") +
-    "callback=" +
-    encodeURIComponent(callbackName) +
-    "&_=" +
-    Date.now();
-
-console.log("JSONP URL =", script.src);
+            url +
+            (url.includes("?") ? "&" : "?") +
+            "callback=" +
+            encodeURIComponent(callbackName) +
+            "&_=" +
+            Date.now();
 
 
         document.body.appendChild(script);
