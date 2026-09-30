@@ -1121,89 +1121,40 @@ function formatVolume(value){
 
 function jsonp(url){
 
-    return new Promise(function(resolve, reject){
+    return fetch(
+        url +
+        (url.includes("?") ? "&" : "?") +
+        "_=" +
+        Date.now(),
+        {
+            method: "GET",
+            cache: "no-store"
+        }
+    )
+    .then(function(response){
 
-        const callbackName =
-            "jsonp_" +
-            Date.now() +
-            "_" +
-            Math.floor(
-                Math.random() * 100000
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status
             );
 
-        const script =
-            document.createElement("script");
+        }
 
-        let selesai = false;
+        return response.json();
 
-        window[callbackName] =
-            function(data){
+    })
+    .catch(function(error){
 
-                selesai = true;
-
-                delete window[callbackName];
-
-                script.remove();
-
-                resolve(data);
-
-            };
-
-        script.onerror =
-            function(){
-
-                if(selesai) return;
-
-                selesai = true;
-
-                delete window[callbackName];
-
-                script.remove();
-
-                reject(
-                    new Error(
-                        "Gagal mengambil data dari Apps Script."
-                    )
-                );
-
-            };
-
-        script.src =
-            url +
-            (url.includes("?") ? "&" : "?") +
-            "callback=" +
-            encodeURIComponent(
-                callbackName
-            ) +
-            "&_=" +
-            Date.now();
-
-        console.log(
-            "JSONP URL =",
-            script.src
+        console.error(
+            "FETCH ERROR =",
+            error
         );
 
-        document.body.appendChild(
-            script
+        throw new Error(
+            "Gagal mengambil data dari Apps Script."
         );
-
-        setTimeout(function(){
-
-            if(selesai) return;
-
-            selesai = true;
-
-            delete window[callbackName];
-
-            script.remove();
-
-            reject(
-                new Error(
-                    "Waktu mengambil data habis."
-                )
-            );
-
-        }, 15000);
 
     });
 
