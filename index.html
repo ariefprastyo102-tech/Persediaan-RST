@@ -1442,14 +1442,14 @@ async function loadData(){
 
 function tampilkanData(data){
 
+    console.time("RENDER DATA 845");
+
     dataTerakhir = data;
 
     tbody.innerHTML = "";
 
     let jumlahBatang = 0;
-
     let jumlahVolume = 0;
-
 
     if(!data.length){
 
@@ -1460,145 +1460,96 @@ function tampilkanData(data){
             '</td>' +
             '</tr>';
 
+        totalBatang.textContent = "0";
+        totalVolume.textContent = "0,000000";
+        summary.style.display = "none";
 
-        totalBatang.textContent =
-            "0";
-
-
-        totalVolume.textContent =
-            "0,000000";
-
-
-        summary.style.display =
-            "none";
-
-
+        console.timeEnd("RENDER DATA 845");
         return;
-
     }
-
-
-    /*
-     * TOTAL HANYA MUNCUL JIKA
-     * HASIL YANG DITAMPILKAN LEBIH DARI 1
-     */
 
     if(data.length > 1){
-
-        summary.style.display =
-            "grid";
-
+        summary.style.display = "grid";
     }else{
-
-        summary.style.display =
-            "none";
-
-    }
-const urutanSortimen = [
-    "DECKING",
-    "FLOORING",
-    "LONGSTRIP",
-    "PB PANJANG",
-    "PB PENDEK",
-    "P STOCK",
-    "FJL",
-    "RENG",
-    "LIST",
-    "HOUSING COMPONENT"
-];
-
-
-const urutanMutu = [
-    "P",
-    "D",
-    "T"
-];
-
-
-data.sort(function(a, b){
-
-    const posisiSortimenA =
-        urutanSortimen.indexOf(
-            String(a.sortimen || "").toUpperCase()
-        );
-
-    const posisiSortimenB =
-        urutanSortimen.indexOf(
-            String(b.sortimen || "").toUpperCase()
-        );
-
-
-    const nilaiSortimenA =
-        posisiSortimenA === -1
-            ? 999
-            : posisiSortimenA;
-
-
-    const nilaiSortimenB =
-        posisiSortimenB === -1
-            ? 999
-            : posisiSortimenB;
-
-
-    /*
-     * SORTIMEN DULU
-     */
-
-    if(nilaiSortimenA !== nilaiSortimenB){
-
-        return nilaiSortimenA - nilaiSortimenB;
-
+        summary.style.display = "none";
     }
 
+    const urutanSortimen = [
+        "DECKING",
+        "FLOORING",
+        "LONGSTRIP",
+        "PB PANJANG",
+        "PB PENDEK",
+        "P STOCK",
+        "FJL",
+        "RENG",
+        "LIST",
+        "HOUSING COMPONENT"
+    ];
 
-    /*
-     * JIKA SORTIMEN SAMA,
-     * BARU MUTU
-     */
+    const urutanMutu = [
+        "P",
+        "D",
+        "T"
+    ];
 
-    const posisiMutuA =
-        urutanMutu.indexOf(
-            String(a.mutu || "").toUpperCase()
-        );
+    data.sort(function(a,b){
 
+        const posisiSortimenA =
+            urutanSortimen.indexOf(
+                String(a.sortimen || "").toUpperCase()
+            );
 
-    const posisiMutuB =
-        urutanMutu.indexOf(
-            String(b.mutu || "").toUpperCase()
-        );
+        const posisiSortimenB =
+            urutanSortimen.indexOf(
+                String(b.sortimen || "").toUpperCase()
+            );
 
+        const nilaiSortimenA =
+            posisiSortimenA === -1 ? 999 : posisiSortimenA;
 
-    const nilaiMutuA =
-        posisiMutuA === -1
-            ? 999
-            : posisiMutuA;
+        const nilaiSortimenB =
+            posisiSortimenB === -1 ? 999 : posisiSortimenB;
 
+        if(nilaiSortimenA !== nilaiSortimenB){
+            return nilaiSortimenA - nilaiSortimenB;
+        }
 
-    const nilaiMutuB =
-        posisiMutuB === -1
-            ? 999
-            : posisiMutuB;
+        const posisiMutuA =
+            urutanMutu.indexOf(
+                String(a.mutu || "").toUpperCase()
+            );
 
+        const posisiMutuB =
+            urutanMutu.indexOf(
+                String(b.mutu || "").toUpperCase()
+            );
 
-    return nilaiMutuA - nilaiMutuB;
+        const nilaiMutuA =
+            posisiMutuA === -1 ? 999 : posisiMutuA;
 
-});
+        const nilaiMutuB =
+            posisiMutuB === -1 ? 999 : posisiMutuB;
+
+        return nilaiMutuA - nilaiMutuB;
+
+    });
+
+    const fragment =
+        document.createDocumentFragment();
+
     data.forEach(function(item){
 
         jumlahBatang +=
             Number(item.batang || 0);
 
-
         jumlahVolume +=
             Number(item.volume || 0);
-
 
         const tr =
             document.createElement("tr");
 
-
         tr.innerHTML =
-
             "<td style='text-align:center;'>" +
             escapeHTML(item.tahun) +
             "</td>" +
@@ -1623,22 +1574,21 @@ data.sort(function(a, b){
             formatVolume(item.volume) +
             "</td>";
 
-
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
 
     });
 
+    tbody.appendChild(fragment);
 
     totalBatang.textContent =
         formatBatang(jumlahBatang);
 
-
     totalVolume.textContent =
         formatVolume(jumlahVolume);
 
+    console.timeEnd("RENDER DATA 845");
 }
-
-
+    
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
