@@ -1941,7 +1941,55 @@ async function mulai(){
 
 
 mulai();
+fetch(
+    API_URL +
+    "?action=data" +
+    "&tahun=SEMUA" +
+    "&sortimen=SEMUA" +
+    "&mutu=SEMUA" +
+    "&ukuran="
+)
+.then(function(response){
 
+    console.log(
+        "FETCH STATUS =",
+        response.status
+    );
+
+    console.log(
+        "FETCH TYPE =",
+        response.type
+    );
+
+    return response.text();
+
+})
+.then(function(text){
+
+    console.log(
+        "FETCH BERHASIL"
+    );
+
+    console.log(
+        "PANJANG RESPONSE =",
+        text.length
+    );
+
+    console.log(
+        "AWAL RESPONSE =",
+        text.substring(0,200)
+    );
+
+})
+.catch(function(error){
+
+    console.error(
+        "FETCH GAGAL =",
+        error
+    );
+
+});
+    
 </script>
 
 </body>
