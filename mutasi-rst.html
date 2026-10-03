@@ -633,19 +633,22 @@ tbody tr:hover:not(.total){
             <label for="bulan">BULAN</label>
 
             <select id="bulan" onchange="muatMutasi()">
-                <option value="1">JANUARI</option>
-                <option value="2">FEBRUARI</option>
-                <option value="3">MARET</option>
-                <option value="4">APRIL</option>
-                <option value="5">MEI</option>
-                <option value="6">JUNI</option>
-                <option value="7">JULI</option>
-                <option value="8">AGUSTUS</option>
-                <option value="9" selected>SEPTEMBER</option>
-                <option value="10">OKTOBER</option>
-                <option value="11">NOVEMBER</option>
-                <option value="12">DESEMBER</option>
-            </select>
+    <option value="1">JANUARI</option>
+    <option value="2">FEBRUARI</option>
+    <option value="3">MARET</option>
+    <option value="4">APRIL</option>
+    <option value="5">MEI</option>
+    <option value="6">JUNI</option>
+    <option value="7">JULI</option>
+    <option value="8">AGUSTUS</option>
+    <option value="9">SEPTEMBER</option>
+    <option value="10">OKTOBER</option>
+    <option value="11">NOVEMBER</option>
+    <option value="12">DESEMBER</option>
+</select>
+              <script>
+    document.getElementById("bulan").value = new Date().getMonth() + 1;
+</script>
 
             <div id="status" class="status"></div>
 
