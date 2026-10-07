@@ -1439,41 +1439,8 @@ async function loadData(){
         );
 
 
-      let tanggalTampil = "-";
-
-if (hasil.tanggalUpdate) {
-
-    const tanggal = new Date(
-        hasil.tanggalUpdate
-    );
-
-    if (!isNaN(tanggal.getTime())) {
-
-        const namaBulan = [
-            "JANUARI",
-            "FEBRUARI",
-            "MARET",
-            "APRIL",
-            "MEI",
-            "JUNI",
-            "JULI",
-            "AGUSTUS",
-            "SEPTEMBER",
-            "OKTOBER",
-            "NOVEMBER",
-            "DESEMBER"
-        ];
-
-        tanggalTampil =
-            tanggal.getDate() +
-            " " +
-            namaBulan[tanggal.getMonth()] +
-            " " +
-            tanggal.getFullYear();
-
-    }
-
-}
+    let tanggalTampil =
+    hasil.tanggalUpdate || "-";
 
 statusBox.textContent =
     "UPDATE S/D " +
