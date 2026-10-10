@@ -1439,12 +1439,28 @@ async function loadData(){
         );
 
 
-    let tanggalTampil =
-    hasil.tanggalUpdate || "-";
+   let tanggalTampil = "-";
 
-statusBox.textContent =
-    "UPDATE S/D " +
-    tanggalTampil;
+if (hasil.tanggalUpdate) {
+    let t = hasil.tanggalUpdate;
+
+    if (typeof t === "string" && /^\d{1,2} [A-Za-z]+ \d{4}$/.test(t)) {
+        tanggalTampil = t.toUpperCase();
+    } else {
+        let d = new Date(t);
+
+        if (!isNaN(d.getTime())) {
+            tanggalTampil = d.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                timeZone: "Asia/Jakarta"
+            }).toUpperCase();
+        }
+    }
+}
+
+statusBox.textContent = "UPDATE S/D " + tanggalTampil;
 
 console.log(
     "STATUS SETELAH LOAD =",
