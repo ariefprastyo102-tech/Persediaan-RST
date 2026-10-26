@@ -773,6 +773,69 @@ input:focus{
         width:80px;
     }
 }
+
+/* POLISH TAMPILAN */
+:root{
+    color-scheme:light;
+    --rst-green:#176b3a;
+    --rst-green-dark:#075b32;
+    --rst-border:#d7e2db;
+    --rst-shadow:0 6px 18px rgba(25,70,45,.08);
+}
+.container{padding:14px;}
+.header{min-height:96px;}
+.status{line-height:1.4;}
+.card{transition:transform .18s ease,box-shadow .18s ease;}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(25,70,45,.12);}
+.table-wrap{border-color:var(--rst-border);}
+tbody tr{transition:background-color .15s ease;}
+#btnDownloadExcel{box-shadow:0 4px 10px rgba(23,107,58,.18);transition:background-color .15s ease,transform .15s ease,box-shadow .15s ease;}
+#btnDownloadExcel:hover{background:#0d7540!important;box-shadow:0 6px 14px rgba(23,107,58,.24);transform:translateY(-1px);}
+#btnDownloadExcel:active{transform:translateY(0);}
+#btnDownloadExcel:focus-visible{outline:3px solid rgba(25,135,84,.3);outline-offset:2px;}
+#btnDownloadExcel:disabled{opacity:.7;cursor:wait!important;transform:none;}
+@media(max-width:600px){
+    .container{padding:8px;}
+    .header{min-height:unset;}
+    #btnDownloadExcel{height:40px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;}
+}
+
+/* FILTER MENYATU DENGAN JUDUL KOLOM */
+thead tr:first-child th{vertical-align:top;padding:9px 6px 8px;}
+.th-label{min-height:17px;margin-bottom:6px;line-height:1.2;}
+thead th select,
+thead th #filterUkuran{width:100%;height:29px;min-height:29px;font-size:11px!important;padding:3px 5px;border:1px solid rgba(255,255,255,.55);border-radius:6px;background:#fff;color:#26332b;}
+thead th #filterUkuran{display:block;resize:none;overflow:hidden;line-height:20px;font-family:Arial,sans-serif!important;}
+thead th select:focus,
+thead th #filterUkuran:focus{border-color:#b8e6ca;box-shadow:0 0 0 2px rgba(255,255,255,.22);}
+.status{font-size:14px;}
+@media(max-width:600px){.status{font-size:14px!important;}thead tr:first-child th{padding:8px 5px 7px;}thead th select,thead th #filterUkuran{height:27px;min-height:27px;font-size:10px!important;}}
+
+/* FILTER MUNCUL SAAT JUDUL KOLOM DITEKAN */
+thead tr:first-child th{position:sticky;vertical-align:top;padding:10px 6px;}
+thead tr:first-child th:has(.filter-open){z-index:20;}
+.filter-head{position:relative;min-height:22px;}
+.filter-trigger{display:block;margin:0 auto;padding:2px 3px;border:0;border-radius:4px;background:transparent;color:#fff;font:900 12px Arial,sans-serif;letter-spacing:.2px;cursor:pointer;white-space:nowrap;}
+.filter-trigger:hover,.filter-trigger:focus-visible{background:rgba(255,255,255,.16);outline:none;}
+.plain-heading{display:block;padding:2px 0;color:#fff;font-weight:900;white-space:nowrap;}
+.filter-popup{display:none;position:absolute;z-index:30;top:calc(100% + 5px);left:50%;transform:translateX(-50%);width:150px;min-width:120px;height:34px;padding:5px 7px;border:1px solid #b8cbbf;border-radius:7px;background:#fff;color:#26332b;box-shadow:0 8px 20px rgba(0,0,0,.2);font:12px Arial,sans-serif;}
+.filter-popup:focus{outline:2px solid rgba(25,135,84,.28);border-color:#198754;}
+.filter-head.filter-open .filter-popup{display:block;}
+textarea.filter-popup{height:36px;min-height:36px;resize:both;}
+@media(max-width:600px){.filter-trigger{font-size:10px;}.filter-popup{width:135px;}}
+
+/* FILTER RINGKAS DAN TENANG */
+thead tr:first-child th{vertical-align:middle;padding:9px 6px;background:#176b3a;color:#fff;}
+thead tr.filter-row th{background:#f4f7f5;padding:5px 5px;top:38px;}
+thead tr.filter-row select,
+thead tr.filter-row #filterUkuran{height:30px;min-height:30px;border:1px solid #d5dfd9;border-radius:5px;background:#fff;color:#45534a;font-size:12px!important;padding:3px 5px;box-shadow:none;}
+thead tr.filter-row select:focus,
+thead tr.filter-row #filterUkuran:focus{border-color:#8db69b;background:#fff;box-shadow:0 0 0 2px rgba(25,135,84,.08);}
+thead tr.filter-row #filterUkuran{display:block;resize:none;overflow:hidden;line-height:20px;font-family:Arial,sans-serif!important;}
+@media(max-width:600px){thead tr:first-child th{padding:8px 5px;}thead tr.filter-row th{top:34px;padding:4px;}thead tr.filter-row select,thead tr.filter-row #filterUkuran{height:28px;min-height:28px;font-size:12px!important;}}
 </style>
 
 </head>
@@ -912,82 +975,14 @@ input:focus{
             <!-- JUDUL KOLOM -->
 
             <tr>
-
-                <th>TAHUN</th>
-                <th>SORTIMEN</th>
-                <th>MUTU</th>
-                <th>UKURAN</th>
-                <th>BATANG</th>
-                <th>VOLUME</th>
-
+                <th>TAHUN</th><th>SORTIMEN</th><th>MUTU</th><th>UKURAN</th><th>BATANG</th><th>VOLUME</th>
             </tr>
-
-
-            <!-- FILTER -->
-
             <tr class="filter-row">
-
-                <th>
-
-                    <select id="filterTahun">
-
-                        <option value="SEMUA">
-                            SEMUA
-                        </option>
-
-                        <option value="2025">
-                            2025
-                        </option>
-
-                        <option value="2026">
-                            2026
-                        </option>
-
-                    </select>
-
-                </th>
-
-
-                <th>
-
-                    <select id="filterSortimen">
-
-                        <option value="SEMUA">
-                            SEMUA
-                        </option>
-
-                    </select>
-
-                </th>
-
-
-                <th>
-
-                    <select id="filterMutu">
-
-                        <option value="SEMUA">
-                            SEMUA
-                        </option>
-
-                    </select>
-
-                </th>
-
-
-                <th>
-
-                    <textarea
-                        id="filterUkuran"
-                        rows="1"
-                        placeholder="18 100 550"></textarea>
-
-                </th>
-
-
-                <th></th>
-
-                <th></th>
-
+                <th><select id="filterTahun"><option value="SEMUA">SEMUA</option><option value="2025">2025</option><option value="2026">2026</option></select></th>
+                <th><select id="filterSortimen"><option value="SEMUA">SEMUA</option></select></th>
+                <th><select id="filterMutu"><option value="SEMUA">SEMUA</option></select></th>
+                <th><textarea id="filterUkuran" rows="1" placeholder="18 100 550"></textarea></th>
+                <th></th><th></th>
             </tr>
 
         </thead>
@@ -1695,7 +1690,7 @@ function muatLibraryExcel(){
 
 
         script.src =
-            "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+            "https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js";
 
 
         script.onload =
@@ -1787,6 +1782,51 @@ document
                     );
 
 
+                const jumlahBatangExcel=dataTerakhir.reduce(function(total,item){return total+Number(item.batang||0);},0);
+                const jumlahVolumeExcel=dataTerakhir.reduce(function(total,item){return total+Number(item.volume||0);},0);
+                XLSX.utils.sheet_add_aoa(worksheet,[["TOTAL","","","",jumlahBatangExcel,jumlahVolumeExcel]],{origin:-1});
+                const rentang = XLSX.utils.decode_range(worksheet["!ref"]);
+                for(let kolomTotal=0; kolomTotal<6; kolomTotal++){
+                    const alamatTotal=XLSX.utils.encode_cell({r:rentang.e.r,c:kolomTotal});
+                    if(!worksheet[alamatTotal]) worksheet[alamatTotal]={t:"s",v:""};
+                }                const borderTipis = {
+                    top:{style:"thin",color:{rgb:"D9E5DD"}},
+                    bottom:{style:"thin",color:{rgb:"D9E5DD"}},
+                    left:{style:"thin",color:{rgb:"D9E5DD"}},
+                    right:{style:"thin",color:{rgb:"D9E5DD"}}
+                };
+
+                for(let baris=rentang.s.r; baris<=rentang.e.r; baris++){
+                    for(let kolom=rentang.s.c; kolom<=rentang.e.c; kolom++){
+                        const alamat=XLSX.utils.encode_cell({r:baris,c:kolom});
+                        const sel=worksheet[alamat];
+                        if(!sel) continue;
+                        const gaya={
+                            font:{name:"Arial",sz:10,color:{rgb:"26332B"}},
+                            alignment:{vertical:"center",horizontal:kolom>=4?"right":"left"},
+                            border:borderTipis
+                        };
+                        if(baris===0){
+                            gaya.font={name:"Arial",sz:10,bold:true,color:{rgb:"FFFFFF"}};
+                            gaya.fill={patternType:"solid",fgColor:{rgb:"176B3A"}};
+                            gaya.alignment={vertical:"center",horizontal:"center"};
+                        }else if(baris===rentang.e.r){
+                            gaya.font={name:"Arial",sz:10,bold:true,color:{rgb:"FFFFFF"}};
+                            gaya.fill={patternType:"solid",fgColor:{rgb:"176B3A"}};
+                            gaya.alignment={vertical:"center",horizontal:kolom>=4?"right":"center"};
+                            gaya.border={top:{style:"medium",color:{rgb:"0D542D"}},bottom:borderTipis.bottom,left:borderTipis.left,right:borderTipis.right};
+                        }else{
+                            gaya.fill={patternType:"solid",fgColor:{rgb:baris%2===0?"F1F7F3":"FFFFFF"}};
+                            if(kolom<4) gaya.alignment={vertical:"center",horizontal:"center"};
+                        }
+                        if(baris>0 && kolom===4) gaya.numFmt="#,##0";
+                        if(baris>0 && kolom===5) gaya.numFmt="#,##0.000000";
+                        sel.s=gaya;
+                    }
+                }
+                worksheet["!merges"]=[{s:{r:rentang.e.r,c:0},e:{r:rentang.e.r,c:3}}];
+                worksheet["!rows"]=[{hpt:25}];
+                worksheet["!autofilter"]={ref:XLSX.utils.encode_range({s:rentang.s,e:{r:rentang.e.r-1,c:rentang.e.c}})};
                 const workbook =
                     XLSX.utils.book_new();
 
@@ -1837,6 +1877,40 @@ document
         }
     );
     
+
+document.querySelectorAll(".filter-trigger").forEach(function(trigger){
+    trigger.addEventListener("click",function(event){
+        event.stopPropagation();
+        const head=this.closest(".filter-head");
+        const wasOpen=head.classList.contains("filter-open");
+        document.querySelectorAll(".filter-head.filter-open").forEach(function(item){
+            item.classList.remove("filter-open");
+            const button=item.querySelector(".filter-trigger");
+            if(button) button.setAttribute("aria-expanded","false");
+        });
+        if(!wasOpen){
+            head.classList.add("filter-open");
+            this.setAttribute("aria-expanded","true");
+            const control=head.querySelector(".filter-popup");
+            if(control) control.focus();
+        }
+    });
+});
+document.addEventListener("click",function(event){
+    if(!event.target.closest(".filter-head")){
+        document.querySelectorAll(".filter-head.filter-open").forEach(function(item){
+            item.classList.remove("filter-open");
+            const button=item.querySelector(".filter-trigger");
+            if(button) button.setAttribute("aria-expanded","false");
+        });
+    }
+});
+document.querySelectorAll(".filter-popup").forEach(function(control){
+    control.addEventListener("change",function(){
+        const head=this.closest(".filter-head");
+        if(head){head.classList.remove("filter-open");const button=head.querySelector(".filter-trigger");if(button)button.setAttribute("aria-expanded","false");}
+    });
+});
 /* =====================================================
    EVENT FILTER
 ===================================================== */
@@ -2006,3 +2080,5 @@ mulai();
 
 </body>
 </html>
+
+
