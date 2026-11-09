@@ -1781,9 +1781,9 @@ document
 
                 const jumlahBatangExcel=dataTerakhir.reduce(function(total,item){return total+Number(item.batang||0);},0);
                 const jumlahVolumeExcel=dataTerakhir.reduce(function(total,item){return total+Number(item.volume||0);},0);
-                XLSX.utils.sheet_add_aoa(worksheet,[["TOTAL","","","",jumlahBatangExcel,jumlahVolumeExcel]],{origin:-1});
+               XLSX.utils.sheet_add_aoa(worksheet,[["TOTAL","","",jumlahBatangExcel,jumlahVolumeExcel]],{origin:-1});
                 const rentang = XLSX.utils.decode_range(worksheet["!ref"]);
-                for(let kolomTotal=0; kolomTotal<6; kolomTotal++){
+                for(let kolomTotal=0; kolomTotal<5; kolomTotal++){
                     const alamatTotal=XLSX.utils.encode_cell({r:rentang.e.r,c:kolomTotal});
                     if(!worksheet[alamatTotal]) worksheet[alamatTotal]={t:"s",v:""};
                 }                const borderTipis = {
@@ -1800,7 +1800,7 @@ document
                         if(!sel) continue;
                         const gaya={
                             font:{name:"Arial",sz:10,color:{rgb:"26332B"}},
-                            alignment:{vertical:"center",horizontal:kolom>=4?"right":"left"},
+                            alignment:{vertical:"center",horizontal:kolom>=3?"right":"left"},
                             border:borderTipis
                         };
                         if(baris===0){
@@ -1810,18 +1810,18 @@ document
                         }else if(baris===rentang.e.r){
                             gaya.font={name:"Arial",sz:10,bold:true,color:{rgb:"FFFFFF"}};
                             gaya.fill={patternType:"solid",fgColor:{rgb:"176B3A"}};
-                            gaya.alignment={vertical:"center",horizontal:kolom>=4?"right":"center"};
+                            gaya.alignment={vertical:"center",horizontal:kolom>=3?"right":"center"};
                             gaya.border={top:{style:"medium",color:{rgb:"0D542D"}},bottom:borderTipis.bottom,left:borderTipis.left,right:borderTipis.right};
                         }else{
                             gaya.fill={patternType:"solid",fgColor:{rgb:baris%2===0?"F1F7F3":"FFFFFF"}};
                             if(kolom<4) gaya.alignment={vertical:"center",horizontal:"center"};
                         }
-                        if(baris>0 && kolom===4) gaya.numFmt="#,##0";
-                        if(baris>0 && kolom===5) gaya.numFmt="#,##0.000000";
+                        if(baris>0 && kolom===3) gaya.numFmt="#,##0";
+                        if(baris>0 && kolom===4) gaya.numFmt="#,##0.000000";
                         sel.s=gaya;
                     }
                 }
-                worksheet["!merges"]=[{s:{r:rentang.e.r,c:0},e:{r:rentang.e.r,c:3}}];
+               worksheet["!merges"]=[{s:{r:rentang.e.r,c:0},e:{r:rentang.e.r,c:2}}];
                 worksheet["!rows"]=[{hpt:25}];
                 worksheet["!autofilter"]={ref:XLSX.utils.encode_range({s:rentang.s,e:{r:rentang.e.r-1,c:rentang.e.c}})};
                 const workbook =
@@ -1837,15 +1837,13 @@ document
 
                 worksheet["!cols"] = [
 
-                    { wch:10 },
-                    { wch:24 },
-                    { wch:10 },
-                    { wch:24 },
-                    { wch:14 },
-                    { wch:16 }
+    { wch:24 },
+    { wch:10 },
+    { wch:24 },
+    { wch:14 },
+    { wch:16 }
 
-                ];
-
+];
 
                 XLSX.writeFile(
                     workbook,
