@@ -1810,7 +1810,14 @@ document
                         }else if(baris===rentang.e.r){
                             gaya.font={name:"Arial",sz:10,bold:true,color:{rgb:"FFFFFF"}};
                             gaya.fill={patternType:"solid",fgColor:{rgb:"176B3A"}};
-                            gaya.alignment={vertical:"center",horizontal:kolom>=3?"right":"center"};
+                           gaya.alignment={
+    vertical:"center",
+    horizontal:kolom===3
+        ? "center"
+        : kolom>=4
+            ? "right"
+            : "center"
+};
                             gaya.border={top:{style:"medium",color:{rgb:"0D542D"}},bottom:borderTipis.bottom,left:borderTipis.left,right:borderTipis.right};
                         }else{
                             gaya.fill={patternType:"solid",fgColor:{rgb:baris%2===0?"F1F7F3":"FFFFFF"}};
