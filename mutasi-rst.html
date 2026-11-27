@@ -3529,10 +3529,16 @@ for(
     rapikanWorksheet(ws, { headerRows:[4,5] });
 
     // RINCIAN: judul baris 1-2, header tabel baris 3.
-    const sheetRincian = workbook.getWorksheet("RINCIAN TERJUAL");
-    if(sheetRincian){
+   const sheetRincian = workbook.getWorksheet("RINCIAN TERJUAL");
+
+if(sheetRincian){
+
     rapikanWorksheet(sheetRincian, { headerRows:[3] });
 
+    // Lebarkan kolom SORTIMEN
+    sheetRincian.getColumn(2).width = 60;
+
+    // Warna header RINCIAN TERJUAL
     const header = sheetRincian.getRow(3);
 
     header.eachCell({ includeEmpty:true }, cell => {
@@ -3549,23 +3555,10 @@ for(
             color:{ argb:"FFFFFFFF" }
         };
     });
+
 }
 
-      const cellSortimen = sheetRincian.getCell("B3");
-
-cellSortimen.fill = {
-    type:"pattern",
-    pattern:"solid",
-    fgColor:{ argb:"FF243B63" }
-};
-
-cellSortimen.font = {
-    name:"Arial",
-    size:10,
-    bold:true,
-    color:{ argb:"FFFFFFFF" }
-};
-
+    
     // =====================================================
     // DOWNLOAD
     // =====================================================
