@@ -3154,8 +3154,8 @@ for(
             "TOTAL",
             "",
             "",
-            angka(sumber[3]),
-            angka(sumber[4])
+            0,
+            0
         ]);
 
     // MERGE A:C
@@ -3167,6 +3167,17 @@ for(
     );
 
     wr.getCell(row.number, 1).value = "TOTAL";
+
+    // TOTAL dihitung langsung oleh Excel dari seluruh baris rincian.
+    // Baris data dimulai dari baris 4; jika belum ada data, tetap 0.
+    if(row.number > 4){
+        wr.getCell(row.number, 4).value = {
+            formula: `SUM(D4:D${row.number - 1})`
+        };
+        wr.getCell(row.number, 5).value = {
+            formula: `SUM(E4:E${row.number - 1})`
+        };
+    }
 
     // CENTER TOTAL
     wr.getCell(row.number, 1).alignment = {
@@ -3311,7 +3322,7 @@ for(
         const headerRows = opsi.headerRows || [];
         const totalText = opsi.totalText || "TOTAL";
         const minWidth = 11;
-        const maxWidth = 42;
+        const maxWidth = 48;
 
         // Hitung lebar kolom dari isi sel dan judul kolom.
         worksheet.columns.forEach((column, index) => {
@@ -3345,10 +3356,10 @@ for(
 
             // Kolom sortimen/tanggal dan nama pembeli diberi ruang lebih.
             if(index === 0 && worksheet.name === "MUTASI"){
-                lebar = Math.max(lebar, 24);
+                lebar = Math.max(lebar, 36);
             }
             if(index === 2 && worksheet.name === "RINCIAN TERJUAL"){
-                lebar = Math.max(lebar, 24);
+                lebar = Math.max(lebar, 38);
             }
 
             column.width = Math.min(maxWidth, lebar);
@@ -3377,15 +3388,19 @@ for(
                 };
 
                 cell.border = {
-                    top: { style:"thin", color:{ argb:"FFD5E2D8" } },
-                    bottom: { style:"thin", color:{ argb:"FFD5E2D8" } },
-                    left: { style:"thin", color:{ argb:"FFD5E2D8" } },
-                    right: { style:"thin", color:{ argb:"FFD5E2D8" } }
+                    top: { style:"thin", color:{ argb:"FFD7DEE8" } },
+                    bottom: { style:"thin", color:{ argb:"FFD7DEE8" } },
+                    left: { style:"thin", color:{ argb:"FFD7DEE8" } },
+                    right: { style:"thin", color:{ argb:"FFD7DEE8" } }
                 };
 
-                if(!cell.font || !cell.font.name){
-                    cell.font = { name:"Arial", size:10, color:{ argb:"FF24332A" } };
-                }
+                cell.font = {
+                    ...(cell.font || {}),
+                    name:"Arial",
+                    color: (rowNumber <= 2)
+                        ? { argb:"FF243B63" }
+                        : ((cell.font && cell.font.color) || { argb:"FF263449" })
+                };
 
                 const isiTotal =
                     String(nilai || "").trim().toUpperCase() === totalText;
@@ -3395,13 +3410,13 @@ for(
                         totalCell.fill = {
                             type:"pattern",
                             pattern:"solid",
-                            fgColor:{ argb:"FFDCEFE2" }
+                            fgColor:{ argb:"FFE8EDF4" }
                         };
                         totalCell.font = {
                             name:"Arial",
                             size:10,
                             bold:true,
-                            color:{ argb:"FF14532D" }
+                            color:{ argb:"FF243B63" }
                         };
                     });
                 }
@@ -3420,7 +3435,7 @@ for(
                     cell.fill = {
                         type:"pattern",
                         pattern:"solid",
-                        fgColor:{ argb:"FFF4F8F5" }
+                        fgColor:{ argb:"FFF6F8FB" }
                     };
                 });
             }
@@ -3431,7 +3446,21 @@ for(
             }
         });
 
-        // Header utama hijau tua dan sub-header hijau muda.
+        // Judul bersih dengan teks navy; header utama navy dan sub-header abu-abu.
+        [1,2].forEach(nomor => {
+            const row = worksheet.getRow(nomor);
+            row.eachCell({ includeEmpty:true }, cell => {
+                cell.font = {
+                    ...(cell.font || {}),
+                    name:"Arial",
+                    bold:true,
+                    color:{ argb:"FF243B63" }
+                };
+                cell.alignment = { horizontal:"center", vertical:"middle" };
+            });
+        });
+
+        // Header utama navy dan sub-header abu-abu muda.
         headerRows.forEach((nomor, urutan) => {
             const row = worksheet.getRow(nomor);
             row.height = Math.max(row.height || 0, 27);
@@ -3440,13 +3469,13 @@ for(
                 cell.fill = {
                     type:"pattern",
                     pattern:"solid",
-                    fgColor:{ argb: urutan === 0 ? "FF166534" : "FFDCFCE7" }
+                    fgColor:{ argb: urutan === 0 ? "FF243B63" : "FFE8EDF4" }
                 };
                 cell.font = {
                     name:"Arial",
                     size:10,
                     bold:true,
-                    color:{ argb: urutan === 0 ? "FFFFFFFF" : "FF14532D" }
+                    color:{ argb: urutan === 0 ? "FFFFFFFF" : "FF243B63" }
                 };
                 cell.alignment = {
                     horizontal:"center",
@@ -3454,10 +3483,10 @@ for(
                     wrapText:true
                 };
                 cell.border = {
-                    top:{ style:"thin", color:{ argb:"FF14532D" } },
-                    bottom:{ style:"thin", color:{ argb:"FF14532D" } },
-                    left:{ style:"thin", color:{ argb:"FFB7CDBD" } },
-                    right:{ style:"thin", color:{ argb:"FFB7CDBD" } }
+                    top:{ style:"thin", color:{ argb:"FF243B63" } },
+                    bottom:{ style:"thin", color:{ argb:"FF243B63" } },
+                    left:{ style:"thin", color:{ argb:"FFD7DEE8" } },
+                    right:{ style:"thin", color:{ argb:"FFD7DEE8" } }
                 };
             });
         });
