@@ -3363,6 +3363,9 @@ for(
                 lebar = Math.max(lebar, 36);
             }
 
+              if(index === 1 && worksheet.name === "RINCIAN TERJUAL"){
+    lebar = 48;
+}
             column.width = Math.min(maxWidth, lebar);
         });
 
@@ -3548,6 +3551,20 @@ for(
     });
 }
 
+      const cellSortimen = sheetRincian.getCell("B3");
+
+cellSortimen.fill = {
+    type:"pattern",
+    pattern:"solid",
+    fgColor:{ argb:"FF243B63" }
+};
+
+cellSortimen.font = {
+    name:"Arial",
+    size:10,
+    bold:true,
+    color:{ argb:"FFFFFFFF" }
+};
 
     // =====================================================
     // DOWNLOAD
