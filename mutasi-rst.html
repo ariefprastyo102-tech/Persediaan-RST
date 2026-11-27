@@ -3556,6 +3556,20 @@ if(sheetRincian){
         };
     });
 
+// Paksa khusus header SORTIMEN menjadi navy
+sheetRincian.getCell("B3").fill = {
+    type:"pattern",
+    pattern:"solid",
+    fgColor:{ argb:"FF243B63" }
+};
+
+sheetRincian.getCell("B3").font = {
+    name:"Arial",
+    size:10,
+    bold:true,
+    color:{ argb:"FFFFFFFF" }
+};
+      
 }
 
     
