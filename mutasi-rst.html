@@ -2729,10 +2729,11 @@ async function exportExcel(){
     ws.getCell("A1").value =
         "MUTASI RST IK SARADAN";
 
-    ws.getCell("A1").font = {
-        bold:true,
-        size:16
-    };
+   ws.getCell("A1").font = {
+    bold:true,
+    size:16,
+    color:{ argb:"FF243B63" }
+};
 
     ws.getCell("A1").alignment = {
         horizontal:"center",
@@ -2748,9 +2749,10 @@ async function exportExcel(){
         namaBulan[bulan];
 
     ws.getCell("A2").font = {
-        bold:true,
-        size:12
-    };
+    bold:true,
+    size:12,
+    color:{ argb:"FF243B63" }
+};
 
     ws.getCell("A2").alignment = {
         horizontal:"center",
@@ -3046,10 +3048,11 @@ async function exportExcel(){
         wr.getCell("A1").value =
             "RINCIAN TERJUAL RST";
 
-        wr.getCell("A1").font = {
-            bold:true,
-            size:16
-        };
+       wr.getCell("A1").font = {
+    bold:true,
+    size:16,
+    color:{ argb:"FF243B63" }
+};
 
         wr.getCell("A1").alignment = {
             horizontal:"center",
@@ -3065,9 +3068,10 @@ async function exportExcel(){
             namaBulan[bulan];
 
         wr.getCell("A2").font = {
-            bold:true,
-            size:12
-        };
+    bold:true,
+    size:12,
+    color:{ argb:"FF243B63" }
+};
 
         wr.getCell("A2").alignment = {
             horizontal:"center"
@@ -3469,13 +3473,13 @@ for(
                 cell.fill = {
                     type:"pattern",
                     pattern:"solid",
-                    fgColor:{ argb: urutan === 0 ? "FF243B63" : "FFE8EDF4" }
+                   fgColor:{ argb: urutan === 0 ? "FFE8EDF4" : "FF243B63" }
                 };
                 cell.font = {
                     name:"Arial",
                     size:10,
                     bold:true,
-                    color:{ argb: urutan === 0 ? "FFFFFFFF" : "FF243B63" }
+                   color:{ argb: urutan === 0 ? "FF243B63" : "FFFFFFFF" }
                 };
                 cell.alignment = {
                     horizontal:"center",
@@ -3501,7 +3505,7 @@ for(
                     name:"Arial",
                     bold:true,
                     size: index === 0 ? 16 : 12,
-                    color:{ argb: index === 0 ? "FF14532D" : "FF3F6B4D" }
+                    color:{ argb:"FF243B63" }
                 };
             });
         });
