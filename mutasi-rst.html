@@ -3470,13 +3470,13 @@ for(
                 cell.fill = {
                     type:"pattern",
                     pattern:"solid",
-                   fgColor:{ argb: urutan === 0 ? "FFE8EDF4" : "FF243B63" }
+                  fgColor:{ argb: urutan === 0 ? "FF243B63" : "FFE8EDF4" }
                 };
                 cell.font = {
                     name:"Arial",
                     size:10,
                     bold:true,
-                   color:{ argb: urutan === 0 ? "FF243B63" : "FFFFFFFF" }
+                 color:{ argb: urutan === 0 ? "FFFFFFFF" : "FF243B63" }
                 };
                 cell.alignment = {
                     horizontal:"center",
@@ -3528,8 +3528,25 @@ for(
     // RINCIAN: judul baris 1-2, header tabel baris 3.
     const sheetRincian = workbook.getWorksheet("RINCIAN TERJUAL");
     if(sheetRincian){
-        rapikanWorksheet(sheetRincian, { headerRows:[3] });
-    }
+    rapikanWorksheet(sheetRincian, { headerRows:[3] });
+
+    const header = sheetRincian.getRow(3);
+
+    header.eachCell({ includeEmpty:true }, cell => {
+        cell.fill = {
+            type:"pattern",
+            pattern:"solid",
+            fgColor:{ argb:"FF243B63" }
+        };
+
+        cell.font = {
+            name:"Arial",
+            size:10,
+            bold:true,
+            color:{ argb:"FFFFFFFF" }
+        };
+    });
+}
 
 
     // =====================================================
