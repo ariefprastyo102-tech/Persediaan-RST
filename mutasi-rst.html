@@ -3465,35 +3465,25 @@ for(
         });
 
         // Header utama navy dan sub-header abu-abu muda.
-        headerRows.forEach((nomor, urutan) => {
-            const row = worksheet.getRow(nomor);
-            row.height = Math.max(row.height || 0, 27);
+        // KHUSUS SORTIMEN MUTASI A4:A5
+if(worksheet.name === "MUTASI"){
+    [4,5].forEach(nomor => {
+        const cellSortimen = worksheet.getCell(`A${nomor}`);
 
-            row.eachCell({ includeEmpty:true }, cell => {
-                cell.fill = {
-                    type:"pattern",
-                    pattern:"solid",
-                  fgColor:{ argb: urutan === 0 ? "FF243B63" : "FFE8EDF4" }
-                };
-                cell.font = {
-                    name:"Arial",
-                    size:10,
-                    bold:true,
-                 color:{ argb: urutan === 0 ? "FFFFFFFF" : "FF243B63" }
-                };
-                cell.alignment = {
-                    horizontal:"center",
-                    vertical:"middle",
-                    wrapText:true
-                };
-                cell.border = {
-                    top:{ style:"thin", color:{ argb:"FF243B63" } },
-                    bottom:{ style:"thin", color:{ argb:"FF243B63" } },
-                    left:{ style:"thin", color:{ argb:"FFD7DEE8" } },
-                    right:{ style:"thin", color:{ argb:"FFD7DEE8" } }
-                };
-            });
-        });
+        cellSortimen.fill = {
+            type:"pattern",
+            pattern:"solid",
+            fgColor:{ argb:"FF243B63" }
+        };
+
+        cellSortimen.font = {
+            name:"Arial",
+            size:10,
+            bold:true,
+            color:{ argb:"FFFFFFFF" }
+        };
+    });
+}
 
         // Judul dan nama bulan.
         [1,2].forEach((nomor, index) => {
