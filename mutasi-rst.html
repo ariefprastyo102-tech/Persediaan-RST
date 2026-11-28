@@ -3500,7 +3500,22 @@ headerRows.forEach((nomor, urutan) => {
         };
     });
 });
+if (worksheet.name === "MUTASI") {
+    const cell = worksheet.getCell("A4");
 
+    cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF243B63" }
+    };
+
+    cell.font = {
+        name: "Arial",
+        size: 10,
+        bold: true,
+        color: { argb: "FFFFFFFF" }
+    };
+}
         // Judul dan nama bulan.
         [1,2].forEach((nomor, index) => {
             const row = worksheet.getRow(nomor);
